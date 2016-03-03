@@ -67,6 +67,7 @@ Template.app_discover_filter.onCreated(function() {
     };
 
     var sortOptions = [
+        
         {
             value: 'popular',
             label: function() {
@@ -77,6 +78,12 @@ Template.app_discover_filter.onCreated(function() {
             value: 'new',
             label: function() {
                 return TAPi18n.__('pages-app-discover-filter-sorting-type-newest');
+            }
+        },
+        {
+            value: 'recommended',
+            label: function() {
+                return 'Recommended'; // TODO: i18n this string
             }
         }
     ];

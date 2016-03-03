@@ -85,6 +85,7 @@ Template.app_discover_page.onRendered(function() {
         query.userId = Meteor.userId();
         query.token = Accounts._storedLoginToken();
 
+
         // Update state(s)
         template.states.loading_infinite_scroll = true;
 

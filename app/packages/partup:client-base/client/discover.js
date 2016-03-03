@@ -13,7 +13,7 @@ Partup.client.discover = {
         textSearch: undefined,
         networkId: undefined,
         locationId: undefined,
-        sort: 'new',
+        sort: 'recommended',
         language: undefined
     },
 

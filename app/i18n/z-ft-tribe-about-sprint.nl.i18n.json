@@ -1,3 +1,19 @@
 {
-
+	"pages-modal-network_settings-about": "Over page",
+	"network-settings-about-title"		: "Over page",
+	"network-settings-about-paragraph"	: "Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris",
+	"network-settings-about-form-page-title" : "Pagina titel",
+	"network-settings-about-form-page-placeholder-title" : "Geef je pagina een titel",
+	"network-settings-about-form-intro" : "Introductie",
+	"network-settings-about-form-btn-save" : "Oplaan",
+	"network-settings-about-form-btn-close" : "Cancel",
+	"network-settings-about-textline" : "Paragrafen",
+	"network-settings-about-form-title" : "Titel",
+	"network-settings-about-form-placeholder-title" : "Geef je paragraaf een titel",
+	"network-settings-about-form-text" : "Tekst",
+	"network-settings-about-form-img" : "Afbeelding",
+	"network-settings-about-form-img-upload" : "Upload een nieuwe afbeelding",
+	"network-settings-about-form-img-hint" : "Max breedte: 400px",
+	"network-settings-about-add-form" : "Voeg een content blok toe"
 }
+

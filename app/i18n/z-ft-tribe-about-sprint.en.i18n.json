@@ -1,5 +1,18 @@
 {
 	"pages-modal-network_settings-about": "About page",
 	"network-settings-about-title"		: "About page",
-	"network-settings-about-paragraph"	: "Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris"
+	"network-settings-about-paragraph"	: "Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris",
+	"network-settings-about-form-page-title" : "Page title",
+	"network-settings-about-form-page-placeholder-title" : "Give your page a title",
+	"network-settings-about-form-intro" : "Introduction",
+	"network-settings-about-form-btn-save" : "Save",
+	"network-settings-about-form-btn-close" : "Close",
+	"network-settings-about-textline" : "Paragraphs",
+	"network-settings-about-form-title" : "Title",
+	"network-settings-about-form-placeholder-title" : "Give your paragraph a title",
+	"network-settings-about-form-text" : "Text",
+	"network-settings-about-form-img" : "Image",
+	"network-settings-about-form-img-upload" : "Upload new image",
+	"network-settings-about-form-img-hint" : "Max width: 400px",
+	"network-settings-about-add-form" : "Add content block"
 }

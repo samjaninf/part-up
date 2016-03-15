@@ -36,6 +36,13 @@
                                     {{_ 'pages-app-network-tab-button-uppers'}}
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ pathFor route='network-about' slug=data.network.slug }}"
+                                    class="pu-button pu-button-nav pu-button-nav-secondary {{ isActiveRoute name='network-about' class='pu-state-active'}}">
+                                    <i class="picon-chart"></i>
+                                    {{_ 'pages-app-network-tab-button-about'}}
+                                </a>
+                            </li>
                         </ul>
 
                         <!-- actions -->

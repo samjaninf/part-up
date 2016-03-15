@@ -88,6 +88,8 @@ Package.onUse(function(api) {
             'app/network/tabs/uppers.js',
             'app/network/tabs/closed.html',
             'app/network/tabs/closed.js',
+            'app/network/tabs/about.html',
+            'app/network/tabs/about.js',
 
             // App:profile
             'app/profile/profile.html',

@@ -635,6 +635,22 @@ Router.route('/tribes/:slug/uppers', {
     }
 });
 
+
+Router.route('/tribes/:slug/about', {
+    name: 'network-about',
+    where: 'client',
+    yieldRegions: {
+        'app':                  {to: 'main'},
+        'app_network':          {to: 'app'},
+        'app_network_about':   {to: 'app_network'}
+    },
+    data: function() {
+        return {
+            networkSlug: this.params.slug
+        };
+    }
+});
+
 Router.route('/tribes/:slug/invite', {
     name: 'network-invite',
     where: 'client',

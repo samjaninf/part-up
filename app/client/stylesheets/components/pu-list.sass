@@ -13,6 +13,10 @@
     &.pu-state-hidden
         display: none
 
+    &-large
+        > li
+            font-size: 18px
+
     &-right
         text-align: right
 
@@ -155,6 +159,20 @@
                     right: 100%
                     margin-right: 11px
                     color: #ccc
+
+    &-arrows-secondary
+        li
+            position: relative
+            margin-left: 25px
+
+            &:before
+                content: '\e004'
+                font: normal normal normal 9px 'partup-icons'
+                position: absolute
+                top: 3px
+                right: 100%
+                margin-right: 11px
+                color: $color-secondary
 
     &-features
         li

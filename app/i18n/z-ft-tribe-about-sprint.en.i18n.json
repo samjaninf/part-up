@@ -16,5 +16,8 @@
 	"network-settings-about-form-img-hint" : "Max width: 400px",
 	"network-settings-about-add-form" : "Add content block",
 
-	"pages-app-network-tab-button-about" : "About"
+	"pages-app-network-tab-button-about" : "About",
+
+	"pages-app-about-page-contact-title" : "Admin(s)",
+	"pages-app-about-page-contact-text" : "Do you want to be the first to hear about the latest Part-up developments? Sign up for newsletter, the Part-update."
 }

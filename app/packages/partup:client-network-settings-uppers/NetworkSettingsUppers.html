@@ -12,10 +12,10 @@
                         <figure class="pu-avatar" style="background-image: url('{{ partupImageUrl id=profile.image }}');" data-hovercontainer="HoverContainer_upper" data-hovercontainer-context="{{ _id }}"></figure>
                         <p class="pu-sub-name">
                             <a href="{{ pathFor 'profile' _id=_id }}" class="pu-sub-name" data-hovercontainer="HoverContainer_upper" data-hovercontainer-context="{{ _id }}">{{ profile.name }}</a>
+                            <span class="pu-sub-mail">anne@lifely.nl</span>
+                            <span class="pu-sub-status">Admin</span>
                         </p>
-                        {{#unless partupEquals _id currentUser._id}}
-                            <button type="button" class="pu-sub-remove pu-button pu-button-checkmark pu-button-checkmark-deny" data-upper-remove="{{ _id }}"> <i class="picon-times"></i> </button>
-                        {{/unless}}
+                        <button type="button" class="pu-sub-settings pu-button pu-button-checkmark pu-button-checkmark-deny"> <i class="picon-cog"></i> </button>
                     </li>
                 {{/ with }}
             {{/ each }}
@@ -23,5 +23,11 @@
         {{ else }}
         <ul class="pu-network-uppers"><li><p>{{_ 'network-settings-uppers-nouppers' }}</p></li></ul>
         {{/ if }}
+        <div class="pu-upper-settings">
+            <ul class="pu-list pu-list-lineseparated">
+                <li>Make admin</li>
+                <li class="pu-upper-settings-delete">Delete user</li>
+            </ul>
+        </div>
     </div>
 </template>

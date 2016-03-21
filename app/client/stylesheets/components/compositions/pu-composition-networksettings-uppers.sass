@@ -5,10 +5,60 @@
         margin-top: 20px
         font-size: 16px
 
+    .pu-form
+    	.pu-formfield
+    		.pu-label
+    			float: left
+
+    		.pu-sub-input
+    			float: left
+    			margin-top: -15px
+    			margin-left: 15px
+
+    			input.pu-input.form-control
+    				width: 52px
+    				transition: width 200ms
+
+    			input.pu-input.form-control:focus
+    				width: 490px
+    				padding-left: 45px
+
+    			.picon-search
+    				position: absolute
+    				top: 14px
+    				left: 16px
+    				font-size: 18px
+    				color: $color-button-gray-background
+
+    // left arrow
+    .pu-sub-input:after,
+    .pu-sub-input:before
+    	right: 96%
+    	top: 50%
+    	border: solid transparent
+    	content: " "
+    	height: 0
+    	width: 0
+    	position: absolute
+    	pointer-events: none
+    	z-index: 2
+
+    .pu-sub-input:after
+    	//border-color: rgba(136, 183, 213, 0)
+    	border-right-color: #fff
+    	border-width: 8px
+    	margin-top: -8px
+
+    .pu-sub-input:before
+    	//border-color: rgba(194, 225, 245, 0)
+    	border-right-color: #eee
+    	border-width: 11px
+    	margin-top: -11px
+
+
     .pu-sub-name
-        a
-            color: $color-text
-            text-decoration: none
+        color: $color-text
+        text-decoration: none
 
     .pu-sub-mail
     	position: absolute

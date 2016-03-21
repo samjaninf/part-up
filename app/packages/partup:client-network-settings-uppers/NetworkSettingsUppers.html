@@ -4,13 +4,24 @@
         <p>{{_ 'network-settings-uppers-paragraph' }}</p>
 
         {{# if data.network.uppers }}
-        <h3>{{_ 'network-settings-uppers-listheading' }}</h3>
+        <!-- <h3>{{_ 'network-settings-uppers-listheading' }}</h3> -->
+
+        <form id="" class="pu-form" novalidate="novalidate">
+            <label class="pu-formfield">
+                <span class="pu-label">6 uppers</span>
+                <span class="pu-sub-input">
+                    <input type="text" name="email" placeholder="" class="pu-input form-control" autofocus="" required="" maxlength="255">
+                    <i class="picon-search"></i>
+                </span>
+            </label>
+        </form>
+
         <ul class="pu-list pu-list-lineseparated">
             {{# each data.network.uppers }}
                 {{# with data.upper }}
                     <li>
                         <figure class="pu-avatar" style="background-image: url('{{ partupImageUrl id=profile.image }}');" data-hovercontainer="HoverContainer_upper" data-hovercontainer-context="{{ _id }}"></figure>
-                        <p class="pu-sub-name">
+                        <p class="pu-sub-upperinfo">
                             <a href="{{ pathFor 'profile' _id=_id }}" class="pu-sub-name" data-hovercontainer="HoverContainer_upper" data-hovercontainer-context="{{ _id }}">{{ profile.name }}</a>
                             <span class="pu-sub-mail">anne@lifely.nl</span>
                             <span class="pu-sub-status">Admin</span>

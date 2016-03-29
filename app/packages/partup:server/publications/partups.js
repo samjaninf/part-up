@@ -29,8 +29,18 @@ Meteor.routeComposite('/partups/discover', function(request, parameters) {
         textSearch: parameters.query.textSearch,
         limit: parameters.query.limit,
         skip: parameters.query.skip,
+        userId: parameters.query.userId,
         language: (parameters.query.language === 'all') ? undefined : parameters.query.language
     };
+
+    // If the sorting is set to recommended
+    if (parameters.sort === "recommended"){
+        // REST call to api , this should return a list of recommended Partup IDS
+        
+        // HTTP.call('GET', process.env.API_BASE_URL + '/partups/recommended/for/user/' + parameters.userId, {
+        parameters.partupsIds = HTTP.call('GET', 'http://www.mocky.io/v2/56fa712f110000bc28a72181').data.partups
+            
+    }
 
     var options = {};
 

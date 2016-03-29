@@ -539,6 +539,16 @@ Partups.findForDiscover = function(userId, options, parameters) {
     var locationId = parameters.locationId || undefined;
     var networkId = parameters.networkId || undefined;
     var language = parameters.language || undefined;
+    var partupsIds = parameters.partupsIds || undefined;
+
+    // Get specific partups based on partupIds in parameters
+    if (partupsIds) {
+
+        console.log(partupsIds);
+
+        selector['_id'] = {$in: partupsIds};
+
+    }
 
     if (sort) {
         // Sort the partups from the newest to the oldest
@@ -549,7 +559,8 @@ Partups.findForDiscover = function(userId, options, parameters) {
         // Sort the partups from the most popular to the least popular
         if (sort === 'popular') {
             options.sort['popularity'] = -1;
-        }
+        }        
+
     }
 
     // Filter the partups on language

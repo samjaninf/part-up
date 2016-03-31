@@ -66,8 +66,8 @@ Template.app_discover_filter.onCreated(function() {
         }
     };
 
+    // Sort options for the discover sorting
     var sortOptions = [
-        
         {
             value: 'popular',
             label: function() {
@@ -80,13 +80,18 @@ Template.app_discover_filter.onCreated(function() {
                 return TAPi18n.__('pages-app-discover-filter-sorting-type-newest');
             }
         },
-        {
+    ];
+
+    // Only show recommended when logged in:
+    if ( Meteor.user() ){
+        sortOptions.push({
             value: 'recommended',
             label: function() {
-                return 'Recommended'; // TODO: i18n this string
+                return 'Recommended';
             }
-        }
-    ];
+        })
+    };
+
     var prefilledSortValue = Partup.client.discover.query.get('sort');
     var sortOption = lodash.find(sortOptions, {
         value: prefilledSortValue

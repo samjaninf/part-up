@@ -1,5 +1,6 @@
 /*
  * Count route for /partups/discover
+ * Required for endless scroll, not for recommended sorting.
  */
 Router.route('/partups/discover/count', {where: 'server'}).get(function() {
     var request = this.request;
@@ -15,8 +16,10 @@ Router.route('/partups/discover/count', {where: 'server'}).get(function() {
         textSearch: request.query.textSearch,
         limit: request.query.limit,
         skip: request.query.skip,
-        language: (request.query.language === 'all') ? undefined : request.query.language
+        language: (request.query.language === 'all') ? undefined : request.query.language,
     };
+
+    console.log(parameters.sort);
 
     var userId = request.user ? request.user._id : null;
     var partups = Partups.findForDiscover(userId, {}, parameters);

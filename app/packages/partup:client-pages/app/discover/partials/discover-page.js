@@ -114,6 +114,10 @@ Template.app_discover_page.onRendered(function() {
                 };
             });
 
+            // Print count
+            console.log(result.partups.length);
+            template.count.set(result.partups.length)
+
             // Add tiles to the column layout
             template.columnTilesLayout.addTiles(tiles, function callback() {
                 template.states.loading_infinite_scroll = false;
@@ -139,19 +143,21 @@ Template.app_discover_page.onRendered(function() {
         template.page.set(0);
         template.columnTilesLayout.clear();
 
-        template.states.count_loading.set(true);
-        HTTP.get('/partups/discover/count' + mout.queryString.encode(query), {
-            beforeSend: function(request) {
-                template.countXMLHttpRequest = request;
-            }
-        }, function(error, response) {
-            template.countXMLHttpRequest = null;
-            template.states.count_loading.set(false);
-            if (error || !response || !mout.lang.isString(response.content)) { return; }
+        // TODO: fix this so the spinner is shown even when calling the discover API...
+        
+        //template.states.count_loading.set(true);
+        // HTTP.get('/partups/discover/count' + mout.queryString.encode(query), {
+        //     beforeSend: function(request) {
+        //         template.countXMLHttpRequest = request;
+        //     }
+        // }, function(error, response) {
+        //     template.countXMLHttpRequest = null;
+        //     template.states.count_loading.set(false);
+        //     if (error || !response || !mout.lang.isString(response.content)) { return; }
 
-            var content = JSON.parse(response.content);
-            template.count.set(content.count);
-        });
+        //     var content = JSON.parse(response.content);
+        //     template.count.set(content.count);
+        // });
     });
 
     // Infinite scroll

@@ -544,8 +544,6 @@ Partups.findForDiscover = function(userId, options, parameters) {
     // Get specific partups based on partupIds in parameters
     if (partupsIds) {
 
-        console.log(partupsIds);
-
         selector['_id'] = {$in: partupsIds};
 
     }

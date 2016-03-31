@@ -1,0 +1,48 @@
+.pu-search
+    .pu-formfield
+        .pu-label
+            float: left
+            font-size: 21px;
+
+        .pu-sub-input
+            float: left
+            margin-top: -13px
+            margin-left: 18px
+
+            &:after, &:before
+                right: 95%
+                top: 50%
+                border: solid transparent
+                content: " "
+                height: 0
+                width: 0
+                position: absolute
+                pointer-events: none
+                z-index: 2
+
+            &:after
+                border-color: rgba(136, 183, 213, 0)
+                border-right-color: #fff
+                border-width: 7px
+                margin-top: -7px
+
+            &:before
+                border-color: rgba(194, 225, 245, 0)
+                border-right-color: #eee
+                border-width: 10px
+                margin-top: -10px
+
+            input.pu-input.form-control
+                width: 44px
+                transition: width 200ms
+
+            input.pu-input.form-control:focus
+                width: 490px
+                padding-left: 45px
+
+            .picon-search
+                position: absolute
+                top: 14px
+                left: 12px
+                font-size: 18px
+                color: $color-button-gray-background

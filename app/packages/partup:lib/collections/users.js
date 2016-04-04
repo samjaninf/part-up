@@ -84,8 +84,8 @@ Meteor.users.findSinglePublicProfile = function(userId) {
  * @return {Mongo.Cursor}
  */
 Meteor.users.findMultiplePublicProfiles = function(userIds, options, parameters) {
-    var options = options || {};
-    var parameters = parameters || {};
+    options = options || {};
+    parameters = parameters || {};
     var selector = {_id: {$in: userIds}};
 
     if (parameters.onlyActive) selector.deactivatedAt = {$exists: false};
@@ -362,7 +362,7 @@ User = function(user) {
          */
         isSomeNetworkAdmin: function() {
             if (!user) return false;
-            return !!Networks.findOne({admin_id: user._id});
+            return !!Networks.findOne({admins: {$in: [user._id]}});
         },
 
         /**

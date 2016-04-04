@@ -221,10 +221,10 @@ Meteor.publishComposite('networks.admin_all', function() {
         children: [
             {find: Images.findForNetwork},
             {find: function(network) {
-                return Meteor.users.findSinglePublicProfile(network.admin_id);
+                return Meteor.users.findMultiplePublicProfiles(network.admins);
             }, children: [
                 {find: Images.findForUser}
-            ]},
+            ]}
         ]
     };
 });

@@ -19,7 +19,7 @@ Meteor.methods({
             network.privacy_type = fields.privacy_type;
             network.slug = Partup.server.services.slugify.slugify(fields.name);
             network.uppers = [user._id];
-            network.admin_id = user._id;
+            network.admins = [user._id];
             network.created_at = new Date();
             network.updated_at = new Date();
             network.stats = {
@@ -662,10 +662,6 @@ Meteor.methods({
         if (!User(user).isAdmin()) throw new Meteor.Error(401, 'unauthorized');
 
         var network = Networks.findOneOrFail({slug: networkSlug});
-
-        if (fields.admin_id) {
-            var adminUser = Meteor.users.findOneOrFail(fields.admin_id);
-        }
 
         try {
             Networks.update(network._id, {$set: fields});

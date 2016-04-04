@@ -43,52 +43,57 @@ Event.on('networks.accepted', function(userId, networkId, upperId) {
 });
 
 /**
- * Generate a notification for the network admin when a new upper is pending
+ * Generate a notification for the network admins when a new upper is pending
  */
 Event.on('networks.new_pending_upper', function(network, pendingUpper) {
     var notificationType = 'partups_networks_new_pending_upper';
-    var admin = Meteor.users.findOneOrFail(network.admin_id);
+    var admins = Meteor.users.find({_id: {$in: network.admins}});
 
-    // Send notifications to network admin
-    var notificationOptions = {
-        userId: admin._id,
-        type: notificationType,
-        typeData: {
-            pending_upper: {
-                _id: pendingUpper._id,
-                name: pendingUpper.profile.name,
-                image: pendingUpper.profile.image
-            },
-            network: {
-                _id: network._id,
-                name: network.name,
-                image: network.image,
-                slug: network.slug
+    admins.forEach(function(admin) {
+        // Send notifications to network admin
+        var notificationOptions = {
+            userId: admin._id,
+            type: notificationType,
+            typeData: {
+                pending_upper: {
+                    _id: pendingUpper._id,
+                    name: pendingUpper.profile.name,
+                    image: pendingUpper.profile.image
+                },
+                network: {
+                    _id: network._id,
+                    name: network.name,
+                    image: network.image,
+                    slug: network.slug
+                }
             }
-        }
-    };
+        };
 
-    Partup.server.services.notifications.send(notificationOptions);
+        Partup.server.services.notifications.send(notificationOptions);
 
-    // Set the email details
-    var emailOptions = {
-        type: notificationType,
-        toAddress: User(admin).getEmail(),
-        subject: TAPi18n.__('emails-partups_networks_new_pending_upper-subject', {upper: pendingUpper.profile.name, network: network.name}, User(admin).getLocale()),
-        locale: User(admin).getLocale(),
-        typeData: {
-            name: User(admin).getFirstname(),
-            pendingUpperName: pendingUpper.profile.name,
-            networkName: network.name,
-            url: Meteor.absoluteUrl() + 'tribes/' + network.slug + '/settings/requests',
-            unsubscribeOneUrl: Meteor.absoluteUrl() + 'unsubscribe-email-one/' + notificationType + '/' + admin.profile.settings.unsubscribe_email_token,
-            unsubscribeAllUrl: Meteor.absoluteUrl() + 'unsubscribe-email-all/' + admin.profile.settings.unsubscribe_email_token
-        },
-        userEmailPreferences: admin.profile.settings.email
-    };
+        // Set the email details
+        var emailOptions = {
+            type: notificationType,
+            toAddress: User(admin).getEmail(),
+            subject: TAPi18n.__('emails-partups_networks_new_pending_upper-subject', {
+                upper: pendingUpper.profile.name,
+                network: network.name
+            }, User(admin).getLocale()),
+            locale: User(admin).getLocale(),
+            typeData: {
+                name: User(admin).getFirstname(),
+                pendingUpperName: pendingUpper.profile.name,
+                networkName: network.name,
+                url: Meteor.absoluteUrl() + 'tribes/' + network.slug + '/settings/requests',
+                unsubscribeOneUrl: Meteor.absoluteUrl() + 'unsubscribe-email-one/' + notificationType + '/' + admin.profile.settings.unsubscribe_email_token,
+                unsubscribeAllUrl: Meteor.absoluteUrl() + 'unsubscribe-email-all/' + admin.profile.settings.unsubscribe_email_token
+            },
+            userEmailPreferences: admin.profile.settings.email
+        };
 
-    // Send the email
-    Partup.server.services.emails.send(emailOptions);
+        // Send the email
+        Partup.server.services.emails.send(emailOptions);
+    });
 });
 
 /**
@@ -147,51 +152,52 @@ Event.on('networks.uppers.inserted', function(newUpper, network) {
 });
 
 /**
- * Generate a notification for the network admin to notify that an upper left
+ * Generate a notification for all network admins to notify that an upper left
  */
 Event.on('networks.uppers.removed', function(upper, network) {
     var notificationType = 'partups_networks_upper_left';
 
-    // Send notifications to network admin only
-    var networkAdmin = Meteor.users.findOneOrFail(network.admin_id);
+    var admins = Meteor.users.find({_id: {$in: network.admins}});
 
-    var notificationOptions = {
-        userId: networkAdmin._id,
-        type: notificationType,
-        typeData: {
-            upper: {
-                _id: upper._id,
-                name: upper.profile.name,
-                image: upper.profile.image
-            },
-            network: {
-                _id: network._id,
-                name: network.name,
-                image: network.image,
-                slug: network.slug
+    admins.forEach(function(networkAdmin) {
+        var notificationOptions = {
+            userId: networkAdmin._id,
+            type: notificationType,
+            typeData: {
+                upper: {
+                    _id: upper._id,
+                    name: upper.profile.name,
+                    image: upper.profile.image
+                },
+                network: {
+                    _id: network._id,
+                    name: network.name,
+                    image: network.image,
+                    slug: network.slug
+                }
             }
-        }
-    };
+        };
 
-    Partup.server.services.notifications.send(notificationOptions);
+        Partup.server.services.notifications.send(notificationOptions);
 
-    // Set the email details
-    var emailOptions = {
-        type: notificationType,
-        toAddress: User(networkAdmin).getEmail(),
-        subject: TAPi18n.__('emails-' + notificationType + '-subject', {network: network.name}, User(networkAdmin).getLocale()),
-        locale: User(networkAdmin).getLocale(),
-        typeData: {
-            name: User(networkAdmin).getFirstname(),
-            upperName: upper.profile.name,
-            networkName: network.name,
-            url: Meteor.absoluteUrl() + 'tribes/' + network.slug + '/uppers',
-            unsubscribeOneUrl: Meteor.absoluteUrl() + 'unsubscribe-email-one/' + notificationType + '/' + networkAdmin.profile.settings.unsubscribe_email_token,
-            unsubscribeAllUrl: Meteor.absoluteUrl() + 'unsubscribe-email-all/' + networkAdmin.profile.settings.unsubscribe_email_token
-        },
-        userEmailPreferences: networkAdmin.profile.settings.email
-    };
+        // Set the email details
+        var emailOptions = {
+            type: notificationType,
+            toAddress: User(networkAdmin).getEmail(),
+            subject: TAPi18n.__('emails-' + notificationType + '-subject', {network: network.name}, User(networkAdmin).getLocale()),
+            locale: User(networkAdmin).getLocale(),
+            typeData: {
+                name: User(networkAdmin).getFirstname(),
+                upperName: upper.profile.name,
+                networkName: network.name,
+                url: Meteor.absoluteUrl() + 'tribes/' + network.slug + '/uppers',
+                unsubscribeOneUrl: Meteor.absoluteUrl() + 'unsubscribe-email-one/' + notificationType + '/' + networkAdmin.profile.settings.unsubscribe_email_token,
+                unsubscribeAllUrl: Meteor.absoluteUrl() + 'unsubscribe-email-all/' + networkAdmin.profile.settings.unsubscribe_email_token
+            },
+            userEmailPreferences: networkAdmin.profile.settings.email
+        };
 
-    // Send the email
-    Partup.server.services.emails.send(emailOptions);
+        // Send the email
+        Partup.server.services.emails.send(emailOptions);
+    });
 });

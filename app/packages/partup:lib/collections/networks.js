@@ -32,7 +32,7 @@ var Network = function(document) {
  */
 Network.prototype.isNetworkAdmin = function(userId) {
     if (!userId) return false;
-    return mout.lang.isString(userId) && (userId === this.admin_id);
+    return mout.lang.isString(userId) && (this.admins.indexOf(userId) > -1);
 };
 
 /**
@@ -347,7 +347,7 @@ Networks = new Mongo.Collection('networks', {
 // Add indices
 if (Meteor.isServer) {
     Networks._ensureIndex('slug');
-    Networks._ensureIndex('admin_id');
+    Networks._ensureIndex('admins');
     Networks._ensureIndex('privacy_type');
 }
 
@@ -378,8 +378,8 @@ Networks.NETWORK_CLOSED = NETWORK_CLOSED;
  * @return {Cursor}
  */
 Networks.guardedMetaFind = function(selector, options) {
-    var selector = selector || {};
-    var options = options || {};
+    selector = selector || {};
+    options = options || {};
 
     // Make sure that if the callee doesn't pass the fields
     // key used in the options parameter, we set it with
@@ -409,8 +409,8 @@ Networks.guardedMetaFind = function(selector, options) {
 Networks.guardedFind = function(userId, selector, options) {
     if (Meteor.isClient) return this.find(selector, options);
 
-    var selector = selector || {};
-    var options = options || {};
+    selector = selector || {};
+    options = options || {};
 
     // The fields that should never be exposed
     var guardedFields = ['access_tokens'];
@@ -431,7 +431,7 @@ Networks.guardedFind = function(userId, selector, options) {
         guardedCriterias.push({'uppers': {'$in': [userId]}});
 
         // Of course the admin of a network always has the needed rights
-        guardedCriterias.push({'admin_id': userId});
+        guardedCriterias.push({'admins': {'$in': [userId]}});
     }
 
     // Guarding selector that needs to be fulfilled

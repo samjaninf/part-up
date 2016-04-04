@@ -14,7 +14,7 @@ Meteor.startup(function() {
                 'uppers' : [
                     'q63Kii9wwJX3Q6rHS'
                 ],
-                'admin_id' : 'q63Kii9wwJX3Q6rHS',
+                'admins' : ['q63Kii9wwJX3Q6rHS'],
                 'created_at' : new Date('2015-07-21T15:47:33.225Z'),
                 'updated_at' : new Date('2015-07-21T15:47:33.225Z'),
                 'featured' : {
@@ -41,7 +41,7 @@ Meteor.startup(function() {
                     'q63Kii9wwJX3Q6rHS',
                     'K5c5M4Pbdg3B82wQH'
                 ],
-                'admin_id' : 'q63Kii9wwJX3Q6rHS',
+                'admins' : ['q63Kii9wwJX3Q6rHS'],
                 'created_at' : new Date('2015-07-21T15:51:48.825Z'),
                 'updated_at' : new Date('2015-07-21T15:51:48.825Z'),
                 'invites' : [
@@ -66,7 +66,7 @@ Meteor.startup(function() {
                     'q63Kii9wwJX3Q6rHS',
                     'K5c5M4Pbdg3B82wQI'
                 ],
-                'admin_id' : 'q63Kii9wwJX3Q6rHS',
+                'admins' : ['q63Kii9wwJX3Q6rHS'],
                 'created_at' : new Date('2015-07-21T15:51:56.562Z'),
                 'updated_at' : new Date('2015-07-21T15:51:56.562Z'),
                 'invites' : [
@@ -100,7 +100,7 @@ Meteor.startup(function() {
                     'K5c5M4Pbdg3B82wQH',
                     'a7qcp5RHnh5rfaeW9'
                 ],
-                'admin_id' : 'q63Kii9wwJX3Q6rHS',
+                'admins' : ['q63Kii9wwJX3Q6rHS'],
                 'created_at' : new Date('2015-07-21T15:52:04.548Z'),
                 'updated_at' : new Date('2015-07-21T15:52:04.548Z'),
                 'featured' : {

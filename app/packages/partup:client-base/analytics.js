@@ -25,7 +25,7 @@ Meteor.startup(function() {
     }
 
     analytics.on('track', function(event, properties, options) {
-
+        if (!properties) return;
         // Pass track events to 2nd tracker
         if (second_tracker_id) {
             ga(SECOND_TRACKER_NAME + '.send', {

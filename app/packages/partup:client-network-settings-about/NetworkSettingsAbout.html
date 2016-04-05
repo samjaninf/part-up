@@ -1,0 +1,123 @@
+<template name="NetworkSettingsAbout">
+    <div class="pu-composition pu-composition-defaultmodal pu-composition-networksettings-about">
+        <h2 class="pu-title pu-title-modal">{{_ 'network-settings-about-title' }}</h2>
+        <p>{{{_ 'network-settings-about-paragraph' }}}</p>
+        <form id="1quoteForm" class="pu-form pu-block pu-block-active" novalidate="novalidate">
+            <label class="pu-formfield">
+                <span class="pu-label">
+                    Page title
+                    <!-- <a class="pu-hint">
+                        max 75 characters
+                    </a> -->
+                </span>
+                <div class="pu-sub-validations">
+                    <span class="pu-sub-input">
+                        <input type="text" name="title" placeholder="Give your page a title" class="pu-input form-control" data-schema-key="title" maxlength="75">
+                    </span>
+                    <span class="pu-sub-error"></span>
+                </div>
+            </label>
+            <div class="pu-formfield">
+                <span class="pu-label">
+                    Introduction
+                    <a class="pu-hint">
+                        400 characters left
+                    </a>
+                </span>
+                <div class="pu-sub-validations">
+                    <span class="pu-sub-input">
+                        <div class="pu-textarea form-control" id="summernote-intro"></div>
+                    </span>
+                    <span class="pu-sub-error"></span>
+                </div>
+            </div>
+            <footer class="pu-sub-formfooter pu-row pu-row-scalable">
+                <div class="cell">
+                    <button type="submit" class="pu-button">
+                        <span>Save</span>
+                    </button>
+                </div>
+                <div class="cell stretch"><button type="button" class="pu-button pu-button-gray" data-close="">Close</button></div>
+                <!-- <div class="cell">
+                    <a class="pu-button pu-button-text pu-button-text-subtle" data-remove="">Remove</a>
+                </div> -->
+            </footer>
+        </form>
+        <p class="pu-textline pu-textline-divider">
+            <span>Paragraphs</span>
+        </p>
+        <form id="1quoteForm" class="pu-form pu-block pu-block-active" novalidate="novalidate">
+            <label class="pu-formfield">
+                <span class="pu-label">
+                    Title
+                    <!-- <a class="pu-hint">
+                        max 75 characters
+                    </a> -->
+                </span>
+                <div class="pu-sub-validations">
+                    <span class="pu-sub-input">
+                        <input type="text" name="title" placeholder="Give your paragraph a title" class="pu-input form-control" data-schema-key="title" maxlength="75">
+                    </span>
+                    <span class="pu-sub-error"></span>
+                </div>
+            </label>
+            <div class="pu-formfield">
+                <span class="pu-label">
+                    Text
+                    <!-- <a class="pu-hint">
+                        Max 180 characters
+                    </a> -->
+                </span>
+                <div class="pu-sub-validations">
+                    <span class="pu-sub-input">
+                        <div class="pu-textarea form-control" id="summernote-p"></div>
+                    </span>
+                    <span class="pu-sub-error"></span>
+                </div>
+            </div>
+            <div class="pu-formfield">
+                <div class="pu-upload">
+                    <span class="pu-label">
+                        Image
+                    </span>
+                    <figure style="background-image:url('/images/smile.png')" class="pu-imagepreview pu-imagepreview-logo">
+                    </figure>
+                    <button type="button" class="pu-button pu-button-secondary" data-image-browse="">
+                        <span>Upload new image</span>
+                    </button>
+                    <span class="pu-hint">Max width: 400px</span>
+                    <input type="file" class="pu-fileinput" data-image-input="">
+                    <input type="hidden" name="image" data-schema-key="image">
+                </div>
+            </div>
+            <footer class="pu-sub-formfooter pu-row pu-row-scalable">
+                <div class="cell">
+                    <button type="submit" class="pu-button">
+                        <span>Save</span>
+                    </button>
+                </div>
+                <div class="cell stretch"><button type="button" class="pu-button pu-button-gray" data-close="">Close</button></div>
+                <!-- <div class="cell">
+                    <a class="pu-button pu-button-text pu-button-text-subtle" data-remove="">Remove</a>
+                </div> -->
+            </footer>
+        </form>
+        <section class="pu-block pu-block-result">
+                <p><strong>Bladielala</strong></p>
+                <p>Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris</p>
+                <ul class="pu-list pu-list-buttons">
+                    <li><button type="button" class="pu-button pu-button-action" data-edit=""><i class="picon-arrow-up"></i></button></li>
+                    <li><button type="button" class="pu-button pu-button-action" data-edit=""><i class="picon-arrow-down"></i></button></li>
+                    <li><button type="button" class="pu-button pu-button-action" data-edit=""><i class="picon-pencil"></i></button></li>
+                </ul>
+
+
+        </section>
+
+            <!-- <p>Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris</p> -->
+
+        <div class="pu-block pu-block-action">
+            <a href="" class="pu-button" data-create="">Add content block</a>
+        </div>
+    </div>
+</template>

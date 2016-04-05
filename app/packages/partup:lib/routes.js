@@ -712,6 +712,21 @@ Router.route('/tribes/:slug/settings/requests', {
     }
 });
 
+Router.route('/tribes/:slug/settings/about', {
+    name: 'network-settings-about',
+    where: 'client',
+    yieldRegions: {
+        'modal':                         {to: 'main'},
+        'modal_network_settings':        {to: 'modal'},
+        'modal_network_settings_about': {to: 'modal_network_settings'}
+    },
+    data: function() {
+        return {
+            networkSlug: this.params.slug
+        };
+    }
+});
+
 /*************************************************************/
 /* Swarm */
 /*************************************************************/

@@ -26,6 +26,9 @@
                                 <a href="{{ pathFor 'network-settings-requests' slug=network.slug }}">{{_ 'pages-modal-network_settings-requests' }}</a>
                             </li>
                         {{/unless }}
+                        <li class="{{# if isActiveRoute name='network-settings-about' }}pu-state-active{{/ if }}">
+                            <a href="{{ pathFor 'network-settings-about' slug=network.slug }}">{{_ 'pages-modal-network_settings-about' }}</a>
+                        </li>
                     </ul>
                 </div>
             </div>

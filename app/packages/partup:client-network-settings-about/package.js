@@ -7,8 +7,7 @@ Package.describe({
 
 Package.onUse(function(api) {
     api.use([
-        'partup:lib',
-        'meteorhacks:subs-manager'
+        'partup:lib'
     ], ['client', 'server']);
 
     api.use([

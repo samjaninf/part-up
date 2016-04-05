@@ -1,0 +1,695 @@
+.pu-trumbowyg-box
+    padding-top: 37px
+    display: block
+    position: relative
+    border: 1px solid #DDD
+    width: 96%
+    min-height: 300px
+    margin: 17px auto
+    *
+        box-sizing: border-box
+        &:before, &:after
+            box-sizing: border-box
+
+.pu-trumbowyg-editor
+    display: block
+    position: relative
+    border: 1px solid #DDD
+    width: 96%
+    min-height: 300px
+    margin: 17px auto
+
+.pu-trumbowyg-box
+    .pu-trumbowyg-editor
+        margin: 0 auto
+    &.pu-trumbowyg-fullscreen
+        background: #FEFEFE
+
+    .pu-trumbowyg-editor, .pu-trumbowyg-textarea
+        position: relative
+        box-sizing: border-box
+        padding: 1% 2%
+        min-height: 300px
+        width: 100%
+        border-style: none
+        resize: none
+        outline: none
+        overflow: auto
+
+.pu-trumbowyg-box-blur .pu-trumbowyg-editor
+    *
+        color: transparent !important
+        text-shadow: 0 0 7px #333
+    img
+        opacity: .2
+
+.pu-trumbowyg-textarea
+    position: relative
+    display: block
+    overflow: auto
+    border: none
+    white-space: normal
+    font-size: 14px
+    font-family: "Inconsolata", "Consolas", "Courier", "Courier New", sans-serif
+    line-height: 18px
+
+.pu-trumbowyg-box
+    &.pu-trumbowyg-editor-visible .pu-trumbowyg-textarea
+        position: absolute
+        top: 36px
+        height: 1px !important
+        width: 25%
+        min-height: 0 !important
+        padding: 0 !important
+        background: none
+        opacity: 0
+    &.pu-trumbowyg-editor-hidden
+        .pu-trumbowyg-textarea
+            display: block
+        .pu-trumbowyg-editor
+            display: none
+
+.pu-trumbowyg-editor[contenteditable=true]:empty:before
+    content: attr(placeholder)
+    color: #999
+
+.pu-trumbowyg-button-pane
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    min-height: 37px
+    background: #ecf0f1
+    border-bottom: 1px solid #d7e0e2
+    margin: 0
+    padding: 0
+    list-style-type: none
+    line-height: 10px
+    -webkit-backface-visibility: hidden
+    backface-visibility: hidden
+    li
+        display: block
+        float: left
+        text-align: center
+        overflow: hidden
+        padding: 0 !important
+        &.pu-trumbowyg-separator
+            width: 1px
+            background: #d7e0e2
+            margin: 0 5px
+            height: 35px
+    &.pu-trumbowyg-disable li
+        &:not(.pu-trumbowyg-not-disable) button:not(.pu-trumbowyg-active)
+            opacity: .2
+            cursor: default
+        &.pu-trumbowyg-separator
+            background: #e3e9eb
+    li button
+        padding: 1px 6px !important
+    &:not(.pu-trumbowyg-disable) li button
+        &:hover, &:focus
+            background-color: #FFF
+            outline: none
+    li
+        button.pu-trumbowyg-active
+            background-color: #FFF
+            outline: none
+        &.pu-trumbowyg-not-disable button
+            &:hover, &:focus
+                background-color: #FFF
+                outline: none
+        .pu-trumbowyg-open-dropdown:after
+            display: block
+            content: " "
+            position: absolute
+            top: 25px
+            right: 3px
+            height: 0
+            width: 0
+            border: 3px solid transparent
+            border-top-color: #555
+    .pu-trumbowyg-buttons-right
+        float: right
+        width: auto
+        button
+            float: left
+
+.pu-trumbowyg-dropdown
+    width: 200px
+    border: 1px solid #ecf0f1
+    padding: 5px 0
+    border-top: none
+    background: #FFF
+    margin-left: -1px
+    box-shadow: rgba(0, 0, 0, 0.1) 0 2px 3px
+    button
+        display: block
+        width: 100%
+        height: 35px
+        line-height: 35px
+        text-decoration: none
+        background: #FFF
+        padding: 0 14px
+        color: #333 !important
+        border: none
+        cursor: pointer
+        text-align: left
+        font-size: 15px
+        -webkit-transition: all .15s
+        transition: all .15s
+        &:hover, &:focus
+            background: #ecf0f1
+
+/* Modal box */
+
+.pu-trumbowyg-modal
+    position: absolute
+    top: 0
+    left: 50%
+    margin-left: -260px
+    width: 520px
+    height: 350px
+    z-index: 11
+    overflow: hidden
+    -webkit-backface-visibility: hidden
+    backface-visibility: hidden
+
+.pu-trumbowyg-modal-box
+    position: absolute
+    top: 0
+    left: 50%
+    margin-left: -250px
+    width: 500px
+    padding-bottom: 45px
+    z-index: 1
+    background-color: #FFF
+    text-align: center
+    font-size: 14px
+    box-shadow: rgba(0, 0, 0, 0.2) 0 2px 3px
+    -webkit-backface-visibility: hidden
+    backface-visibility: hidden
+    .pu-trumbowyg-modal-title
+        font-size: 24px
+        font-weight: bold
+        margin: 0 0 20px
+        padding: 15px 0 13px
+        display: block
+        border-bottom: 1px solid #EEE
+        color: #333
+        background: #fbfcfc
+    .pu-trumbowyg-progress
+        width: 100%
+        background: #F00
+        height: 3px
+        position: absolute
+        top: 58px
+        .pu-trumbowyg-progress-bar
+            background: #2BC06A
+            height: 100%
+            -webkit-transition: width .15s linear
+            transition: width .15s linear
+    label
+        display: block
+        position: relative
+        margin: 15px 12px
+        height: 27px
+        line-height: 27px
+        overflow: hidden
+        .pu-trumbowyg-input-infos
+            display: block
+            text-align: left
+            height: 25px
+            line-height: 25px
+            -webkit-transition: all .15
+            transition: all .15
+            span
+                display: block
+                color: #69878f
+                background-color: #fbfcfc
+                border: 1px solid #DEDEDE
+                padding: 0 7px
+                width: 137px
+                &.pu-trumbowyg-msg-error
+                    color: #e74c3c
+        &.pu-trumbowyg-input-error
+            input, textarea
+                border: 1px solid #e74c3c
+            .pu-trumbowyg-input-infos
+                margin-top: -27px
+        input
+            position: absolute
+            top: 0
+            right: 0
+            height: 27px
+            line-height: 27px
+            border: 1px solid #DEDEDE
+            background: transparent
+            font-size: 14px
+            width: 340px
+            padding: 0 7px
+            -webkit-transition: all .15s
+            transition: all .15s
+            &:hover
+                outline: none
+                border: 1px solid #95a5a6
+            &:focus
+                outline: none
+                border: 1px solid #95a5a6
+                background: rgba(230, 230, 255, 0.1)
+    .error
+        margin-top: 25px
+        display: block
+        color: red
+    .pu-trumbowyg-modal-button
+        position: absolute
+        bottom: 10px
+        right: 0
+        text-decoration: none
+        color: #FFF
+        display: block
+        width: 100px
+        height: 35px
+        line-height: 33px
+        margin: 0 10px
+        background-color: #333
+        border: none
+        cursor: pointer
+        font-family: "Trebuchet MS", Helvetica, Verdana, sans-serif
+        font-size: 16px
+        -webkit-transition: all .15s
+        transition: all .15s
+        &.pu-trumbowyg-modal-submit
+            right: 110px
+            background: #2bc06a
+            &:hover, &:focus
+                background: #40d47e
+                outline: none
+            &:active
+                background: #25a25a
+        &.pu-trumbowyg-modal-reset
+            color: #555
+            background: #e6e6e6
+            &:hover, &:focus
+                background: #fbfbfb
+                outline: none
+            &:active
+                background: #d5d5d5
+
+.pu-trumbowyg-overlay
+    position: absolute
+    background-color: rgba(255, 255, 255, 0.5)
+    width: 100%
+    left: 0
+    display: none
+    z-index: 10
+
+/* Fullscreen */
+
+body.pu-trumbowyg-body-fullscreen
+    overflow: hidden
+
+.pu-trumbowyg-fullscreen
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    margin: 0
+    padding: 0
+    z-index: 99999
+    &.pu-trumbowyg-box
+        border: none
+    .pu-trumbowyg-editor
+        border: none
+        height: calc(100% - 37px) !important
+        overflow: auto
+        margin-top: 37px
+    .pu-trumbowyg-textarea
+        height: calc(100% - 37px) !important
+        overflow: auto
+        margin-top: 37px
+    .pu-trumbowyg-overlay
+        height: 100% !important
+
+.pu-trumbowyg-editor
+    /* Reset for resetCss option */
+    object, embed, video, img
+        max-width: 100%
+    video
+        height: auto
+    img
+        height: auto
+        cursor: move
+    &.pu-trumbowyg-reset-css
+        background: #FEFEFE !important
+        font-family: "Trebuchet MS", Helvetica, Verdana, sans-serif !important
+        font-size: 14px !important
+        line-height: 1.45em !important
+        white-space: normal !important
+        color: #333
+        a
+            color: #15c !important
+            text-decoration: underline !important
+        div, p, ul, ol, blockquote
+            box-shadow: none !important
+            background: none !important
+            margin: 0 !important
+            margin-bottom: 15px !important
+            line-height: 1.4em !important
+            font-family: "Trebuchet MS", Helvetica, Verdana, sans-serif !important
+            font-size: 14px !important
+            border: none
+        iframe, object, hr
+            margin-bottom: 15px !important
+        blockquote
+            margin-left: 32px !important
+            font-style: italic !important
+            color: #555
+        ul, ol
+            padding-left: 20px !important
+        ul ul, ol ol, ul ol, ol ul
+            border: none
+            margin: 2px !important
+            padding: 0 !important
+            padding-left: 24px !important
+        hr
+            display: block
+            height: 1px
+            border: none
+            border-top: 1px solid #CCC
+        h1, h2, h3, h4
+            color: #111
+            background: none
+            margin: 0 !important
+            padding: 0 !important
+            font-weight: bold
+        h1
+            font-size: 32px !important
+            line-height: 38px !important
+            margin-bottom: 20px !important
+        h2
+            font-size: 26px !important
+            line-height: 34px !important
+            margin-bottom: 15px !important
+        h3
+            font-size: 22px !important
+            line-height: 28px !important
+            margin-bottom: 7px !important
+        h4
+            font-size: 16px !important
+            line-height: 22px !important
+            margin-bottom: 7px !important
+
+/* Black theme */
+
+.pu-trumbowyg-black
+    .pu-trumbowyg-button-pane
+        background-color: #222
+        border-bottom-color: #343434
+        li.pu-trumbowyg-separator
+            background-color: #343434
+        &.pu-trumbowyg-disable li.pu-trumbowyg-separator
+            background-color: #2a2a2a
+        &:not(.pu-trumbowyg-disable) li button
+            &:hover, &:focus
+                background-color: #555
+        li
+            button.pu-trumbowyg-active
+                background-color: #555
+            &.pu-trumbowyg-not-disable button
+                &:hover, &:focus
+                    background-color: #555
+                .pu-trumbowyg-open-dropdown:after
+                    border-top-color: #fff
+    .pu-trumbowyg-dropdown
+        border-color: #222
+        background: #222
+        button
+            background: #222
+            color: #fff !important
+            &:hover, &:focus
+                background: #555
+    .pu-trumbowyg-modal-box
+        background-color: #222
+        .pu-trumbowyg-modal-title
+            border-bottom: 1px solid #555
+            color: #fff
+            background: #3c3c3c
+        label
+            display: block
+            position: relative
+            margin: 15px 12px
+            height: 27px
+            line-height: 27px
+            overflow: hidden
+            .pu-trumbowyg-input-infos span
+                color: #eee
+                background-color: #2f2f2f
+                border-color: #222
+                &.pu-trumbowyg-msg-error
+                    color: #e74c3c
+            &.pu-trumbowyg-input-error
+                input, textarea
+                    border-color: #e74c3c
+            input
+                border-color: #222
+                color: #eee
+                background: #333
+                &:hover
+                    border-color: #95a5a6
+                &:focus
+                    border-color: #95a5a6
+                    background-color: rgba(230, 230, 255, 0.1)
+    .pu-trumbowyg-overlay
+        background-color: rgba(0, 0, 0, 0.5)
+
+/* Buttons icons */
+
+.pu-trumbowyg-button-pane li button
+    display: block
+    position: relative
+    text-indent: -9999px
+    width: 35px
+    height: 35px
+    overflow: hidden
+    background: transparent url("./images/icons-black.png") no-repeat
+    border: none
+    cursor: pointer
+    -webkit-transition: background-color .15s, background-image .15s, opacity .15s
+    transition: background-color .15s, background-image .15s, opacity .15s
+    /* English and others */
+    &.pu-trumbowyg-viewHTML-button
+        background-position: -70px -95px
+    &.pu-trumbowyg-formatting-button
+        background-position: -45px -20px
+    &.pu-trumbowyg-bold-button, &.pu-trumbowyg-strong-button
+        background-position: 5px -20px
+    &.pu-trumbowyg-italic-button, &.pu-trumbowyg-em-button
+        background-position: -70px -45px
+    &.pu-trumbowyg-underline-button
+        background-position: 5px -95px
+    &.pu-trumbowyg-strikethrough-button, &.pu-trumbowyg-del-button
+        background-position: -95px -70px
+    &.pu-trumbowyg-link-button
+        background-position: -45px -70px
+    &.pu-trumbowyg-insertImage-button
+        background-position: -70px -20px
+    &.pu-trumbowyg-justifyLeft-button
+        background-position: -20px -70px
+    &.pu-trumbowyg-justifyCenter-button
+        background-position: -20px -20px
+    &.pu-trumbowyg-justifyRight-button
+        background-position: -95px -20px
+    &.pu-trumbowyg-justifyFull-button
+        background-position: 5px 5px
+    &.pu-trumbowyg-unorderedList-button
+        background-position: -20px -95px
+    &.pu-trumbowyg-orderedList-button
+        background-position: -70px -70px
+    &.pu-trumbowyg-horizontalRule-button
+        background-position: -70px 5px
+    &.pu-trumbowyg-removeformat-button
+        background-position: -95px 5px
+    &.pu-trumbowyg-fullscreen-button
+        background-position: -20px -45px
+    &.pu-trumbowyg-close-button
+        background-position: -45px 5px
+
+.pu-trumbowyg-fullscreen .pu-trumbowyg-button-pane li button.pu-trumbowyg-fullscreen-button
+    background-position: 5px -45px
+
+.pu-trumbowyg-button-pane li
+    &:first-child button
+        margin-left: 6px
+    &:last-child button
+        margin-right: 6px
+
+/* French */
+
+.pu-trumbowyg-fr .pu-trumbowyg-button-pane li button
+    &.pu-trumbowyg-bold-button, &.pu-trumbowyg-strong-button
+        background-position: -45px -45px
+    &.pu-trumbowyg-underline-button
+        background-position: -95px -45px
+    &.pu-trumbowyg-strikethrough-button, &.pu-trumbowyg-del-button
+        background-position: 5px -70px
+
+.pu-trumbowyg-black
+    /* French */
+    .pu-trumbowyg-button-pane li button
+        background-image: url("./images/icons-white.png")
+        /* English and others */
+        &.pu-trumbowyg-viewHTML-button
+            background-position: -70px -95px
+        &.pu-trumbowyg-formatting-button
+            background-position: -45px -20px
+        &.pu-trumbowyg-bold-button, &.pu-trumbowyg-strong-button
+            background-position: 5px -20px
+        &.pu-trumbowyg-italic-button, &.pu-trumbowyg-em-button
+            background-position: -70px -45px
+        &.pu-trumbowyg-underline-button
+            background-position: 5px -95px
+        &.pu-trumbowyg-strikethrough-button, &.pu-trumbowyg-del-button
+            background-position: -95px -70px
+        &.pu-trumbowyg-link-button
+            background-position: -45px -70px
+        &.pu-trumbowyg-insertImage-button
+            background-position: -70px -20px
+        &.pu-trumbowyg-justifyLeft-button
+            background-position: -20px -70px
+        &.pu-trumbowyg-justifyCenter-button
+            background-position: -20px -20px
+        &.pu-trumbowyg-justifyRight-button
+            background-position: -95px -20px
+        &.pu-trumbowyg-justifyFull-button
+            background-position: 5px 5px
+        &.pu-trumbowyg-unorderedList-button
+            background-position: -20px -95px
+        &.pu-trumbowyg-orderedList-button
+            background-position: -70px -70px
+        &.pu-trumbowyg-horizontalRule-button
+            background-position: -70px 5px
+        &.pu-trumbowyg-removeformat-button
+            background-position: -95px 5px
+        &.pu-trumbowyg-fullscreen-button
+            background-position: -20px -45px
+        &.pu-trumbowyg-close-button
+            background-position: -45px 5px
+    .pu-trumbowyg-fullscreen .pu-trumbowyg-button-pane li button.pu-trumbowyg-fullscreen-button
+        background-position: 5px -45px
+    .pu-trumbowyg-button-pane li
+        &:first-child button
+            margin-left: 6px
+        &:last-child button
+            margin-right: 6px
+    .pu-trumbowyg-fr .pu-trumbowyg-button-pane li button
+        &.pu-trumbowyg-bold-button, &.pu-trumbowyg-strong-button
+            background-position: -45px -45px
+        &.pu-trumbowyg-underline-button
+            background-position: -95px -45px
+        &.pu-trumbowyg-strikethrough-button, &.pu-trumbowyg-del-button
+            background-position: 5px -70px
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3), only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx)
+    .pu-trumbowyg-button-pane li button
+        background-size: 125px 125px !important
+        background-image: url("./images/icons-black-2x.png") !important
+        /* English and others */
+        &.pu-trumbowyg-viewHTML-button
+            background-position: -70px -95px
+        &.pu-trumbowyg-formatting-button
+            background-position: -45px -20px
+        &.pu-trumbowyg-bold-button, &.pu-trumbowyg-strong-button
+            background-position: 5px -20px
+        &.pu-trumbowyg-italic-button, &.pu-trumbowyg-em-button
+            background-position: -70px -45px
+        &.pu-trumbowyg-underline-button
+            background-position: 5px -95px
+        &.pu-trumbowyg-strikethrough-button, &.pu-trumbowyg-del-button
+            background-position: -95px -70px
+        &.pu-trumbowyg-link-button
+            background-position: -45px -70px
+        &.pu-trumbowyg-insertImage-button
+            background-position: -70px -20px
+        &.pu-trumbowyg-justifyLeft-button
+            background-position: -20px -70px
+        &.pu-trumbowyg-justifyCenter-button
+            background-position: -20px -20px
+        &.pu-trumbowyg-justifyRight-button
+            background-position: -95px -20px
+        &.pu-trumbowyg-justifyFull-button
+            background-position: 5px 5px
+        &.pu-trumbowyg-unorderedList-button
+            background-position: -20px -95px
+        &.pu-trumbowyg-orderedList-button
+            background-position: -70px -70px
+        &.pu-trumbowyg-horizontalRule-button
+            background-position: -70px 5px
+        &.pu-trumbowyg-removeformat-button
+            background-position: -95px 5px
+        &.pu-trumbowyg-fullscreen-button
+            background-position: -20px -45px
+        &.pu-trumbowyg-close-button
+            background-position: -45px 5px
+    .pu-trumbowyg-fullscreen .pu-trumbowyg-button-pane li a.pu-trumbowyg-fullscreen-button
+        background-position: 5px -45px
+    /* French */
+    .pu-trumbowyg-fr .pu-trumbowyg-button-pane li button
+        &.pu-trumbowyg-bold-button, &.pu-trumbowyg-strong-button
+            background-position: -45px -45px
+        &.pu-trumbowyg-underline-button
+            background-position: -95px -45px
+        &.pu-trumbowyg-strikethrough-button, &.pu-trumbowyg-del-button
+            background-position: 5px -70px
+    /* Black theme */
+    .pu-trumbowyg-black
+        /* French */
+        .pu-trumbowyg-button-pane li button
+            background-size: 125px 125px !important
+            background-image: url("./images/icons-white-2x.png") !important
+            /* English and others */
+            &.pu-trumbowyg-viewHTML-button
+                background-position: -70px -95px
+            &.pu-trumbowyg-formatting-button
+                background-position: -45px -20px
+            &.pu-trumbowyg-bold-button, &.pu-trumbowyg-strong-button
+                background-position: 5px -20px
+            &.pu-trumbowyg-italic-button, &.pu-trumbowyg-em-button
+                background-position: -70px -45px
+            &.pu-trumbowyg-underline-button
+                background-position: 5px -95px
+            &.pu-trumbowyg-strikethrough-button, &.pu-trumbowyg-del-button
+                background-position: -95px -70px
+            &.pu-trumbowyg-link-button
+                background-position: -45px -70px
+            &.pu-trumbowyg-insertImage-button
+                background-position: -70px -20px
+            &.pu-trumbowyg-justifyLeft-button
+                background-position: -20px -70px
+            &.pu-trumbowyg-justifyCenter-button
+                background-position: -20px -20px
+            &.pu-trumbowyg-justifyRight-button
+                background-position: -95px -20px
+            &.pu-trumbowyg-justifyFull-button
+                background-position: 5px 5px
+            &.pu-trumbowyg-unorderedList-button
+                background-position: -20px -95px
+            &.pu-trumbowyg-orderedList-button
+                background-position: -70px -70px
+            &.pu-trumbowyg-horizontalRule-button
+                background-position: -70px 5px
+            &.pu-trumbowyg-removeformat-button
+                background-position: -95px 5px
+            &.pu-trumbowyg-fullscreen-button
+                background-position: -20px -45px
+            &.pu-trumbowyg-close-button
+                background-position: -45px 5px
+        .pu-trumbowyg-fullscreen .pu-trumbowyg-button-pane li a.pu-trumbowyg-fullscreen-button
+            background-position: 5px -45px
+        .pu-trumbowyg-fr .pu-trumbowyg-button-pane li button
+            &.pu-trumbowyg-bold-button, &.pu-trumbowyg-strong-button
+                background-position: -45px -45px
+            &.pu-trumbowyg-underline-button
+                background-position: -95px -45px
+            &.pu-trumbowyg-strikethrough-button, &.pu-trumbowyg-del-button
+                background-position: 5px -70px

@@ -119,4 +119,4 @@ partup:client-network-tile
 partup:client-dropbox-chooser
 #mike:mocha
 #velocity:console-reporter
-summernote:summernote
+partup:client-network-settings-about

@@ -7,6 +7,10 @@ Template._EditTribe.onCreated(function() {
 
 Template._EditTribe.helpers({
     formSchema: Partup.schemas.forms.networkEdit,
+    fieldsFromNetworkAdmin: function() {
+        var network = Networks.findOne({slug: Template.instance().data.networkSlug.get()});
+        return Partup.transformers.network.toFormNetworkAdmin(network)
+    },
     submitting: function() {
         return Template.instance().submitting.get();
     },

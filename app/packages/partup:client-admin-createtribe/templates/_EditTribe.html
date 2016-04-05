@@ -3,7 +3,7 @@
         Edit Tribe Admin
     {{/contentFor}}
 
-    {{#autoForm schema=formSchema id="editTribeForm" class="pu-form pu-form-popup" validation="submitThenBlur" }}
+    {{#autoForm schema=formSchema doc=fieldsFromNetworkAdmin id="editTribeForm" class="pu-form pu-form-popup" validation="submitThenBlur" }}
         <div class="pu-row">
             <label class="pu-formfield">
                 <span class="pu-label">Tribe slug</span>
@@ -18,7 +18,7 @@
                 <span class="pu-label">Admin Profile Id</span>
                 <div class="pu-sub-validations">
                     <span class="pu-sub-input">
-                        {{> afFieldInput name='admin_id' class="pu-input" }}
+                        {{> afFieldInput name='admins' class="pu-input" }}
                     </span>
                     <span class="pu-sub-error">ERROR</span>
                 </div>

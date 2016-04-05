@@ -26,6 +26,18 @@ Partup.transformers.network = {
     },
 
     /**
+     * Transform network to admin network form
+     *
+     * @memberof Partup.transformers.network
+     * @param {object} network
+     */
+    'toFormNetworkAdmin': function(network) {
+        return {
+            admins: Partup.services.tags.tagArrayToInput(network.admins)
+        };
+    },
+
+    /**
      * Transform network form to network
      *
      * @memberof Partup.transformers.network

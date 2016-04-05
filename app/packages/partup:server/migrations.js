@@ -737,7 +737,27 @@ Migrations.add({
     }
 });
 
+Migrations.add({
+    version: 30,
+    name: 'Convert admin_id string to admins array for all networks',
+    up: function() {
+        Networks.find().fetch().forEach(function(network) {
+            if (!network.admin_id) return;
+            Networks.update(network._id, {
+                $set: {
+                    admins: [network.admin_id]
+                },
+                $unset: {
+                    admin_id: ''
+                }
+            });
+        });
+    },
+    down: function() {
+        //
+    }
+});
 
 Meteor.startup(function() {
-    Migrations.migrateTo(29);
+    Migrations.migrateTo(30);
 });

@@ -32,8 +32,7 @@ var Network = function(document) {
  */
 Network.prototype.isNetworkAdmin = function(userId) {
     if (!userId) return false;
-    var admins = this.admins ? this.admins : [this.admin_id];
-    return mout.lang.isString(userId) && (admins.indexOf(userId) > -1);
+    return mout.lang.isString(userId) && (this.admins.indexOf(userId) > -1);
 };
 
 /**

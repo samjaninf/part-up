@@ -22,7 +22,8 @@ Template.Wysiwyg.onRendered(function() {
             ['bold', 'italic', 'underline', 'strikethrough'],
             ['unorderedList'],
             ['formattingCustom'],
-            ['link']
+            ['link'],
+            ['viewHTML']
         ],
         fullscreenable: false,
         closable: false,
@@ -42,10 +43,6 @@ Template.Wysiwyg.onRendered(function() {
 Template.Wysiwyg.onDestroyed(function() {
     var template = this;
     template.editor.off('tbwchange', template.outputHandler);
-});
-
-Template.Wysiwyg.events({
-
 });
 
 Template.Wysiwyg.helpers({

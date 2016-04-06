@@ -31,6 +31,18 @@
 
                 &:hover
                     background-color: #f9f9f9
+            &:nth-last-child(2)
+                float: right
+
+    &-textarea
+        min-height: 300px
+        outline: none
+        padding: 12px
+        width: 100%
+        border: 0
+        font-size: 16px
+        font-family: $font-primary
+
     &-editor
         min-height: 300px
         outline: none
@@ -39,6 +51,12 @@
         &[contenteditable=true]:empty:before
             content: attr(placeholder)
             color: #999
+        &-hidden
+            .pu-wysiwyg-editor
+                display: none
+            .pu-wysiwyg-textarea
+                display: block
+
 
     &-reset-css
 
@@ -176,6 +194,20 @@
             font-weight: normal
             content: '://'
             line-height: .6em
+    &-viewHTML-button
+        width: 40px !important
+        &:after
+            font-size: 14px
+            font-weight: normal
+            content: '</>'
+
+        &.pu-wysiwyg-active
+            background-color: #ccc
+            &:after
+                font-weight: bold
+                color: #fff
+            &:hover
+                background-color: darken(#ccc, 5%)
     &:hover,
     &:focus
         .pu-wysiwyg-button-pane

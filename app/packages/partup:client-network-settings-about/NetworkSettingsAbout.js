@@ -17,6 +17,11 @@ Template.NetworkSettingsAbout.helpers({
                 input: 'data-intro',
                 className: 'pu-textarea pu-wysiwyg',
                 placeholder: 'Schrijf een intro'
+            },
+            paragraphInput: {
+                input: 'data-paragraph',
+                className: 'pu-textarea pu-wysiwyg',
+                placeholder: 'Paragraaf'
             }
         };
     }

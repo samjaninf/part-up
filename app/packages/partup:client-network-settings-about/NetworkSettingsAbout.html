@@ -72,7 +72,9 @@
                 </span>
                 <div class="pu-sub-validations">
                     <span class="pu-sub-input">
-                        <div class="pu-textarea form-control" id="summernote-p"></div>
+                        {{# Wysiwyg inputSettings=form.paragraphInput }}
+                            <input type="hidden" data-paragraph>
+                        {{/ Wysiwyg}}
                     </span>
                     <span class="pu-sub-error"></span>
                 </div>

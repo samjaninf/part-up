@@ -344,6 +344,17 @@ Network.prototype.addAdmin = function(upperId) {
     Networks.update(this._id, {$push: {admins: upperId}});
 };
 
+/**
+ * Remove user from admins
+ *
+ * @memberOf Networks
+ * @param {String} upperId the user id of the user that is being removed from admins
+ */
+Network.prototype.removeAdmin = function(upperId) {
+    Networks.update(this._id, {$pull: {admins: upperId}});
+};
+
+/**
  Networks, also known as "Tribes" are entities that group users and partups
  @namespace Networks
  */

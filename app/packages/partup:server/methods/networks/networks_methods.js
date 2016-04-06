@@ -447,6 +447,11 @@ Meteor.methods({
         }
 
         try {
+            // Remove user from admin list (if admin)
+            if (network.isNetworkAdmin(upperId)) {
+                network.removeAdmin(upperId);
+            }
+
             network.leave(upperId);
             Event.emit('networks.uppers.removed', user._id, network._id);
 

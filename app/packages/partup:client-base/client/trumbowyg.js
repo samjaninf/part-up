@@ -166,7 +166,7 @@ jQuery.trumbowyg = {
             fixedFullWidth: false,
             autogrow: false,
 
-            prefix: 'pu-trumbowyg-',
+            prefix: 'trumbowyg-',
 
             // WYSIWYG only
             semantic: true,

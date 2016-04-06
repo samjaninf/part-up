@@ -18,6 +18,8 @@ Package.onUse(function(api) {
         'datepicker.html',
         'datepicker.js',
         'multi-invite-input.html',
-        'multi-invite-input.js'
+        'multi-invite-input.js',
+        'wysiwyg.html',
+        'wysiwyg.js'
     ], 'client');
 });

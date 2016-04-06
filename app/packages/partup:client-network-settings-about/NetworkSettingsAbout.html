@@ -26,7 +26,9 @@
                 </span>
                 <div class="pu-sub-validations">
                     <span class="pu-sub-input">
-                        <div class="pu-textarea form-control" id="trumbowyg-demo"></div>
+                        {{# Wysiwyg inputSettings=form.introInput }}
+                            <input type="hidden" data-intro>
+                        {{/ Wysiwyg}}
                     </span>
                     <span class="pu-sub-error"></span>
                 </div>

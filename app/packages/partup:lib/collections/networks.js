@@ -335,6 +335,15 @@ Network.prototype.displayTags = function() {
 };
 
 /**
+ * Make a user an admin
+ *
+ * @memberOf Networks
+ * @param {String} upperId the user id of the user that is being added as an admin
+ */
+Network.prototype.addAdmin = function(upperId) {
+    Networks.update(this._id, {$push: {admins: upperId}});
+};
+
  Networks, also known as "Tribes" are entities that group users and partups
  @namespace Networks
  */

@@ -160,39 +160,6 @@ Template.app_partup_updates_newmessage.helpers({
             documents: this.type_data.documents || []
         };
     },
-    imageInput: function () {
-        var template = Template.instance();
-        return {
-            button: 'data-browse-photos',
-            input: 'data-photo-input',
-            multiple: true,
-            onFileChange: function (event) {
-
-                template.uploadingPhotos.set(true);
-
-                // toggle (close) the add media dropdown menu
-                $('[data-toggle-add-media-menu]').trigger('click');
-
-                var total = Math.max(template.totalPhotos.get(), template.uploadedPhotos.get().length);
-                Partup.client.uploader.eachFile(event, function (file) {
-                    if (total === template.maxPhotos) return;
-
-                    Partup.client.uploader.uploadImage(file, function (error, image) {
-                        template.uploadingPhotos.set(false);
-                        if (error) {
-                            Partup.client.notify.error(TAPi18n.__(error.reason));
-                            return;
-                        }
-                        var uploaded = template.uploadedPhotos.get();
-                        uploaded.push(image._id);
-                        template.uploadedPhotos.set(uploaded);
-                    });
-                    total++;
-                    template.totalPhotos.set(total);
-                });
-            }
-        };
-    },
     DropboxRenderer: Partup.helpers.DropboxRenderer,
     disabledImageUploadFile: function () {
         return (photoLimitReached()) ? 'disabled' : '';
@@ -208,7 +175,7 @@ Template.app_partup_updates_newmessage.events({
         event.stopImmediatePropagation();
         event.preventDefault();
         if (!mediaLimitReached()) {
-            toggleMenu($(event.currentTarget));
+            // toggleMenu($(event.currentTarget));
         }
     },
     'click [data-dismiss]': function clearForm(event, template) {

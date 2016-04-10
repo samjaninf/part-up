@@ -53,33 +53,13 @@
                    data-dismiss>{{_ 'pages-app-partup-updates-newmessage-close'}}</a>
             </div>
             <div class="cell last">
-                {{#FileInput inputSettings=imageInput}}
-                    <div class="pu-dropdown-add-media  pu-formdropdown" data-toggle-add-media-menu>
-                        <div class="pu-sub-container">
-                            <button class="pu-button pu-button-input pu-button-input-keepbuttonheight {{#if uploadingMedia }}pu-state-loading{{/if}} {{#if mediaLimitReached }}pu-state-disabled{{/if}}">
-                                {{_ 'pages-app-partup-updates-newmessage-addmedia' }}
-                                {{#if uploadingMedia }}
-                                    {{> Spinner color='inverted' type='small'}}
-                                {{/if}}
-                                <i class="picon-caret-down"></i>
-                            </button>
-                            <ul class="pu-dropdown pu-dropdown-form" data-clickoutside-close>
-                                <li class="pu-dropdownitem pu-dropdownitem-small">
-                                    <a data-browse-photos href="#"
-                                       class="{{#if photoLimitReached }}pu-state-disabled{{/if}}">
-                                        <i class="picon-upload"></i> {{_ 'dropdowns-updatesactions-computer' }}
-                                        <span class="pu-media-types-description">{{_ 'dropdowns-updatesactions-computer-types' }}</span>
-                                    </a>
-                                </li>
-                                <li class="pu-dropdownitem pu-dropdownitem-small">
-                                    {{> DropboxChooser }}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <input {{ disabledImageUploadFile }} accept="{{ imageExtensions }}" type="file" class="pu-fileinput"
-                                                         multiple data-photo-input style="visibility: hidden;">
-                {{/FileInput}}
+                {{>FilestackUploader triggerElement='[data-toggle-add-media-menu]'}}
+                <button data-toggle-add-media-menu class="pu-button pu-button-secondary {{#if uploadingMedia }}pu-state-loading{{/if}} {{#if mediaLimitReached }}pu-state-disabled{{/if}}">
+                    {{_ 'pages-app-partup-updates-newmessage-addmedia' }}
+                    {{#if uploadingMedia }}
+                        {{> Spinner color='inverted' type='small'}}
+                    {{/if}}
+                </button>
             </div>
         </footer>
     {{/autoForm}}

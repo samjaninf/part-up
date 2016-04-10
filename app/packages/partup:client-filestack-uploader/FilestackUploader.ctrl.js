@@ -23,8 +23,10 @@ if (Meteor.isClient) {
                     language: TAPi18n.getLanguage(),
                     services: ['COMPUTER', 'DROPBOX']
                 }, onFilestackSuccess,
-                function (fperror) {
-                    Partup.client.notify.error(TAPi18n.__(fperror.toString()));
+                function (event) {
+                    if(event.code.toString() === '400' || event.code.toString() === '403') {
+                        Partup.client.notify.error(TAPi18n.__(fperror.toString()));
+                    }
                 }
             );
 

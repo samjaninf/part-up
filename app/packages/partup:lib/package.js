@@ -81,7 +81,7 @@ Package.onUse(function(api) {
         'helpers/normalize.js',
         'helpers/interpolateEmailMessage.js',
         'helpers/url.js',
-        'helpers/fileExtensions.js',
+        'helpers/fileUploaderHelper.js',
         'helpers/dropboxChooser.js',
         'helpers/filestackUploader.js'
     ]);

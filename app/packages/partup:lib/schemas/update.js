@@ -182,6 +182,11 @@ var DocumentSchema = new SimpleSchema({
     isDir: {
         type: Boolean,
         optional: true
+    },
+    client: {
+        type: String,
+        optional: true,
+        defaultValue: 'dropbox'
     }
 });
 

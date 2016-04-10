@@ -21,7 +21,7 @@ if (Meteor.isClient) {
                 {
                     extensions: getExtensions(),
                     language: TAPi18n.getLanguage(),
-                    services: ['COMPUTER', 'DROPBOX', 'GOOGLE_DRIVE']
+                    services: ['COMPUTER', 'DROPBOX']
                 }, onFilestackSuccess,
                 function (fperror) {
                     Partup.client.notify.error(TAPi18n.__(fperror.toString()));
@@ -43,12 +43,12 @@ if (Meteor.isClient) {
         }
 
         function allowImageUpload(template, filestackFile) {
-            return (filestackUploaderHelper.fileNameIsImage(filestackFile.filename)
+            return (filestackUploaderHelper.fileNameIsImage(filestackFile.filename || filestackFile.name)
             && template.uploadedPhotos.get().length < template.maxPhotos)
         }
 
         function allowDocumentUpload(template, filestackFile) {
-            return (filestackUploaderHelper.fileNameIsDoc(filestackFile.filename)
+            return (filestackUploaderHelper.fileNameIsDoc(filestackFile.filename || filestackFile.name)
             && template.uploadedDocuments.get().length < template.maxDocuments);
         }
 

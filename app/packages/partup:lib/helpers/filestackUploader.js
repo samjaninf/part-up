@@ -19,8 +19,12 @@ FilestackUploader.prototype.getAllExtensions = function () {
     }).flatten().value();
 };
 
-FilestackUploader.prototype.getExtensionFromFileName = function (filename) {
-    return filename.match(/\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/)[0];
+FilestackUploader.prototype.getExtensionFromFileName = function (fileName) {
+    if(fileName) {
+        return fileName.toString().match(/\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/)[0];
+    } else {
+        throw new Error('no fileName');
+    }
 };
 
 FilestackUploader.prototype.fileNameIsImage = function (fileName) {
@@ -44,6 +48,8 @@ FilestackUploader.prototype.partupUploadPhoto = function (template, filestackFil
         filestackFile.bytes = filestackFile.size;
         filestackFile.link = filestackFile.url;
 
+        filestackFile = _.omit(filestackFile, 'id', 'filename', 'size', 'url', 'mimetype', 'isWriteable');
+
         Partup.client.uploader.uploadImageByUrl(filestackFile.link, function (error, image) {
             if (error) {
                 Partup.client.notify.error(TAPi18n.__(error.reason));
@@ -63,6 +69,8 @@ FilestackUploader.prototype.partupUploadDoc = function (template, filestackFile)
         filestackFile.link = filestackFile.url;
         filestackFile._id = new Meteor.Collection.ObjectID()._str;
 
+        filestackFile = _.omit(filestackFile, 'id', 'filename', 'size', 'url', 'mimetype', 'isWriteable');
+
         if (!filestackFile._id) {
             return reject(new Error('meteor _id is not created!'));
         }
@@ -71,3 +79,24 @@ FilestackUploader.prototype.partupUploadDoc = function (template, filestackFile)
 };
 
 Partup.helpers.FilestackUploader = FilestackUploader;
+
+var FilestackRenderer = function () {
+    
+    return {
+        getFileIdFromDirectLink: getFileIdFromDirectLink,
+        createPreviewLinkFromDirectLink: createPreviewLinkFromDirectLink
+    };
+    
+
+    function getFileIdFromDirectLink(fileUrl) {
+        return fileUrl.match(/file\/(\w+)/)[1];
+    }
+
+    function createPreviewLinkFromDirectLink(directLinkUrl) {
+        var fileId = getFileIdFromDirectLink(directLinkUrl);
+        return 'https://www.filestackapi.com/api/preview/' + fileId;
+    }
+
+};
+
+Partup.helpers.FilestackRenderer = FilestackRenderer;

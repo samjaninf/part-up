@@ -41,12 +41,12 @@ if (Meteor.isClient) {
         }
 
         function allowImageUpload(template, dropboxFile) {
-            return (dropboxHelper.fileNameIsImage(dropboxFile.name)
+            return (dropboxHelper.fileNameIsImage(dropboxFile.filename)
             && template.uploadedPhotos.get().length < template.maxPhotos)
         }
 
         function allowDocumentUpload(template, dropboxFile) {
-            return (dropboxHelper.fileNameIsDoc(dropboxFile.name)
+            return (dropboxHelper.fileNameIsDoc(dropboxFile.filename)
             && template.uploadedDocuments.get().length < template.maxDocuments);
         }
 

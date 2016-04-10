@@ -2,7 +2,7 @@
     "public": {
         "development": true,
         "aws": {
-            "bucket": "partup-production",
+            "bucket": "partup-development",
             "region": "eu-west-1"
         },
         "facebookAppId": "",

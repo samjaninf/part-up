@@ -4,15 +4,19 @@ phraseapp:
   file_format: simple_json
   push:
     sources:
-    - file: 'app/i18n/*.<locale_name>.i18n.json'
+    - file: 'app/i18n/emails.<locale_name>.i18n.json'
       params:
         file_format: simple_json
-    - file: 'app/packages/**/*.<locale_name>.i18n.json'
+    - file: 'app/i18n/errors.<locale_name>.i18n.json'
       params:
         file_format: simple_json
-    - file: 'app/packages/**/<locale_name>.i18n.json'
+    - file: 'app/i18n/notification.<locale_name>.i18n.json'
       params:
         file_format: simple_json
+# feature keys: uncomment this block and change filename
+#    - file: 'app/i18n/notification.<locale_name>.i18n.json'
+#      params:
+#        file_format: simple_json
   pull:
     targets:
     - file: 'app/i18n/phraseapp.<locale_name>.i18n.json'

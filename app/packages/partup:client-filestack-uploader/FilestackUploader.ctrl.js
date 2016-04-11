@@ -21,7 +21,8 @@ if (Meteor.isClient) {
                 {
                     extensions: getExtensions(),
                     language: TAPi18n.getLanguage(),
-                    services: ['COMPUTER', 'DROPBOX', 'GOOGLE_DRIVE']
+                    services: ['COMPUTER', 'DROPBOX', 'GOOGLE_DRIVE'],
+                    maxSize: 10485760
                 }, onFilestackSuccess,
                 function (event) {
                     if(event.code.toString() === '400' || event.code.toString() === '403') {

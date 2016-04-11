@@ -1,5 +1,5 @@
-FilestackUploader = function (options) {
-        this.options = _.extend({
+FilestackUploader = function () {
+        this.options = {
             allowedExtensions: {
                 images: Partup.helpers.imageExtensions,
                 docs: _.flatten([
@@ -9,7 +9,7 @@ FilestackUploader = function (options) {
                     Partup.helpers.fallbackFileExtensions
                 ])
             }
-        }, options);
+        };
     } || {};
 
 FilestackUploader.prototype.getAllExtensions = function () {
@@ -20,22 +20,18 @@ FilestackUploader.prototype.getAllExtensions = function () {
 };
 
 FilestackUploader.prototype.getExtensionFromFileName = function (fileName) {
-    if(fileName) {
-        return fileName.toString().match(/\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/)[0];
-    } else {
-        throw new Error('no fileName');
-    }
+    return fileName.match(/\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/)[0];
 };
 
 FilestackUploader.prototype.fileNameIsImage = function (fileName) {
     return _.include(this.options.allowedExtensions.images,
-        this.getExtensionFromFileName(fileName)
+        this.getExtensionFromFileName(fileName).toLowerCase()
     );
 };
 
 FilestackUploader.prototype.fileNameIsDoc = function (fileName) {
     return _.include(this.options.allowedExtensions.docs,
-        this.getExtensionFromFileName(fileName)
+        this.getExtensionFromFileName(fileName).toLowerCase()
     );
 };
 

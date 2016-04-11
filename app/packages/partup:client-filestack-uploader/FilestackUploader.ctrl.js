@@ -21,7 +21,7 @@ if (Meteor.isClient) {
                 {
                     extensions: getExtensions(),
                     language: TAPi18n.getLanguage(),
-                    services: ['COMPUTER', 'DROPBOX']
+                    services: ['COMPUTER', 'DROPBOX', 'GOOGLE_DRIVE']
                 }, onFilestackSuccess,
                 function (event) {
                     if(event.code.toString() === '400' || event.code.toString() === '403') {

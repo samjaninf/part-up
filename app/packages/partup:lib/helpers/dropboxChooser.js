@@ -65,23 +65,13 @@ DropboxChooser.prototype.partupUploadDoc = function (template, dropboxFile) {
 Partup.helpers.DropboxChooser = DropboxChooser;
 
 var DropboxRenderer = function () {
-    var dropboxChooser = new DropboxChooser();
 
     return {
         getFileIdFromDirectLink: getFileIdFromDirectLink,
         createPreviewLinkFromDirectLink: createPreviewLinkFromDirectLink,
-        getSvgIcon: getSvgIcon,
-        bytesToSize: bytesToSize
+        getSvgIcon: Partup.helpers.getSvgIcon,
+        bytesToSize: Partup.helpers.bytesToSize
     };
-
-    // from http://scratch99.com/web-development/javascript/convert-bytes-to-mb-kb/
-    function bytesToSize(bytes) {
-        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-        if (bytes == 0) return 'n/a';
-        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-        if (i == 0) return bytes + ' ' + sizes[i];
-        return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
-    }
 
     function getFileIdFromDirectLink(fileUrl) {
         return fileUrl.match(/view\/(\w+)/)[1];
@@ -90,33 +80,6 @@ var DropboxRenderer = function () {
     function createPreviewLinkFromDirectLink(directLinkUrl, fileName) {
         var fileId = getFileIdFromDirectLink(directLinkUrl);
         return 'https://www.dropbox.com/s/' + fileId + '/' + fileName + '?dl=0';
-    }
-
-    /**
-     * @param fileName - file name of the dropbox object
-     * @returns {string}
-     */
-    function getSvgIcon(fileName) {
-        var extension = dropboxChooser.getExtensionFromFileName(fileName);
-        var svgFileName = 'file.svg';
-
-        if (_.include(Partup.helpers.fallbackFileExtensions, extension)) {
-            svgFileName = 'file.svg';
-        }
-        else if (_.include(Partup.helpers.presentationExtensions, extension)) {
-            svgFileName = 'ppt.svg';
-        }
-        else if (_.include(Partup.helpers.docExtensions, extension)) {
-            svgFileName = 'doc.svg';
-        }
-        else if (_.include(Partup.helpers.pdfExtensions, extension)) {
-            svgFileName = 'pdf.svg';
-        }
-        else if (_.include(Partup.helpers.spreadSheetExtensions, extension)) {
-            svgFileName = 'xls.svg';
-        }
-
-        return svgFileName;
     }
 };
 

@@ -160,7 +160,7 @@ Template.app_partup_updates_newmessage.helpers({
             documents: this.type_data.documents || []
         };
     },
-    DropboxRenderer: Partup.helpers.DropboxRenderer,
+    getSvgIcon: Partup.helpers.getSvgIcon,
     disabledImageUploadFile: function () {
         return (photoLimitReached()) ? 'disabled' : '';
     },

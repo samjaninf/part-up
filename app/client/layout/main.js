@@ -3,6 +3,9 @@
 /*************************************************************/
 Template.main.onRendered(function() {
     try {
+
+        alert('Meteor.Device.isMobile(): ' + Meteor.Device.isPhone());
+
         var mainContainer = this.find('.pu-main');
         if (!mainContainer) throw 'Could not find ".pu-main" element to initialize Bender with.';
 

@@ -17,6 +17,7 @@ var placeholders = {
 };
 
 var submitting = new ReactiveVar(false);
+var isRegisterEmailBtnClicked = new ReactiveVar(false);
 var facebookLoading = new ReactiveVar(false);
 var linkedinLoading = new ReactiveVar(false);
 
@@ -24,6 +25,7 @@ Template.modal_register_signup.onCreated(function() {
     var template = this;
 
     submitting.set(false);
+    isRegisterEmailBtnClicked.set(false);
     facebookLoading.set(false);
     linkedinLoading.set(false);
 
@@ -54,6 +56,27 @@ Template.modal_register_signup.helpers({
     },
     linkedinLoading: function() {
         return linkedinLoading.get();
+    },
+    actionSet1: function() {
+      if (Meteor.Device.isPhone() && !isRegisterEmailBtnClicked.get()) {
+        return true;
+      }
+      return false;
+    },
+    actionSet2: function() {
+      if (Meteor.Device.isPhone()) {
+        return false;
+      }
+      return true;
+    },
+    actionSet3: function() {
+      if (!Meteor.Device.isPhone()) {
+        return true;
+      }
+      if (isRegisterEmailBtnClicked.get()) {
+        return true;
+      }
+      return false;
     }
 });
 
@@ -61,6 +84,9 @@ Template.modal_register_signup.helpers({
 /* Widget events */
 /*************************************************************/
 Template.modal_register_signup.events({
+    'click #registerEmailBtn': function(){
+      isRegisterEmailBtnClicked.set(true);
+    },
     'click [data-signupfacebook]': function(event) {
         event.preventDefault();
 

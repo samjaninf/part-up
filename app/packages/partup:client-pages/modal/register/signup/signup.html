@@ -1,93 +1,133 @@
 <template name="modal_register_signup">
-    {{#contentFor "closeButton"}}
-        <i class="picon-times"></i>
-        {{_ 'pages-modal-register-signup-close'}}
-    {{/contentFor}}
+  {{#contentFor "closeButton"}}
+  <i class="picon-times"></i>
+  {{_ 'pages-modal-register-signup-close'}}
+  {{/contentFor}}
 
-    <div class="pu-composition pu-composition-defaultmodal pu-composition-register">
+  <div class="pu-composition pu-composition-defaultmodal pu-composition-register">
 
-        <h2 class="pu-title pu-title-modal">{{{_ 'pages-modal-register-signup-becomethexthupper' totalNumberOfUppers }}}</h2>
-        <p>{{_ 'pages-modal-register-signup-fillindetailsaccount'}}</p>
-        <ul class="pu-list pu-list-horizontal pu-list-buttons">
-            <li>
-                <button class="pu-button pu-button-facebook needsclick {{# if facebookLoading }}pu-state-loading pu-state-disabled{{/ if }}" data-signupfacebook>
-                    <span>
-                        <i class="picon-facebook"></i>
-                        {{_ 'pages-modal-register-signup-signupfacebook'}}
-                    </span>
-                    {{> Spinner color='inverted' type='small' }}
-                </button>
-            </li>
-            <li>
-                <button class="pu-button pu-button-linkedin needsclick {{# if linkedinLoading }}pu-state-loading pu-state-disabled{{/ if }}" data-signuplinkedin>
-                    <span>
-                        <i class="picon-linkedin"></i>
-                        {{_ 'pages-modal-register-signup-signuplinkedin'}}
-                    </span>
-                    {{> Spinner color='inverted' type='small' }}
-                </button>
-            </li>
-        </ul>
-        <p class="pu-textline"><span>{{_ 'pages-modal-register-signup-or'}}</span></p>
+    <h2 class="pu-title pu-title-modal">{{{_ 'pages-modal-register-signup-becomethexthupper' totalNumberOfUppers }}}</h2>
+    <p>{{_ 'pages-modal-register-signup-fillindetailsaccount'}}</p>
 
-        {{#autoForm schema=formSchema id="pages-modal-register-signupForm" class="pu-form pu-form-disableinvalidstates" validation="submitThenBlur" }}
+    {{# if actionSet1 }}
 
-            <!-- First and last name -->
-            <label class="pu-formfield">
-                <span class="pu-label">{{_ 'pages-modal-register-signup-form-name-label'}}</span>
-                <div class="pu-sub-validations {{#if afFieldIsInvalid name='name' }}pu-state-invalid{{/if}}">
-                    <span class="pu-sub-input">{{> afFieldInput name='name' placeholder=placeholders.name class="pu-input" }}</span>
-                    <span class="pu-sub-error">{{ afFieldMessage name='name' }}</span>
-                </div>
-            </label>
+    <ul class="pu-list pu-list-vertical pu-list-buttons">
+      <li>
+        <button class="pu-button pu-button-facebook needsclick {{# if facebookLoading }}pu-state-loading pu-state-disabled{{/ if }}" data-signupfacebook>
+          <span>
+            <i class="picon-facebook"></i>
+            {{_ 'pages-modal-register-signup-signupfacebook'}}
+          </span>
+          {{> Spinner color='inverted' type='small' }}
+        </button>
+      </li>
+      <li>
+        <button class="pu-button pu-button-linkedin needsclick {{# if linkedinLoading }}pu-state-loading pu-state-disabled{{/ if }}" data-signuplinkedin>
+          <span>
+            <i class="picon-linkedin"></i>
+            {{_ 'pages-modal-register-signup-signuplinkedin'}}
+          </span>
+          {{> Spinner color='inverted' type='small' }}
+        </button>
+      </li>
+      <li>
+        <button  id="registerEmailBtn" class="pu-button">
+          Register with email
+        </button>
+      </li>
+    </ul>
 
-            <!-- Email address -->
-            <label class="pu-formfield">
-                <span class="pu-label">{{_ 'pages-modal-register-signup-form-email-label'}}</span>
-                <div class="pu-sub-validations {{#if afFieldIsInvalid name='email' }}pu-state-invalid{{/if}}">
-                    <span class="pu-sub-input">{{> afFieldInput name='email' placeholder=placeholders.email class="pu-input" }}</span>
-                    <span class="pu-sub-error">{{ afFieldMessage name='email' }}</span>
-                </div>
-            </label>
+    {{/ if }}
 
-            <!-- Password -->
-            <fieldset class="pu-formfield">
-                <label>
-                    <span class="pu-label">
-                        {{_ 'pages-modal-register-signup-form-password-label'}}
-                        <a class="pu-hint pu-tooltip">
-                            <i class="picon-question"></i>
-                            <span class="pu-tooltip-wrapper"><p class="pu-paragraph">{{_ 'pages-modal-register-signup-form-password-tooltip' }}</p></span>
-                        </a>
-                    </span>
-                    <div class="pu-sub-validations {{#if afFieldIsInvalid name='password' }}pu-state-invalid{{/if}}">
-                        <span class="pu-sub-input">{{> afFieldInput type='password' name='password' placeholder=placeholders.password class="pu-input" }}</span>
-                        <span class="pu-sub-error">{{ afFieldMessage name='password' }}</span>
-                    </div>
-                </label>
+    {{# if actionSet2 }}
 
-            </fieldset>
-            <fieldset class="pu-formfield pu-formfield-nolabel">
-                <label>
-                    <div class="pu-sub-validations {{#if afFieldIsInvalid name='confirmPassword' }}pu-state-invalid{{/if}}">
-                        <span class="pu-sub-input">{{> afFieldInput type='password' name='confirmPassword' placeholder=placeholders.confirmPassword class="pu-input" }}</span>
-                        <span class="pu-sub-error">{{ afFieldMessage name='confirmPassword' }}</span>
-                    </div>
-                </label>
-            </fieldset>
+    <ul class="pu-list pu-list-horizontal pu-list-buttons">
+      <li>
+        <button class="pu-button pu-button-facebook needsclick {{# if facebookLoading }}pu-state-loading pu-state-disabled{{/ if }}" data-signupfacebook>
+          <span>
+            <i class="picon-facebook"></i>
+            {{_ 'pages-modal-register-signup-signupfacebook'}}
+          </span>
+          {{> Spinner color='inverted' type='small' }}
+        </button>
+      </li>
+      <li>
+        <button class="pu-button pu-button-linkedin needsclick {{# if linkedinLoading }}pu-state-loading pu-state-disabled{{/ if }}" data-signuplinkedin>
+          <span>
+            <i class="picon-linkedin"></i>
+            {{_ 'pages-modal-register-signup-signuplinkedin'}}
+          </span>
+          {{> Spinner color='inverted' type='small' }}
+        </button>
+      </li>
+    </ul>
+    <p class="pu-textline"><span>{{_ 'pages-modal-register-signup-or'}}</span></p>
 
-            <p class="pu-sub-terms">
-                {{{_ 'pages-modal-register-signup-form-terms' }}}
-            </p>
+    {{/ if }}
 
-            <!-- Submit -->
-            <footer>
-                <button type="submit" class="pu-button {{# if submitting }}pu-state-loading pu-state-disabled{{/ if }}">
-                    <span>{{_ 'pages-modal-register-signup-form-submit' }}</span>
-                    {{> Spinner color='inverted' type='small' }}
-                </button>
-            </footer>
-        {{/autoForm}}
+    {{# if actionSet3 }}
+    
+    {{#autoForm schema=formSchema id="pages-modal-register-signupForm" class="pu-form pu-form-disableinvalidstates" validation="submitThenBlur" }}
 
-    </div>
+    <!-- First and last name -->
+    <label class="pu-formfield">
+      <span class="pu-label">{{_ 'pages-modal-register-signup-form-name-label'}}</span>
+      <div class="pu-sub-validations {{#if afFieldIsInvalid name='name' }}pu-state-invalid{{/if}}">
+        <span class="pu-sub-input">{{> afFieldInput name='name' placeholder=placeholders.name class="pu-input" }}</span>
+        <span class="pu-sub-error">{{ afFieldMessage name='name' }}</span>
+      </div>
+    </label>
+
+    <!-- Email address -->
+    <label class="pu-formfield">
+      <span class="pu-label">{{_ 'pages-modal-register-signup-form-email-label'}}</span>
+      <div class="pu-sub-validations {{#if afFieldIsInvalid name='email' }}pu-state-invalid{{/if}}">
+        <span class="pu-sub-input">{{> afFieldInput name='email' placeholder=placeholders.email class="pu-input" }}</span>
+        <span class="pu-sub-error">{{ afFieldMessage name='email' }}</span>
+      </div>
+    </label>
+
+    <!-- Password -->
+    <fieldset class="pu-formfield">
+      <label>
+        <span class="pu-label">
+          {{_ 'pages-modal-register-signup-form-password-label'}}
+          <a class="pu-hint pu-tooltip">
+            <i class="picon-question"></i>
+            <span class="pu-tooltip-wrapper"><p class="pu-paragraph">{{_ 'pages-modal-register-signup-form-password-tooltip' }}</p></span>
+          </a>
+        </span>
+        <div class="pu-sub-validations {{#if afFieldIsInvalid name='password' }}pu-state-invalid{{/if}}">
+          <span class="pu-sub-input">{{> afFieldInput type='password' name='password' placeholder=placeholders.password class="pu-input" }}</span>
+          <span class="pu-sub-error">{{ afFieldMessage name='password' }}</span>
+        </div>
+      </label>
+
+    </fieldset>
+    <fieldset class="pu-formfield pu-formfield-nolabel">
+      <label>
+        <div class="pu-sub-validations {{#if afFieldIsInvalid name='confirmPassword' }}pu-state-invalid{{/if}}">
+          <span class="pu-sub-input">{{> afFieldInput type='password' name='confirmPassword' placeholder=placeholders.confirmPassword class="pu-input" }}</span>
+          <span class="pu-sub-error">{{ afFieldMessage name='confirmPassword' }}</span>
+        </div>
+      </label>
+    </fieldset>
+
+    <p class="pu-sub-terms">
+      {{{_ 'pages-modal-register-signup-form-terms' }}}
+    </p>
+
+    <!-- Submit -->
+    <footer>
+      <button type="submit" class="pu-button {{# if submitting }}pu-state-loading pu-state-disabled{{/ if }}">
+        <span>{{_ 'pages-modal-register-signup-form-submit' }}</span>
+        {{> Spinner color='inverted' type='small' }}
+      </button>
+    </footer>
+    {{/autoForm}}
+
+    {{/ if }}
+
+  </div>
+
 </template>

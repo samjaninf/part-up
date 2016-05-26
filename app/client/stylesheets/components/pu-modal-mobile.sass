@@ -1,0 +1,37 @@
+.pu-modal-mobile
+    background-color: $color-background
+    min-width: $breakpoint-min
+
+    .pu-sub-focuslayer
+        &:after
+            content: ''
+            display: block
+            position: fixed
+            top: 0
+            left: 0
+            right: 0
+            bottom: 0
+            z-index: 4
+            pointer-events: none
+            transition: background .2s
+
+        &-active
+            &:after
+                background-color: rgba($color-background, .8)
+                pointer-events: auto
+
+    @media screen and (min-width: $breakpoint-min)
+        padding-top: $spacing-modal-headerheight
+
+        .pu-header
+            position: fixed
+            top: 0
+            left: 0
+            right: 0
+            z-index: 15
+.pu-no-pointer-events
+    .pu-sub-focuslayer
+        display: none
+
+        &-active
+            display: block

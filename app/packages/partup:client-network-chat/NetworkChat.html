@@ -46,7 +46,7 @@
                             <span>{{ partupDayOfWeek day }} {{ partupDateDayMonthYear day }}</span>
                         </p>
                         {{#each data.messagesGroupedByUser messages}}
-                            {{> ChatMessage data=.}}
+                            {{> ChatMessage data=. highlight=state.reactiveQuery }}
                         {{/each}}
                     {{/each}}
                     <!-- New messages divider -->
@@ -64,7 +64,7 @@
                             <span>{{ partupDayOfWeek day }} {{ partupDateDayMonthYear day }}</span>
                         </p>
                         {{#each data.messagesGroupedByUser messages}}
-                            {{> ChatMessage data=.}}
+                            {{> ChatMessage data=. highlight=state.reactiveQuery }}
                         {{/each}}
                     {{/each}}
                 </div>

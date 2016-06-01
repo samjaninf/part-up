@@ -2,8 +2,8 @@ Template.NetworkChat.onCreated(function() {
     var template = this;
     var networkSlug = template.data.networkSlug;
     var chatId = undefined;
-    var searching = false;
 
+    template.searching = false;
     template.MAX_TYPING_PAUSE = 5000; // 5s
     template.LIMIT = 100;
     template.oldestNewMessage = new ReactiveVar(undefined);
@@ -246,11 +246,12 @@ Template.NetworkChat.onCreated(function() {
     };
 
     // search
-    template.searchQuery = new ReactiveVar('', function(a, b) {
-        if (a !== b) {
-            searching = !!b.length;
-            Meteor.call('chatmessages.search_in_network', networkSlug, b, {}, function(err, res) {
-                if (res.length) template.messages.set(res);
+    template.searchQuery = new ReactiveVar('', function(oldValue, newValue) {
+        if (oldValue !== newValue) {
+            template.searching = (typeof newValue === 'string') && newValue.length;
+            if (!template.searching) return;
+            Meteor.call('chatmessages.search_in_network', networkSlug, newValue, {}, function(err, res) {
+                template.messages.set(res);
                 _.defer(template.instantlyScrollToBottom);
             });
         }
@@ -264,7 +265,8 @@ Template.NetworkChat.onCreated(function() {
     var localCollection = [];
     template.messages = new ReactiveVar([]);
     template.autorun(function() {
-        if (searching) return;
+        var searchQuery = template.searchQuery.get();
+        if (template.searching) return;
         var limit = template.messageLimit.get();
         var messages = ChatMessages.find({}, {limit: limit, sort: {created_at: 1}}).fetch();
         localCollection = localCollection.concat(messages);
@@ -367,6 +369,9 @@ Template.NetworkChat.helpers({
                 var started_typing_date = new Date(typing_user.date).getTime();
                 var now = new Date().getTime();
                 return now - started_typing_date < template.MAX_TYPING_PAUSE;
+            },
+            reactiveQuery: function() {
+                return template.searchQuery;
             }
         };
     }
@@ -397,7 +402,7 @@ Template.NetworkChat.events({
         template.loadOlderMessages();
     },
     'scroll [data-reversed-scroller]': function(event, template) {
-        if (event.currentTarget.scrollTop < 200 && !template.loadingOlderMessages) {
+        if (event.currentTarget.scrollTop < 200 && !template.loadingOlderMessages && !template.searching) {
             template.loadOlderMessages();
         }
         template.stickyUserAvatarHandler();

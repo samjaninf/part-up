@@ -1,6 +1,7 @@
 Template.ChatMessage.onCreated(function() {
     var template = this;
     template.subscribe('users.one', template.data.data.creator_id);
+    template.highlight = template.data.highlight;
 });
 
 Template.ChatMessage.onRendered(function() {

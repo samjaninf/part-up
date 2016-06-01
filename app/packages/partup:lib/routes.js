@@ -657,20 +657,20 @@ Router.route('/tribes/:slug/about', {
 });
 
 // Temporarily disabled for mobile chat release
-// Router.route('/tribes/:slug/chat', {
-//     name: 'network-chat',
-//     where: 'client',
-//     yieldRegions: {
-//         'app':                  {to: 'main'},
-//         'app_network':          {to: 'app'},
-//         'app_network_chat':   {to: 'app_network'}
-//     },
-//     data: function() {
-//         return {
-//             networkSlug: this.params.slug
-//         };
-//     }
-// });
+Router.route('/tribes/:slug/chat', {
+    name: 'network-chat',
+    where: 'client',
+    yieldRegions: {
+        'app':                  {to: 'main'},
+        'app_network':          {to: 'app'},
+        'app_network_chat':   {to: 'app_network'}
+    },
+    data: function() {
+        return {
+            networkSlug: this.params.slug
+        };
+    }
+});
 
 Router.route('/tribes/:slug/invite', {
     name: 'network-invite',

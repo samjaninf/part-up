@@ -103,9 +103,6 @@ Meteor.methods({
      * @param {Object} options
      */
     'chatmessages.search_in_network': function(networkSlug, query, options) {
-        // Temp disable
-        return;
-
         check(networkSlug, String);
         check(query, String);
         check(options, {

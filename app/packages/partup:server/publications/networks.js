@@ -195,9 +195,6 @@ Meteor.publishComposite('networks.one.pending_uppers', function(networkSlug) {
  * @param {String} networkSlug
  */
 Meteor.publishComposite('networks.one.chat', function(networkSlug, parameters) {
-    // Temp disable
-    return;
-
     if (this.unblock) this.unblock();
 
     check(networkSlug, String);

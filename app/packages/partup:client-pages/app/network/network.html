@@ -29,12 +29,12 @@
                                 </a>
                             </li>
                             <!--Temp disable chat tab-->
-                            <!--<li>-->
-                                <!--<a href="{{! pathFor route='network-chat' slug=data.network.slug }}"-->
-                                    <!--class="pu-button pu-button-nav pu-button-nav-secondary {{! isActiveRoute name='network-chat' class='pu-state-active'}}">-->
-                                    <!--{{!_ 'pages-app-network-tab-button-chat'}}-->
-                                <!--</a>-->
-                            <!--</li>-->
+                            <li>
+                                <a href="{{ pathFor route='network-chat' slug=data.network.slug }}"
+                                    class="pu-button pu-button-nav pu-button-nav-secondary {{ isActiveRoute name='network-chat' class='pu-state-active'}}">
+                                    {{_ 'pages-app-network-tab-button-chat'}}
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ pathFor route='network-uppers' slug=data.network.slug }}"
                                     class="pu-button pu-button-nav pu-button-nav-secondary {{ isActiveRoute name='network-uppers' class='pu-state-active'}}">

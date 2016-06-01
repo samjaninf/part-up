@@ -868,9 +868,6 @@ Meteor.methods({
      * @param {mixed[]} fields
      */
     'networks.chat_insert': function(networkSlug, fields) {
-        // Temp disable
-        return;
-
         check(networkSlug, String);
         check(fields, Partup.schemas.forms.chat);
 

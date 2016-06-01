@@ -1,7 +1,12 @@
-Meteor.publishComposite('chats.for_loggedin_user', function(options) {
+Meteor.publishComposite('chats.for_loggedin_user', function(parameters, options) {
     this.unblock();
 
+    parameters = parameters || {};
     options = options || {};
+    check(parameters, {
+        private: Match.Optional(Boolean),
+        networks: Match.Optional(Boolean)
+    });
     check(options, {
         limit: Match.Optional(Number),
         skip: Match.Optional(Number)
@@ -14,7 +19,7 @@ Meteor.publishComposite('chats.for_loggedin_user', function(options) {
         children: [
             {
                 find: function(user) {
-                    return Chats.findForUser(user._id, options);
+                    return Chats.findForUser(user._id, parameters, options);
                 },
                 children: [
                     {

@@ -59,25 +59,37 @@ Chats = new Mongo.Collection('chats', {
  *
  * @memberOf Chats
  * @param {String} userId
+ * @param {Object} parameters
+ * @param {Boolean} parameters.private Set true when you need to incluce the private chats
+ * @param {Boolean} parameters.networks Set true when you need to incluce the network chats
+ * @param {Object} options
  * @return {Mongo.Cursor}
  */
-Chats.findForUser = function(userId, options) {
+Chats.findForUser = function(userId, parameters, options) {
     options = options || {};
+    parameters = parameters || {};
     var user = Meteor.users.findOneOrFail(userId);
+    var chatIds = [];
 
-    // Begin with the private chats
-    var userChats = user.chats || [];
+    if (parameters.private) {
+        // Add the private chats
+        var userChats = user.chats || [];
+        chatIds.concat(userChats);
+    }
 
-    // And now collect the tribe chats
-    var networks = Networks.find({_id: {$in: user.networks || []}});
-    networks.forEach(function(network) {
-        if (network.chat_id) userChats.push(network.chat_id);
-    });
+    if (parameters.networks) {
+        // And now collect the tribe chats
+        var userNetworks = user.networks || [];
+        var networks = Networks.find({_id: {$in: userNetworks}});
+        networks.forEach(function(network) {
+            if (network.chat_id) chatIds.push(network.chat_id);
+        });
+    }
 
     if (!options.sort) {
         options.sort = {updated_at: -1};
     }
 
     // Return the IDs ordered by most recent
-    return Chats.find({_id: {$in: userChats}}, options);
+    return Chats.find({_id: {$in: chatIds}}, options);
 };

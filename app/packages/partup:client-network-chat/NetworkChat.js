@@ -2,6 +2,7 @@ Template.NetworkChat.onCreated(function() {
     var template = this;
     var networkSlug = template.data.networkSlug;
     var chatId = undefined;
+    var searching = false;
 
     template.MAX_TYPING_PAUSE = 5000; // 5s
     template.LIMIT = 100;
@@ -97,7 +98,7 @@ Template.NetworkChat.onCreated(function() {
 
         var currentPosition = scroller.scrollTop;
         var bottomPosition = scroller[0].scrollHeight - scroller[0].clientHeight;
-
+        console.log(chatId)
         Meteor.call('chatmessages.insert', {
             chat_id: chatId,
             content: Partup.client.strings.emojify(message)
@@ -124,6 +125,11 @@ Template.NetworkChat.onCreated(function() {
         template.ajustScrollOffset();
     };
 
+    template.instantlyScrollToBottom = function() {
+        var element = template.scrollContainer[0];
+        element.scrollTop = element.scrollHeight;
+    };
+
     template.ajustScrollOffset = function() {
         if (!template.scrollContainer) return;
         var element = template.scrollContainer[0];
@@ -131,9 +137,7 @@ Template.NetworkChat.onCreated(function() {
         var pos = element.scrollTop;
         var height = element.scrollHeight - element.clientHeight;
         _.defer(function() {
-            if (pos === height) {
-                element.scrollTop = element.scrollHeight;
-            }
+            if (pos === height) template.instantlyScrollToBottom();
             template.stickyNewMessagesDividerHandler();
         });
     };
@@ -244,7 +248,11 @@ Template.NetworkChat.onCreated(function() {
     // search
     template.searchQuery = new ReactiveVar('', function(a, b) {
         if (a !== b) {
-            // do something
+            searching = !!b.length;
+            Meteor.call('chatmessages.search_in_network', networkSlug, b, {}, function(err, res) {
+                if (res.length) template.messages.set(res);
+                _.defer(template.instantlyScrollToBottom);
+            });
         }
     });
     var setSearchQuery = function(query) {
@@ -256,6 +264,7 @@ Template.NetworkChat.onCreated(function() {
     var localCollection = [];
     template.messages = new ReactiveVar([]);
     template.autorun(function() {
+        if (searching) return;
         var limit = template.messageLimit.get();
         var messages = ChatMessages.find({}, {limit: limit, sort: {created_at: 1}}).fetch();
         localCollection = localCollection.concat(messages);
@@ -397,40 +406,40 @@ Template.NetworkChat.events({
     'DOMMouseScroll [data-reversed-scroller], mousewheel [data-reversed-scroller]': function(event, template) {
         template.stickyNewMessagesDividerHandler(true);
     },
-    // 'click [data-flexible-center]': function(event, template) {
-    //     event.preventDefault();
-    //     $(event.currentTarget).parent().addClass('start');
-    //     _.defer(function() {
-    //         $(event.currentTarget).parent().addClass('active');
-    //         $('[data-search]').focus();
-    //     });
-    // },
-    // 'click [data-clear]': function(event, template) {
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //     $('[data-search]').val('');
-    //     _.defer(function() {
-    //         template.throttledSetSearchQuery('');
-    //         $('[data-search]').blur();
-    //     });
-    // },
-    // 'input [data-search]': function(event, template) {
-    //     template.throttledSetSearchQuery(event.currentTarget.value);
-    // },
-    // 'focus [data-search]': function(event, template) {
-    //     $(event.currentTarget).parent().addClass('start');
-    //     _.defer(function() {
-    //         template.focussed = true;
-    //         $(event.currentTarget).parent().addClass('active');
-    //     });
-    // },
-    // 'blur [data-search]': function(event, template) {
-    //     if (!$(event.target).val()) {
-    //         template.focussed = false;
-    //         $('[data-flexible-center]').parent().removeClass('active');
-    //     }
-    // },
-    // 'transitionend [data-flexible-center]': function(event, template) {
-    //     $(event.currentTarget).parent().removeClass('start');
-    // }
+    'click [data-flexible-center]': function(event, template) {
+        event.preventDefault();
+        $(event.currentTarget).parent().addClass('start');
+        _.defer(function() {
+            $(event.currentTarget).parent().addClass('active');
+            $('[data-search]').focus();
+        });
+    },
+    'click [data-clear]': function(event, template) {
+        event.preventDefault();
+        event.stopPropagation();
+        $('[data-search]').val('');
+        _.defer(function() {
+            template.throttledSetSearchQuery('');
+            $('[data-search]').blur();
+        });
+    },
+    'input [data-search]': function(event, template) {
+        template.throttledSetSearchQuery(event.currentTarget.value);
+    },
+    'focus [data-search]': function(event, template) {
+        $(event.currentTarget).parent().addClass('start');
+        _.defer(function() {
+            template.focussed = true;
+            $(event.currentTarget).parent().addClass('active');
+        });
+    },
+    'blur [data-search]': function(event, template) {
+        if (!$(event.target).val()) {
+            template.focussed = false;
+            $('[data-flexible-center]').parent().removeClass('active');
+        }
+    },
+    'transitionend [data-flexible-center]': function(event, template) {
+        $(event.currentTarget).parent().removeClass('start');
+    }
 });

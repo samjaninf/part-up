@@ -98,7 +98,6 @@ Template.NetworkChat.onCreated(function() {
 
         var currentPosition = scroller.scrollTop;
         var bottomPosition = scroller[0].scrollHeight - scroller[0].clientHeight;
-        console.log(chatId)
         Meteor.call('chatmessages.insert', {
             chat_id: chatId,
             content: Partup.client.strings.emojify(message)
@@ -250,7 +249,8 @@ Template.NetworkChat.onCreated(function() {
         if (oldValue !== newValue) {
             template.searching = (typeof newValue === 'string') && newValue.length;
             if (!template.searching) return;
-            Meteor.call('chatmessages.search_in_network', networkSlug, newValue, {}, function(err, res) {
+            var limit = template.messageLimit.get();
+            Meteor.call('chatmessages.search_in_network', networkSlug, newValue, {limit: limit}, function(err, res) {
                 template.messages.set(res);
                 _.defer(template.instantlyScrollToBottom);
             });

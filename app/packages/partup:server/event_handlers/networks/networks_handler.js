@@ -4,6 +4,7 @@
 Event.on('networks.accepted', function(userId, networkId, upperId) {
     var network = Networks.findOneOrFail(networkId);
     var acceptedUpper = Meteor.users.findOneOrFail(upperId);
+    if (!User(acceptedUpper).isActive()) return; // Ignore deactivated accounts
     var notificationType = 'partups_networks_accepted';
 
     // Send notifications to accepted upper
@@ -105,6 +106,7 @@ Event.on('networks.uppers.inserted', function(newUpper, network) {
     // Send notifications to all uppers in network
     var networkUppers = network.uppers || [];
     Meteor.users.find({_id: {$in: networkUppers}}).forEach(function(networkUpper) {
+        if (!User(networkUpper).isActive()) return; // Ignore deactivated accounts
         // Don't notify the upper that just joined
         if (networkUpper._id === newUpper._id) return;
 

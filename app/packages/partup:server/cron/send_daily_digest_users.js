@@ -10,6 +10,8 @@ if(process.env.PARTUP_CRON_ENABLED) {
                 'flags.dailyDigestEmailHasBeenSent': false,
                 'profile.settings.email.dailydigest': true
             }).forEach(function(user) {
+                if (!User(user).isActive()) return; // Ignore deactivated accounts
+
                 // This cronjob fails if a mail address doesn't exist. So check on this first.
                 if (!User(user).getEmail()) {
                     Log.debug('DailyDigest job: no email found for user ' + user._id);

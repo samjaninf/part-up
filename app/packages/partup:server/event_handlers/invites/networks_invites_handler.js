@@ -2,6 +2,8 @@
  * Generate a notification and email when an invite gets sent
  */
 Event.on('invites.inserted.network', function(inviter, network, invitee, searchQuery) {
+    if (!User(invitee).isActive()) return; // Ignore deactivated accounts
+
     // Set the notification details
     var notificationOptions = {
         userId: invitee._id,

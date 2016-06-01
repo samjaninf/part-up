@@ -12,6 +12,8 @@ Event.on('updates.comments.inserted', function(upper, partup, update, comment) {
     var limitExceeded = Partup.helpers.mentions.exceedsLimit(comment.content);
     var mentions = Partup.helpers.mentions.extract(comment.content);
     var process = function(user) {
+        if (!User(user).isActive()) return; // Ignore deactivated accounts
+
         if (partup.isViewableByUser(user._id)) {
             // Set the notification details
             var notificationOptions = {
@@ -100,6 +102,8 @@ Event.on('updates.comments.inserted', function(upper, partup, update, comment) {
     var notificationType = 'partups_new_comment_in_involved_conversation';
 
     Meteor.users.find({_id: {$in: filteredUppers}}).fetch().forEach(function(notifiedUpper) {
+        if (!User(notifiedUpper).isActive()) return; // Ignore deactivated accounts
+
         var notificationOptions = {
             userId: notifiedUpper._id,
             type: notificationType,

@@ -9,6 +9,8 @@ Event.on('partups.messages.insert', function(upper, partup, update, message) {
     var limitExceeded = Partup.helpers.mentions.exceedsLimit(message);
     var mentions = Partup.helpers.mentions.extract(message);
     var process = function(user) {
+        if (!User(user).isActive()) return; // Ignore deactivated accounts
+
         if (partup.isViewableByUser(user._id)) {
             // Set the notification details
             var notificationOptions = {

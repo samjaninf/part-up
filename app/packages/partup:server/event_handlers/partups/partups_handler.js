@@ -28,6 +28,8 @@ Event.on('partups.inserted', function(userId, partup) {
 
             var upper = Meteor.users.findOneOrFail(upperId);
 
+            if (!User(upper).isActive()) return; // Ignore deactivated accounts
+
             // Set the notification details
             var notificationOptions = {
                 userId: upper._id,

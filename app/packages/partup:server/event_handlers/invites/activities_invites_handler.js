@@ -2,6 +2,8 @@
  * Generate a notification and email when an invite gets sent
  */
 Event.on('invites.inserted.activity', function(inviter, partup, activity, invitee, searchQuery) {
+    if (!User(invitee).isActive()) return; // Ignore deactivated accounts
+
     // Check if there is already an invite update
     var inviteUpdate = Updates.findOne({partup_id: partup._id, upper_id: inviter._id, type: 'partups_invited'}, {sort: {updated_at: -1}});
 

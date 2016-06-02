@@ -30,5 +30,20 @@ Partup.client.chatmessages = {
             }
         });
         return outputArray;
+    },
+    groupByChat: function(messages) {
+        var outputObject = {};
+        messages.forEach(function(item, index) {
+            if (outputObject[item.chat_id] && outputObject[item.chat_id].chat_id === item.chat_id) {
+                outputObject[item.chat_id].messages.push(item);
+            } else {
+                outputObject[item.chat_id] = {
+                    chat_id: item.chat_id,
+                    messages: [item]
+                };
+            }
+        });
+        var outputArray = _.values(outputObject);
+        return outputArray;
     }
 };

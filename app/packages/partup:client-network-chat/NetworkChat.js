@@ -222,7 +222,10 @@ Template.NetworkChat.onCreated(function() {
                 userId = elm.attr('data-message-user-id');
                 var avatar = Images.findOne({_id: imageId});
                 var image = Partup.helpers.url.getImageUrl(avatar, '80x80');
-                $('[data-avatar]').css('background-image', 'url(' + image + ')');
+                $('[data-avatar]').css({
+                    'background-image': 'url(' + image + ')',
+                    'background-color': '#eee'
+                });
                 elm.addClass('pu-chatbox-noavatar');
 
             } else {
@@ -240,7 +243,12 @@ Template.NetworkChat.onCreated(function() {
         } else {
             $('[data-sticky-avatar]').removeClass('pu-sticky-user-right');
         }
-        if (!imageId) $('[data-avatar]').css('background-image', 'none');
+        if (!imageId) {
+            $('[data-avatar]').css({
+                'background-image': 'none',
+                'background-color': 'transparent'
+            });
+        }
         template.stickyAvatar.set(userId);
     };
 
@@ -249,7 +257,7 @@ Template.NetworkChat.onCreated(function() {
         if (oldValue !== newValue) {
             template.searching = (typeof newValue === 'string') && newValue.length;
             if (!template.searching) return;
-            var limit = template.messageLimit.get();
+            var limit = template.LIMIT;
             Meteor.call('chatmessages.search_in_network', networkSlug, newValue, {limit: limit}, function(err, res) {
                 template.messages.set(res);
                 _.defer(template.instantlyScrollToBottom);

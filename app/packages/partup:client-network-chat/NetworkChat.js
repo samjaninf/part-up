@@ -14,19 +14,21 @@ Template.NetworkChat.onCreated(function() {
     template.rendered = new ReactiveVar(false);
 
     var initializeChat = function() {
-        var chat = Chats.findOne();
+        var network = Networks.findOne({slug: networkSlug});
+        var chat = Chats.findOne({_id: network.chat_id || 0});
         if (chat) {
             chatId = chat._id;
             template.initialized.set(true);
-            return;
+            messageCollector(chat._id);
+        } else {
+            Meteor.call('networks.chat_insert', networkSlug, {}, function(err, chat_id) {
+                if (err) return Partup.client.notify.error('Error initializing tribe chat');
+                chatId = chat_id;
+                template.initialized.set(true);
+                Partup.client.notify.success('Tribe chat initialized');
+                messageCollector(chat_id);
+            });
         }
-
-        Meteor.call('networks.chat_insert', networkSlug, {}, function(err, chat_id) {
-            if (err) return Partup.client.notify.error('Error initializing tribe chat');
-            chatId = chat_id;
-            template.initialized.set(true);
-            Partup.client.notify.success('Tribe chat initialized');
-        });
     };
 
     var chatSubscription = template.subscribe('networks.one.chat', networkSlug, {limit: template.LIMIT}, {onReady: initializeChat});
@@ -35,7 +37,7 @@ Template.NetworkChat.onCreated(function() {
         if (oldLimit !== newLimit) {
             chatSubscription = template.subscribe('networks.one.chat', networkSlug, {limit: newLimit}, {
                 onReady: function() {
-                    var messagesCount = ChatMessages.find({}, {limit: newLimit, sort: {created_at: 1}}).count();
+                    var messagesCount = ChatMessages.find({chat_id: chatId}, {limit: newLimit, sort: {created_at: 1}}).count();
                     var totalNewMessages = messagesCount - oldLimit;
                     if (totalNewMessages < 1) {
                         template.limitReached.set(true);
@@ -272,19 +274,21 @@ Template.NetworkChat.onCreated(function() {
     // message storage
     var localCollection = [];
     template.messages = new ReactiveVar([]);
-    template.autorun(function() {
-        var searchQuery = template.searchQuery.get();
-        if (template.searching) return;
-        var limit = template.messageLimit.get();
-        var messages = ChatMessages.find({}, {limit: limit, sort: {created_at: 1}}).fetch();
-        localCollection = localCollection.concat(messages);
-        localCollection = mout.array.unique(localCollection, function(message1, message2) {
-            return message1._id === message2._id;
+    var messageCollector = function(chat_id) {
+        template.autorun(function() {
+            var searchQuery = template.searchQuery.get();
+            if (template.searching) return;
+            var limit = template.messageLimit.get();
+            var messages = ChatMessages.find({chat_id: chat_id}, {limit: limit, sort: {created_at: 1}}).fetch();
+            localCollection = localCollection.concat(messages);
+            localCollection = mout.array.unique(localCollection, function(message1, message2) {
+                return message1._id === message2._id;
+            });
+            var lastMessage = localCollection[localCollection.length - 1];
+            if (lastMessage) template.rememberOldestNewMessage(lastMessage);
+            template.messages.set(localCollection);
         });
-        var lastMessage = localCollection[localCollection.length - 1];
-        if (lastMessage) template.rememberOldestNewMessage(lastMessage);
-        template.messages.set(localCollection);
-    });
+    };
 });
 
 Template.NetworkChat.onRendered(function() {

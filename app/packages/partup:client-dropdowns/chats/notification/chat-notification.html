@@ -4,7 +4,7 @@
             style="background-image: url('{{ partupImageUrl id=data.network.image }}');">
         </figure>
         <article>
-            <p>{{ data.network.name }} {{partupDateNotification data.latestMessage.created_at}}</p>
+            <p>{{ data.network.name }} ({{data.notificationCount}}) <span>{{partupDateNotification data.latestMessage.created_at}}</span></p>
             <time>{{ data.creator.profile.name }}: {{ data.latestMessage.content }}</time>
         </article>
     </a>

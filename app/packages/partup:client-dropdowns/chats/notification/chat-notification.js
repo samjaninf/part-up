@@ -16,6 +16,9 @@ Template.ChatNotification.helpers({
             },
             creator: function() {
                 return Meteor.users.findOne({_id: template.data.messages[0].creator_id});
+            },
+            notificationCount: function() {
+                return Chats.findOne({_id: template.data.chat_id}).getUnreadCountForUser(Meteor.userId());
             }
         };
     }

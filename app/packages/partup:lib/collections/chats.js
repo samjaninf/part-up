@@ -41,7 +41,7 @@ Chat.prototype.stoppedTyping = function(userId) {
  * @return {Mongo.Cursor}
  */
 Chat.prototype.getUnreadCountForUser = function(userId) {
-    var user = Meteor.users.findOneOrFail(userId);
+    var user = Meteor.users.findOne(userId);
     return ChatMessages.find({chat_id: this._id, read_by: {$nin: [user._id]}}).count();
 };
 

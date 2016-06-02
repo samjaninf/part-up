@@ -4,6 +4,9 @@ Template.Header_personal.helpers({
     },
     isHomePage: function() {
         return  Router.isHomePage.get();
+    },
+    chatlabel: function() {
+        return TAPi18n.__('header-chat');
     }
 });
 

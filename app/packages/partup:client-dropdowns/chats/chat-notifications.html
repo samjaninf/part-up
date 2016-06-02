@@ -1,0 +1,32 @@
+<template name="DropdownChatNotifications">
+    <button class="pu-button pu-button-header pu-button-header-desktop pu-button-header-nostripe" data-toggle-menu="chat-notifications">
+        <!-- bell icon -->
+        <i class="picon-chat pu-badge {{#if totalNewNotifications.count }}pu-badge-active{{/if}}"></i>
+
+        {{ label }}
+    </button>
+    <div class="pu-dropdown pu-dropdown-notifications {{#if menuOpen}}pu-dropdown-active{{/if}} pu-dropdown-notifications-nobutton" data-clickoutside-close>
+        <ul data-preventscroll>
+            {{#each notifications.chats}}
+                <li class="pu-notification {{#unless new}}pu-notification-viewed{{/unless}} {{#if clicked}}pu-notification-clicked{{/if}}" data-notification="{{ chat_id }}">
+                    {{> ChatNotification messages=messages chat_id=chat_id}}
+                </li>
+            {{else}}
+                <li class="pu-notification pu-notification-empty">
+                    <p>{{_ 'dropdowns-notifications-placeholder-nonotifications'}}</p>
+                </li>
+            {{/each}}
+            {{#if notifications.canLoadMore}}
+                <li class="pu-sub-loadmore">
+                    <a href="#" class="pu-button pu-button-grey" data-loadmore>{{_ 'dropdowns-notifications-button-loadmore'}}</a>
+                </li>
+            {{/if}}
+        </ul>
+        {{#if false}}
+            <!-- disabled untill implementation -->
+            <footer>
+                <!-- <a href="{{ pathFor route="profile-settings" _id="" }}">{{_ 'dropdowns-notifications-button-managenotifications'}}</a> -->
+            </footer>
+        {{/if}}
+    </div>
+</template>

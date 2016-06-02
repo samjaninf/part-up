@@ -36,6 +36,7 @@
             {{#if currentUser }}
 
                 <!-- Logged in -->
+                <li>{{> DropdownChatNotifications label=chatlabel }}</li>
                 <li>{{> DropdownNotifications label=notificationslabel }}</li>
                 <li>{{> DropdownProfile label=currentUser.profile.name image=currentUser.profile.image }}</li>
 

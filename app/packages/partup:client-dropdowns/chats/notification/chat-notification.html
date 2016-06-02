@@ -1,0 +1,11 @@
+<template name="ChatNotification">
+    <a href="{{pathFor route='network-chat' slug=data.network.slug}}">
+        <figure class="pu-avatar pu-avatar-plain pu-avatar-square"
+            style="background-image: url('{{ partupImageUrl id=data.network.image }}');">
+        </figure>
+        <article>
+            <p>{{ data.network.name }} {{partupDateNotification data.latestMessage.created_at}}</p>
+            <time>{{ data.creator.profile.name }}: {{ data.latestMessage.content }}</time>
+        </article>
+    </a>
+</template>

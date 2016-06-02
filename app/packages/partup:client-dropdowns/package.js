@@ -52,6 +52,11 @@ Package.onUse(function(api) {
         'notifications/notification/types/partup/archived.html',
         'notifications/notification/types/partup/unarchived.html',
 
+        'chats/chat-notifications.html',
+        'chats/chat-notifications.js',
+        'chats/notification/chat-notification.html',
+        'chats/notification/chat-notification.js',
+
         'profile/profile.html',
         'profile/profile.js',
 

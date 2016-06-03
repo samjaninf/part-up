@@ -7,6 +7,14 @@ var ChatMessage = function(document) {
     _.extend(this, document);
 };
 
+ChatMessage.prototype.isSeenByUpper = function(upperId) {
+    return this.seen_by.indexOf(upperId) > -1;
+};
+
+ChatMessage.prototype.isReadByUpper = function(upperId) {
+    return this.read_by.indexOf(upperId) > -1;
+};
+
 /**
  * Add upper to seen message list
  *

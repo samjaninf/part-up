@@ -7,9 +7,9 @@
     </button>
     <div class="pu-dropdown pu-dropdown-notifications {{#if menuOpen}}pu-dropdown-active{{/if}} pu-dropdown-notifications-nobutton" data-clickoutside-close>
         <ul data-preventscroll>
-            {{#each notifications.chats}}
-                <li class="pu-notification {{#unless new}}pu-notification-viewed{{/unless}} {{#if clicked}}pu-notification-clicked{{/if}}" data-notification="{{ chat_id }}">
-                    {{> ChatNotification messages=messages chat_id=chat_id}}
+            {{#each notifications.chatMessages}}
+                <li class="pu-notification {{#if isSeenByUpper currentUserId }}pu-notification-viewed{{/if}} {{#if isReadByUpper currentUserId }}pu-notification-clicked{{/if}}" data-notification="{{ _id }}">
+                    {{> ChatNotification message=. }}
                 </li>
             {{else}}
                 <li class="pu-notification pu-notification-empty">

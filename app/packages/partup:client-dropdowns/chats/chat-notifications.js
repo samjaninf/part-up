@@ -45,8 +45,8 @@ Template.DropdownChatNotifications.events({
     'click [data-toggle-menu]': ClientDropdowns.dropdownClickHandler,
     'click [data-notification]': function(event, template) {
         template.dropdownOpen.set(false);
-        var notificationId = $(event.currentTarget).data('notification');
-        // Meteor.call('notifications.clicked', notificationId);
+        // var messageId = $(event.currentTarget).data('notification');
+        // Meteor.call('chatmessages.seen', messageId);
     },
     'click [data-loadmore]': function(event, template) {
         event.preventDefault();
@@ -62,11 +62,15 @@ Template.DropdownChatNotifications.helpers({
     notifications: function() {
         var limit = Template.instance().limit.get();
         // var parameters = {sort: {created_at: -1}, limit: limit};
-        var messages = ChatMessages.find().fetch();
+        var messages = Chats.find({}, {fields: {_id: 1}}).fetch().map(function(item) {
+            return ChatMessages.findOne({chat_id: item._id});
+        }).filter(function(item) {
+            return !!item;
+        });
         // var totalNotifications = ChatMessages.find().count();
         return {
-            chats: function() {
-                return Partup.client.chatmessages.groupByChat(messages);
+            chatMessages: function() {
+                return messages;
             }
             // count: function() {
             //     return totalNotifications;

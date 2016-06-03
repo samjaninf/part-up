@@ -7,18 +7,23 @@ Template.ChatNotification.helpers({
     },
     data: function() {
         var template = Template.instance();
+        var message = template.data.message;
+        var chatId = message.chat_id;
         return {
-            latestMessage: function() {
-                return template.data.messages[0];
+            message: function() {
+                return message;
+            },
+            chat_id: function() {
+                return chatId;
             },
             network: function() {
-                return Networks.findOne({chat_id: template.data.chat_id});
+                return Networks.findOne({chat_id: chatId});
             },
             creator: function() {
-                return Meteor.users.findOne({_id: template.data.messages[0].creator_id});
+                return Meteor.users.findOne({_id: message.creator_id});
             },
             notificationCount: function() {
-                return Chats.findOne({_id: template.data.chat_id}).getUnreadCountForUser(Meteor.userId());
+                return Chats.findOne({_id: chatId}).getUnreadCountForUser(Meteor.userId());
             }
         };
     }

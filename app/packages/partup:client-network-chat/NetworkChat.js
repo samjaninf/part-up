@@ -121,7 +121,6 @@ Template.NetworkChat.onCreated(function() {
     template.rememberOldestNewMessage = function(oldestNewMessage) {
         if (!template.focussed && oldestNewMessage) {
             if (!template.oldestNewMessage.get()) template.oldestNewMessage.set(oldestNewMessage);
-        } else if (template.focussed) {
         }
         template.ajustScrollOffset();
     };
@@ -231,7 +230,6 @@ Template.NetworkChat.onCreated(function() {
                 elm.addClass('pu-chatbox-noavatar');
 
             } else {
-                // $('[data-avatar]').css('background-image', 'none');
                 elm.removeClass('pu-chatbox-noavatar');
             }
             if (offsetTop < 0) {
@@ -449,13 +447,11 @@ Template.NetworkChat.events({
     'focus [data-search]': function(event, template) {
         $(event.currentTarget).parent().addClass('start');
         _.defer(function() {
-            template.focussed = true;
             $(event.currentTarget).parent().addClass('active');
         });
     },
     'blur [data-search]': function(event, template) {
         if (!$(event.target).val()) {
-            template.focussed = false;
             $('[data-flexible-center]').parent().removeClass('active');
         }
     },

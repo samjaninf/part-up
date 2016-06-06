@@ -73,24 +73,18 @@
 
         </header>
 
-        <div class="pu-sub-pagecontent">
-            <div class="pu-wrap pu-wrap-columnlayout">
-                <section class="pu-composition pu-composition-network">
-                    {{# if data.network }}
-                        {{# if data.network.isClosedForUpper currentUserId }}
-                            {{> app_network_closed network=data.network.name }}
-                        {{ else }}
+        {{# if data.network }}
+            {{# if data.network.isClosedForUpper currentUserId }}
+                {{> app_network_closed network=data.network.name }}
+            {{ else }}
 
-                            <!-- We use refresh=. to trigger a yield refresh when networkId changes.
-                                 'refresh' is not an accepted attribute of yield, but in general,
-                                 template-includes will re-run when (one of) its attributes change.  -->
-                            {{> yield region='app_network' refresh=data.networkSlug refresh2=joinToggle }}
+                <!-- We use refresh=. to trigger a yield refresh when networkId changes.
+                     'refresh' is not an accepted attribute of yield, but in general,
+                     template-includes will re-run when (one of) its attributes change.  -->
+                {{> yield region='app_network' refresh=data.networkSlug refresh2=joinToggle }}
 
-                        {{/ if }}
-                    {{/ if }}
-                </section>
-            </div>
-        </div>
+            {{/ if }}
+        {{/ if }}
     </article>
 
 </template>

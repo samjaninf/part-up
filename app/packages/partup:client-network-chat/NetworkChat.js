@@ -318,6 +318,9 @@ Template.NetworkChat.helpers({
             activeUppers: function() {
                 return Meteor.users.find({'status.online': true, _id: {$not: Meteor.userId(), $in: network.uppers || []}});
             },
+            messagesGroupedByMinutes: function(messages) {
+                return Partup.client.chatmessages.groupByCreationMinuteRange(messages, 5);
+            },
             messagesGroupedByDay: function(messages) {
                 return Partup.client.chatmessages.groupByCreationDay(messages);
             },

@@ -1,49 +1,55 @@
 <template name="app_network_uppers">
-    <header class="pu-sub-header">
-        <form class="pu-form pu-flexible-center" novalidate data-nosubmit>
-            <div>
-                <span>
-                    <h2 class="pu-title">
-                        {{# if countLoading }}
-                            {{_ 'pages-app-network-uppers-loading' }}
-                            {{> Spinner type='small' }}
-                        {{ else }}
-                            <span class="pu-sub-countlabel">
-                                {{#if count}}
-                                    {{_ 'pages-app-network-uppers-count' count=count }}
-                                {{else}}
-                                    {{_ 'pages-app-network-uppers-none' }}
-                                {{/if}}
+    <div class="pu-sub-pagecontent">
+        <div class="pu-wrap pu-wrap-columnlayout">
+            <section class="pu-composition pu-composition-network">
+                <header class="pu-sub-header">
+                    <form class="pu-form pu-flexible-center" novalidate data-nosubmit>
+                        <div>
+                            <span>
+                                <h2 class="pu-title">
+                                    {{# if countLoading }}
+                                        {{_ 'pages-app-network-uppers-loading' }}
+                                        {{> Spinner type='small' }}
+                                    {{ else }}
+                                        <span class="pu-sub-countlabel">
+                                            {{#if count}}
+                                                {{_ 'pages-app-network-uppers-count' count=count }}
+                                            {{else}}
+                                                {{_ 'pages-app-network-uppers-none' }}
+                                            {{/if}}
+                                        </span>
+
+                                        {{_ 'pages-app-network-uppers-suffix' }}
+                                    {{/if}}
+                                </h2>
                             </span>
+                        </div>
+                        <div class="pu-sub-center" data-flexible-center>
+                            <span>
+                                <div class="pu-searchinput">
+                                    <input type="text" placeholder="{{_ 'pages-app-network-uppers-search-placeholder'}}" class="pu-input form-control" data-search>
+                                    <i class="picon-search"></i>
+                                    <i class="picon-times" data-clear></i>
+                                </div>
+                            </span>
+                        </div>
+                    </form>
+                </header>
 
-                            {{_ 'pages-app-network-uppers-suffix' }}
-                        {{/if}}
-                    </h2>
-                </span>
-            </div>
-            <div class="pu-sub-center" data-flexible-center>
-                <span>
-                    <div class="pu-searchinput">
-                        <input type="text" placeholder="{{_ 'pages-app-network-uppers-search-placeholder'}}" class="pu-input form-control" data-search>
-                        <i class="picon-search"></i>
-                        <i class="picon-times" data-clear></i>
-                    </div>
-                </span>
-            </div>
-        </form>
-    </header>
+                <div data-infinitescroll-container>
+                    {{# ColumnTilesLayout instance=columnTilesLayout firstBlockSettings=networkInviteTileSettings }}
+                        <div class="pu-tile">
+                            {{> UpperTile }}
+                        </div>
+                    {{/ ColumnTilesLayout }}
 
-    <div data-infinitescroll-container>
-        {{# ColumnTilesLayout instance=columnTilesLayout firstBlockSettings=networkInviteTileSettings }}
-            <div class="pu-tile">
-                {{> UpperTile }}
-            </div>
-        {{/ ColumnTilesLayout }}
-
-        {{# unless endReached }}
-            <div class="pu-sub-loading-infinite-scroll">
-                {{> Spinner }}
-            </div>
-        {{/ unless }}
+                    {{# unless endReached }}
+                        <div class="pu-sub-loading-infinite-scroll">
+                            {{> Spinner }}
+                        </div>
+                    {{/ unless }}
+                </div>
+            </section>
+        </div>
     </div>
 </template>

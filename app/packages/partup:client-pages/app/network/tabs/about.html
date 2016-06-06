@@ -1,125 +1,131 @@
 <template name="app_network_about">
-    <div class="pu-composition-about">
-    	<section class="pu-wrap pu-contentpage">
+    <div class="pu-sub-pagecontent">
+        <div class="pu-wrap pu-wrap-columnlayout">
+            <section class="pu-composition pu-composition-network">
+                <div class="pu-composition-about">
+                	<section class="pu-wrap pu-contentpage">
 
-            {{#if data.introBlock}}
-                <article class="pu-article pu-contentblock pu-contentblock-intro">
-                    {{#if data.introBlock.title}}
-                        <h1>{{ data.introBlock.title }}</h1>
-                    {{ else }}
-                        <h1>{{_ 'pages-app-network-tab-about-placeholder-intro-title-placeholder' tribe=data.network.name}}</h1>
-                    {{/if}}
-                    {{#if data.introBlock.text}}
-                        {{{ data.introBlock.text }}}
-                    {{ else }}
-                        {{ data.network.description }}
-                    {{/if}}
-                    <ul class="pu-list pu-list-horizontal">
-                        {{#with data.introBlock.location}}
-                            <li>
-                                <a class="pu-metadata" href="#" data-location>
-                                    <i class="picon-location"></i>
-                                    <span>{{ city }}</span>
-                                </a>
-                            </li>
-                        {{/with}}
-                        {{#with data.introBlock.website}}
-                            <li>
-                                <a class="pu-metadata" href="{{ partupHTTP . }}" target="_blank">
-                                    <i class="picon-monitor"></i>
-                                    <span>{{ partupCleanUrl .}}</span>
-                                </a>
-                            </li>
-                        {{/with}}
-                    </ul>
-                    {{#with data.network.displayTags data.network.slug}}
-                        <ul class="pu-list pu-list-horizontal pu-list-tags">
-                            {{#each .}}
-                                <li>
-                                    <a href="#" class="pu-tag">{{tag}}</a>
-                                </li>
-                            {{/each}}
-                        </ul>
-                    {{/with}}
-                </article>
-            {{else}}
-                {{#if state.contentblocksAvailable}}
-                    <article class="pu-article pu-contentblock pu-contentblock-intro">
-                        <h1>{{_ 'pages-app-network-tab-about-placeholder-title'}}</h1>
-                        <p>{{_ 'pages-app-network-tab-about-placeholder-intro'}}</p>
-                        <ul class="pu-list pu-list-horizontal">
-                            {{#with data.network.location}}
-                                <li>
-                                    <a class="pu-metadata" href="#" data-location>
-                                        <i class="picon-location"></i>
-                                        <span>{{ city }}</span>
-                                    </a>
-                                </li>
+                        {{#if data.introBlock}}
+                            <article class="pu-article pu-contentblock pu-contentblock-intro">
+                                {{#if data.introBlock.title}}
+                                    <h1>{{ data.introBlock.title }}</h1>
+                                {{ else }}
+                                    <h1>{{_ 'pages-app-network-tab-about-placeholder-intro-title-placeholder' tribe=data.network.name}}</h1>
+                                {{/if}}
+                                {{#if data.introBlock.text}}
+                                    {{{ data.introBlock.text }}}
+                                {{ else }}
+                                    {{ data.network.description }}
+                                {{/if}}
+                                <ul class="pu-list pu-list-horizontal">
+                                    {{#with data.introBlock.location}}
+                                        <li>
+                                            <a class="pu-metadata" href="#" data-location>
+                                                <i class="picon-location"></i>
+                                                <span>{{ city }}</span>
+                                            </a>
+                                        </li>
+                                    {{/with}}
+                                    {{#with data.introBlock.website}}
+                                        <li>
+                                            <a class="pu-metadata" href="{{ partupHTTP . }}" target="_blank">
+                                                <i class="picon-monitor"></i>
+                                                <span>{{ partupCleanUrl .}}</span>
+                                            </a>
+                                        </li>
+                                    {{/with}}
+                                </ul>
+                                {{#with data.network.displayTags data.network.slug}}
+                                    <ul class="pu-list pu-list-horizontal pu-list-tags">
+                                        {{#each .}}
+                                            <li>
+                                                <a href="#" class="pu-tag">{{tag}}</a>
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                {{/with}}
+                            </article>
+                        {{else}}
+                            {{#if state.contentblocksAvailable}}
+                                <article class="pu-article pu-contentblock pu-contentblock-intro">
+                                    <h1>{{_ 'pages-app-network-tab-about-placeholder-title'}}</h1>
+                                    <p>{{_ 'pages-app-network-tab-about-placeholder-intro'}}</p>
+                                    <ul class="pu-list pu-list-horizontal">
+                                        {{#with data.network.location}}
+                                            <li>
+                                                <a class="pu-metadata" href="#" data-location>
+                                                    <i class="picon-location"></i>
+                                                    <span>{{ city }}</span>
+                                                </a>
+                                            </li>
+                                        {{/with}}
+                                        {{#with data.network.website}}
+                                            <li>
+                                                <a class="pu-metadata" href="{{ partupHTTP . }}" target="_blank">
+                                                    <i class="picon-monitor"></i>
+                                                    <span>{{ partupCleanUrl .}}</span>
+                                                </a>
+                                            </li>
+                                        {{/with}}
+                                    </ul>
+                                    {{#if data.network.tags}}
+                                        <ul class="pu-list pu-list-horizontal pu-list-tags">
+                                            {{#each tags}}
+                                                <li>
+                                                    <a href="#" class="pu-tag">{{.}}</a>
+                                                </li>
+                                            {{/each}}
+                                        </ul>
+                                    {{/if}}
+                                </article>
+                            {{else}}
+                                <article class="pu-article pu-state-loading">
+                                    {{> Spinner}}
+                                </article>
+                            {{/if}}
+                        {{/if}}
+
+                        {{#each data.contentBlocks}}
+                            <article class="pu-article pu-sub-section pu-contentblock">
+                                <h2>{{ title }}</h2>
+                                {{{ text }}}
+                            </article>
+                            {{#with image}}
+                                <img src="{{ partupImageUrl id=. store='1200x520' }}" alt="" class="pu-image pu-image-content pu-sub-section pu-sub-section-smaller">
                             {{/with}}
-                            {{#with data.network.website}}
-                                <li>
-                                    <a class="pu-metadata" href="{{ partupHTTP . }}" target="_blank">
-                                        <i class="picon-monitor"></i>
-                                        <span>{{ partupCleanUrl .}}</span>
-                                    </a>
-                                </li>
-                            {{/with}}
-                        </ul>
-                        {{#if data.network.tags}}
-                            <ul class="pu-list pu-list-horizontal pu-list-tags">
-                                {{#each tags}}
+                        {{/each}}
+
+                	    <article class="pu-article pu-article-morespace pu-sub-section">
+                            <h2 class="pu-subtitle">{{_ 'pages-app-about-page-contact-title'}}</h2>
+                            <p class="pu-paragraph">{{_ 'pages-app-about-page-contact-text'}}</p>
+                            <ul class="pu-list pu-list-horizontal">
+                                {{#each data.admins}}
                                     <li>
-                                        <a href="#" class="pu-tag">{{.}}</a>
+                                        <article class="pu-face">
+                                            <a href="{{pathFor route='profile' _id=_id}}" class="pu-avatar pu-avatar-extralarge" style="background-image:url('{{ partupImageUrl id=profile.image store='360x360'}}');"></a>
+                                            <ul class="pu-list">
+                                                <li><a href="{{pathFor route='profile' _id=_id}}">{{ profile.name }}</a></li>
+                                                <li>{{ profile.phonenumber }}</li>
+                                                <li><a href="mailto:{{ data.email .}}">{{ data.email . }}</a></li>
+                                            </ul>
+                                            <ul class="pu-list pu-list-horizontal pu-sub-socials">
+                                                {{#if profile.data.facebook_url}}<li><a href="{{ profile.data.facebook_url }}" target="_blank"><i class="picon-facebook"></i></a></li>{{/if}}
+                                                {{#if profile.data.linkedin_url}}<li><a href="{{ profile.data.linkedin_url }}" target="_blank"><i class="picon-linkedin"></i></a></li>{{/if}}
+                                                {{#if profile.data.twitter_url}}<li><a href="{{ profile.data.twitter_url }}" target="_blank"><i class="picon-twitter"></i></a></li>{{/if}}
+                                                {{#if profile.data.instagram_url}}<li><a href="{{ profile.data.instagram_url }}" target="_blank"><i class="picon-instagram"></i></a></li>{{/if}}
+                                            </ul>
+                                        </article>
+                                    </li>
+                                {{else}}
+                                    <li>
+                                        {{> Spinner}}
                                     </li>
                                 {{/each}}
                             </ul>
-                        {{/if}}
-                    </article>
-                {{else}}
-                    <article class="pu-article pu-state-loading">
-                        {{> Spinner}}
-                    </article>
-                {{/if}}
-            {{/if}}
-
-            {{#each data.contentBlocks}}
-                <article class="pu-article pu-sub-section pu-contentblock">
-                    <h2>{{ title }}</h2>
-                    {{{ text }}}
-                </article>
-                {{#with image}}
-                    <img src="{{ partupImageUrl id=. store='1200x520' }}" alt="" class="pu-image pu-image-content pu-sub-section pu-sub-section-smaller">
-                {{/with}}
-            {{/each}}
-
-    	    <article class="pu-article pu-article-morespace pu-sub-section">
-                <h2 class="pu-subtitle">{{_ 'pages-app-about-page-contact-title'}}</h2>
-                <p class="pu-paragraph">{{_ 'pages-app-about-page-contact-text'}}</p>
-                <ul class="pu-list pu-list-horizontal">
-                    {{#each data.admins}}
-                        <li>
-                            <article class="pu-face">
-                                <a href="{{pathFor route='profile' _id=_id}}" class="pu-avatar pu-avatar-extralarge" style="background-image:url('{{ partupImageUrl id=profile.image store='360x360'}}');"></a>
-                                <ul class="pu-list">
-                                    <li><a href="{{pathFor route='profile' _id=_id}}">{{ profile.name }}</a></li>
-                                    <li>{{ profile.phonenumber }}</li>
-                                    <li><a href="mailto:{{ data.email .}}">{{ data.email . }}</a></li>
-                                </ul>
-                                <ul class="pu-list pu-list-horizontal pu-sub-socials">
-                                    {{#if profile.data.facebook_url}}<li><a href="{{ profile.data.facebook_url }}" target="_blank"><i class="picon-facebook"></i></a></li>{{/if}}
-                                    {{#if profile.data.linkedin_url}}<li><a href="{{ profile.data.linkedin_url }}" target="_blank"><i class="picon-linkedin"></i></a></li>{{/if}}
-                                    {{#if profile.data.twitter_url}}<li><a href="{{ profile.data.twitter_url }}" target="_blank"><i class="picon-twitter"></i></a></li>{{/if}}
-                                    {{#if profile.data.instagram_url}}<li><a href="{{ profile.data.instagram_url }}" target="_blank"><i class="picon-instagram"></i></a></li>{{/if}}
-                                </ul>
-                            </article>
-                        </li>
-                    {{else}}
-                        <li>
-                            {{> Spinner}}
-                        </li>
-                    {{/each}}
-                </ul>
-            </article>
-    	</section>
+                        </article>
+                	</section>
+                </div>
+            </section>
+        </div>
     </div>
 </template>

@@ -1,5 +1,11 @@
 <template name="app_network_chat">
-    <div class="pu-composition-chat">
-        {{> NetworkChat networkSlug=data.networkSlug }}
+    <div class="pu-sub-pagecontent pu-sub-pagecontent-chat">
+        <div class="pu-wrap pu-wrap-columnlayout">
+            <section class="pu-composition pu-composition-network">
+                <div class="pu-composition-chat">
+                    {{> NetworkChat networkSlug=data.networkSlug }}
+                </div>
+            </section>
+        </div>
     </div>
 </template>

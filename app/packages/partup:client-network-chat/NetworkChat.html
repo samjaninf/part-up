@@ -1,26 +1,6 @@
 <template name="NetworkChat">
     <div class="pu-chat">
         <main>
-            <header data-preventscroll>
-                <form class="pu-form pu-flexible-center" novalidate>
-                    <div>
-                        <span>
-                            <h2 class="pu-title">
-                                {{_ 'pages-app-network-chat-title' }}
-                            </h2>
-                        </span>
-                    </div>
-                    <div class="pu-sub-center" data-flexible-center>
-                        <span>
-                            <div class="pu-searchinput">
-                                <input type="text" placeholder="Search a message in this chat" class="pu-input form-control" data-search>
-                                <i class="picon-search"></i>
-                                <i class="picon-times" data-clear></i>
-                            </div>
-                        </span>
-                    </div>
-                </form>
-            </header>
             <article class="pu-chat-wrapper {{#if state.fullyLoaded}}pu-state-active{{/if}}" data-reversed-scroller-wrapper>
                 <!-- Top new messages button -->
                 {{#if data.messages.new.length}}{{#if state.overscroll}}
@@ -45,8 +25,10 @@
                         <p class="pu-textline pu-textline-light">
                             <span>{{ partupDayOfWeek day }} {{ partupDateDayMonthYear day }}</span>
                         </p>
-                        {{#each data.messagesGroupedByUser messages}}
-                            {{> ChatMessage data=. highlight=state.reactiveQuery }}
+                        {{#each data.messagesGroupedByMinutes messages}}
+                            {{#each data.messagesGroupedByUser messages}}
+                                {{> ChatMessage data=. highlight=state.reactiveQuery }}
+                            {{/each}}
                         {{/each}}
                     {{/each}}
                     <!-- New messages divider -->
@@ -63,8 +45,10 @@
                         <p class="pu-textline pu-textline-light">
                             <span>{{ partupDayOfWeek day }} {{ partupDateDayMonthYear day }}</span>
                         </p>
-                        {{#each data.messagesGroupedByUser messages}}
-                            {{> ChatMessage data=. highlight=state.reactiveQuery }}
+                        {{#each data.messagesGroupedByMinutes messages}}
+                            {{#each data.messagesGroupedByUser messages}}
+                                {{> ChatMessage data=. highlight=state.reactiveQuery }}
+                            {{/each}}
                         {{/each}}
                     {{/each}}
                 </div>
@@ -98,6 +82,10 @@
             <section>
                 <div class="pu-sidebar-wrap" data-preventscroll>
                     <section>
+                        <div class="pu-clearinput">
+                            <input type="text" placeholder="Search a message in this chat" class="pu-input form-control" data-search>
+                            <i class="picon-times" data-clear></i>
+                        </div>
                         {{#if data.network.isPublic}}<p>{{{_ 'pages-app-network-chat-sidebar-text-open' }}}</p>{{/if}}
                         {{#if data.network.isInvitational}}<p>{{{_ 'pages-app-network-chat-sidebar-text-invite' }}}</p>{{/if}}
                         {{#if data.network.isClosed}}<p>{{{_ 'pages-app-network-chat-sidebar-text-clodes' }}}</p>{{/if}}

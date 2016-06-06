@@ -243,3 +243,28 @@
 
             > div.pu-sub-center
                 max-width: 100%
+
+.pu-clearinput
+    position: relative
+
+    i.picon-times
+        position: absolute
+        right: 0
+        top: 0
+        font-size: 12px
+        color: #eee
+        display: block
+        height: 44px
+        width: 44px
+        line-height: 46px
+        text-align: center
+        cursor: pointer
+        display: block
+
+        &:hover
+            color: darken(#eee, 10%)
+    input
+        padding-right: 44px
+        &:invalid
+            + i.picon-times
+                display: none

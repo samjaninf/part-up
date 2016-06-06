@@ -1,52 +1,58 @@
 <template name="app_network_partups">
-    <header class="pu-sub-header">
-        <form class="pu-form pu-flexible-center" novalidate data-nosubmit>
-            <div>
-                <span>
-                    <h2 class="pu-title">
-                        {{# if state.countLoading }}
-                            {{ translations.partupsLoading state.selectedFilter }}
-                            {{> Spinner type='small' }}
-                        {{ else }}
-                            {{#if data.partupCount}}
-                                {{ translations.partupsCount state.selectedFilter data.partupCount}}
-                            {{else}}
-                                {{ translations.partupsNone state.selectedFilter }}
-                            {{/if}}
-                        {{/if}}
-                    </h2>
-                </span>
-            </div>
-            <div class="pu-sub-center" data-flexible-center>
-                <span>
-                    <div class="pu-searchinput">
-                        <input type="text" placeholder="{{_ 'pages-app-network-partups-search-placeholder'}}" class="pu-input form-control" data-search>
-                        <i class="picon-search"></i>
-                        <i class="picon-times" data-clear></i>
-                    </div>
-                </span>
-            </div>
-            {{# if data.network.hasMember currentUser._id }}
-                <div>
-                    <span>
-                        {{> PartialDropdownNetworkActions reactiveVar=data.filterReactiveVar}}
-                    </span>
+    <div class="pu-sub-pagecontent">
+        <div class="pu-wrap pu-wrap-columnlayout">
+            <section class="pu-composition pu-composition-network">
+                <header class="pu-sub-header">
+                    <form class="pu-form pu-flexible-center" novalidate data-nosubmit>
+                        <div>
+                            <span>
+                                <h2 class="pu-title">
+                                    {{# if state.countLoading }}
+                                        {{ translations.partupsLoading state.selectedFilter }}
+                                        {{> Spinner type='small' }}
+                                    {{ else }}
+                                        {{#if data.partupCount}}
+                                            {{ translations.partupsCount state.selectedFilter data.partupCount}}
+                                        {{else}}
+                                            {{ translations.partupsNone state.selectedFilter }}
+                                        {{/if}}
+                                    {{/if}}
+                                </h2>
+                            </span>
+                        </div>
+                        <div class="pu-sub-center" data-flexible-center>
+                            <span>
+                                <div class="pu-searchinput">
+                                    <input type="text" placeholder="{{_ 'pages-app-network-partups-search-placeholder'}}" class="pu-input form-control" data-search>
+                                    <i class="picon-search"></i>
+                                    <i class="picon-times" data-clear></i>
+                                </div>
+                            </span>
+                        </div>
+                        {{# if data.network.hasMember currentUser._id }}
+                            <div>
+                                <span>
+                                    {{> PartialDropdownNetworkActions reactiveVar=data.filterReactiveVar}}
+                                </span>
+                            </div>
+                        {{/ if }}
+                    </form>
+                </header>
+
+                <div data-infinitescroll-container>
+                    {{# ColumnTilesLayout instance=data.columnTilesLayout firstBlockSettings=configs.networkStartPartupTileSettings }}
+                        <div class="pu-tile">
+                            {{> PartupTile }}
+                        </div>
+                    {{/ ColumnTilesLayout }}
+
+                    {{# unless state.endReached }}
+                        <div class="pu-sub-loading-infinite-scroll">
+                            {{> Spinner }}
+                        </div>
+                    {{/ unless }}
                 </div>
-            {{/ if }}
-        </form>
-    </header>
-
-    <div data-infinitescroll-container>
-        {{# ColumnTilesLayout instance=data.columnTilesLayout firstBlockSettings=configs.networkStartPartupTileSettings }}
-            <div class="pu-tile">
-                {{> PartupTile }}
-            </div>
-        {{/ ColumnTilesLayout }}
-
-        {{# unless state.endReached }}
-            <div class="pu-sub-loading-infinite-scroll">
-                {{> Spinner }}
-            </div>
-        {{/ unless }}
+            </section>
+        </div>
     </div>
 </template>

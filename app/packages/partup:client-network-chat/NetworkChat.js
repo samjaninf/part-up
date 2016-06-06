@@ -100,6 +100,13 @@ Template.NetworkChat.onCreated(function() {
 
         var currentPosition = scroller.scrollTop;
         var bottomPosition = scroller[0].scrollHeight - scroller[0].clientHeight;
+
+        var network = Networks.findOne({slug: networkSlug});
+        var userId = Meteor.userId();
+        if (!network.hasMember(userId)) {
+            return Partup.client.notify.error(TAPi18n.__('pages-app-network-chat-send-message-permission-denied'));
+        }
+
         Meteor.call('chatmessages.insert', {
             chat_id: chatId,
             content: Partup.client.strings.emojify(message)

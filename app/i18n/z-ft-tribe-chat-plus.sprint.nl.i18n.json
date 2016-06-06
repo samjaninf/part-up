@@ -1,3 +1,4 @@
 {
-    "header-chat": "Chat"
+    "header-chat": "Chat",
+    "pages-app-network-chat-send-message-permission-denied": "You have to be a member of this tribe to send a message"
 }

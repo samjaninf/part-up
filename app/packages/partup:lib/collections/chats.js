@@ -11,7 +11,7 @@ var Chat = function(document) {
  * Set a user as typing
  *
  * @memberOf Chats
- * @param {String} userId the user id of the user that started typing
+ * @param {String} userId the id of the user that started typing
  * @param {Date} typingDate the front-end date of when the user started typing
  */
 Chat.prototype.startedTyping = function(userId, typingDate) {
@@ -27,22 +27,87 @@ Chat.prototype.startedTyping = function(userId, typingDate) {
  * Unset a typing user
  *
  * @memberOf Chats
- * @param {String} userId the user id of the user that stopped typing
+ * @param {String} userId the id of the user that stopped typing
  */
 Chat.prototype.stoppedTyping = function(userId) {
     Chats.update(this._id, {$pull: {started_typing: {upper_id: userId}}});
 };
 
 /**
- * Get the unread chat count
+ * Add a user to the counter array
  *
  * @memberOf Chats
- * @param {String} userId
- * @return {Mongo.Cursor}
+ * @param {String} userId the id of the user that needs to be added
  */
-Chat.prototype.getUnreadCountForUser = function(userId) {
-    var user = Meteor.users.findOne(userId);
-    return ChatMessages.find({chat_id: this._id, read_by: {$nin: [user._id]}}).count();
+Chat.prototype.addUserToCounter = function(userId) {
+    Chats.update({
+        _id: this._id,
+        'counter.user_id': {
+            $ne: userId
+        }
+    }, {
+        $push: {
+            counter: {
+                user_id: userId,
+                unread_count: 0
+            }
+        }
+    });
+};
+
+/**
+ * Increment unread messages counter
+ *
+ * @memberOf Chats
+ * @param {String} creatorUserId the id of the creator of a message
+ */
+Chat.prototype.incrementCounter = function(creatorUserId) {
+    Chats.update({
+        _id: this._id,
+        counter: {
+            $elemMatch: {
+                user_id: {
+                    $ne: creatorUserId
+                }
+            }
+        }
+    }, {
+        $inc: {
+            'counter.unread_count': 1
+        }
+    });
+};
+
+/**
+ * Reset unread messages counter
+ *
+ * @memberOf Chats
+ * @param {String} userId the id of the user to reset
+ */
+Chat.prototype.resetCounterForUser = function(userId) {
+    Chats.update({
+        _id: this._id,
+        'counter.user_id': userId
+    }, {
+        $set: {
+            'counter.$.unread_count': 0
+        }
+    });
+};
+
+/**
+ * Remove a user from the counter array
+ *
+ * @memberOf Chats
+ * @param {String} userId the id of the user that needs to be removed
+ */
+Chat.prototype.removeUserFromCounter = function(userId) {
+    Chats.update({
+        _id: this._id,
+        'counter.user_id': userId
+    }, {
+        $pull: {counter: {user_id: userId}}
+    });
 };
 
 /**

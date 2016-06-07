@@ -18,6 +18,17 @@ Partup.schemas.entities.chat = new SimpleSchema([chatBaseSchema, {
         type: String,
         regEx: SimpleSchema.RegEx.Id
     },
+    counter: {
+        type: [Object]
+    },
+    'counter.user_id': {
+        type: String,
+        regEx: SimpleSchema.RegEx.Id
+    },
+    'counter.unread_count': {
+        type: Number,
+        defaultValue: 0
+    },
     created_at: {
         type: Date,
         defaultValue: new Date()

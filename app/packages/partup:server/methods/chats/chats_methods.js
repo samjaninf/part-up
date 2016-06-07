@@ -15,7 +15,8 @@ Meteor.methods({
                 _id: Random.id(),
                 created_at: new Date(),
                 started_typing: [],
-                updated_at: new Date()
+                updated_at: new Date(),
+                counter: []
             };
 
             Chats.insert(chat);

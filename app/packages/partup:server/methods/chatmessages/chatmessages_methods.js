@@ -8,7 +8,11 @@ Meteor.methods({
         check(fields, Partup.schemas.forms.chatMessage);
 
         var user = Meteor.user();
-        if (!user) throw new Meteor.Error(401, 'unauthorized');
+
+        // Check if message is for a network, and if the user is member of the network
+        var network = Networks.findOne({chat_id: fields.chat_id});
+
+        if (!user || (network && !network.hasMember(user._id))) throw new Meteor.Error(401, 'unauthorized');
 
         try {
             var chatMessage = {

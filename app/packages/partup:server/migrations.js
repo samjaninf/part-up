@@ -767,7 +767,8 @@ Migrations.add({
             if (!network.chat_id) return;
             // Add the users to the counter
             var chat = Chats.findOneOrFail(network.chat_id);
-            network.uppers.forEach(function(upperId) {
+            var uppers = network.uppers || [];
+            uppers.forEach(function(upperId) {
                 chat.addUserToCounter(upperId);
             });
         });

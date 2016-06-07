@@ -7,6 +7,16 @@ var Chat = function(document) {
     _.extend(this, document);
 };
 
+Chat.prototype.unreadCount = function() {
+    var countObject = _.find(this.counter || [], {user_id: Meteor.userId()}) || {};
+    return countObject.unread_count || 0;
+};
+
+Chat.prototype.hasUnreadMessages = function() {
+    var countObject = _.find(this.counter || [], {user_id: Meteor.userId()}) || {};
+    return !!countObject.unread_count;
+};
+
 /**
  * Set a user as typing
  *

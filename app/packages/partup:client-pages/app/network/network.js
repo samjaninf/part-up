@@ -38,6 +38,10 @@ Template.app_network.helpers({
             network: function() {
                 return network;
             },
+            unreadChatMessages: function() {
+                if (!network.chat_id) return false;
+                return Chats.findOne({_id: network.chat_id}).hasUnreadMessages();
+            },
             isInvitePending: function() {
                 var user = Meteor.user();
                 if (!user || !user.pending_networks) return false;

@@ -1,29 +1,31 @@
-Template.ChatNotification.onCreated(function() {
-
-});
 Template.ChatNotification.helpers({
     notificationName: function() {
         return 'notification_' + this.notification.type;
     },
+    created_at: function() {
+        var template = Template.instance();
+        var chat = template.data.chat;
+        var chatId = chat._id;
+        var message = ChatMessages.findOne({chat_id: chatId});
+        return message.created_at;
+    },
     data: function() {
         var template = Template.instance();
-        var message = template.data.message;
-        var chatId = message.chat_id;
+        var chat = template.data.chat;
+        var chatId = chat._id;
+        var message = ChatMessages.findOne({chat_id: chatId});
         return {
             message: function() {
                 return message;
             },
-            chat_id: function() {
-                return chatId;
+            creator: function() {
+                return Meteor.users.findOne(message.creator_id);
+            },
+            chat: function() {
+                return chat;
             },
             network: function() {
                 return Networks.findOne({chat_id: chatId});
-            },
-            creator: function() {
-                return Meteor.users.findOne({_id: message.creator_id});
-            },
-            notificationCount: function() {
-                return Chats.findOne({_id: chatId}).getUnreadCountForUser(Meteor.userId());
             }
         };
     }

@@ -1,7 +1,7 @@
 var _now = new ReactiveVar(new Date());
 Meteor.setInterval(function() {
     _now.set(new Date());
-}, 500);
+}, 1000);
 
 /**
  * Current date (reactive)

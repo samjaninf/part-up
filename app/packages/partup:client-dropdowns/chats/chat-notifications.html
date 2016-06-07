@@ -1,15 +1,15 @@
 <template name="DropdownChatNotifications">
     <button class="pu-button pu-button-header pu-button-header-desktop pu-button-header-nostripe" data-toggle-menu="chat-notifications">
         <!-- bell icon -->
-        <i class="picon-chat pu-badge {{#if totalNewNotifications.count }}pu-badge-active{{/if}}"></i>
+        <i class="picon-chat pu-badge {{#unless data.allMessagesAreSeen chats }}pu-badge-active{{/unless}}"></i>
 
         {{ label }}
     </button>
     <div class="pu-dropdown pu-dropdown-notifications {{#if menuOpen}}pu-dropdown-active{{/if}} pu-dropdown-notifications-nobutton" data-clickoutside-close>
         <ul data-preventscroll>
-            {{#each notifications.chatMessages}}
-                <li class="pu-notification {{#if isSeenByUpper currentUserId }}pu-notification-viewed{{/if}} {{#if isReadByUpper currentUserId }}pu-notification-clicked{{/if}}" data-notification="{{ _id }}">
-                    {{> ChatNotification message=. }}
+            {{#each data.chats}}
+                <li class="pu-notification {{#if messagesHaveBeenSeen }}pu-notification-viewed{{/if}} {{#if messagesHaveBeenRead}}pu-notification-clicked{{/if}}" data-notification="{{ _id }}">
+                    {{> ChatNotification chat=. }}
                 </li>
             {{else}}
                 <li class="pu-notification pu-notification-empty">

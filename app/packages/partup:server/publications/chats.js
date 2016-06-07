@@ -30,7 +30,12 @@ Meteor.publishComposite('chats.for_loggedin_user', function(parameters, options)
                 },{
                     find: function(chat) {
                         return ChatMessages.find({chat_id: chat._id}, {sort: {created_at: -1}, limit: 1});
-                    }
+                    },
+                    children: [
+                        {find: function(chatMessage) {
+                            return Meteor.users.find(chatMessage.creator_id);
+                        }}
+                    ]
                 },{
                     find: function(chat) {
                         return Networks.find({chat_id: chat._id}, {fields: {name: 1, slug: 1, chat_id: 1, image: 1, admins: 1}, limit: 1});

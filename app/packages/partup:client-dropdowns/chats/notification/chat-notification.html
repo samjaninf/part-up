@@ -4,7 +4,7 @@
             style="background-image: url('{{ partupImageUrl id=data.network.image }}');">
         </figure>
         <article>
-            <p>{{ data.network.name }} <!--({{data.notificationCount}})--><span>{{partupDateNotification data.message.created_at}}</span></p>
+            <p>{{ data.network.name }} {{#if data.chat.hasUnreadMessages}}({{data.chat.unreadCount}}){{/if}} <span>{{ partupDateNotification created_at }}</span></p>
             <time>{{ data.creator.profile.name }}: {{ data.message.content }}</time>
         </article>
     </a>

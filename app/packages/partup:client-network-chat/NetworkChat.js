@@ -13,25 +13,36 @@ Template.NetworkChat.onCreated(function() {
     template.initialized = new ReactiveVar(false);
     template.rendered = new ReactiveVar(false);
 
-    var initializeChat = function() {
+    var initialize = function(chat_id) {
+        startMessageCollector(chat_id);
+        resetUnreadMessagesIndicator(chat_id);
+    };
+
+    var resetUnreadMessagesIndicator = function(chat_id) {
+        Meteor.setTimeout(function() {
+            Meteor.call('chats.reset_counter', chat_id);
+        }, 2000);
+    };
+
+    var subscriptionReadyHandler = function() {
         var network = Networks.findOne({slug: networkSlug});
         var chat = Chats.findOne({_id: network.chat_id || 0});
         if (chat) {
             chatId = chat._id;
             template.initialized.set(true);
-            messageCollector(chat._id);
+            initialize(chat._id);
         } else {
             Meteor.call('networks.chat_insert', networkSlug, {}, function(err, chat_id) {
                 if (err) return Partup.client.notify.error('Error initializing tribe chat');
                 chatId = chat_id;
                 template.initialized.set(true);
                 Partup.client.notify.success('Tribe chat initialized');
-                messageCollector(chat_id);
+                initialize(chat_id);
             });
         }
     };
 
-    var chatSubscription = template.subscribe('networks.one.chat', networkSlug, {limit: template.LIMIT}, {onReady: initializeChat});
+    var chatSubscription = template.subscribe('networks.one.chat', networkSlug, {limit: template.LIMIT}, {onReady: subscriptionReadyHandler});
     template.limitReached = new ReactiveVar(false);
     template.messageLimit = new ReactiveVar(template.LIMIT, function(oldLimit, newLimit) {
         if (oldLimit !== newLimit) {
@@ -279,7 +290,7 @@ Template.NetworkChat.onCreated(function() {
     // message storage
     var localCollection = [];
     template.messages = new ReactiveVar([]);
-    var messageCollector = function(chat_id) {
+    var startMessageCollector = function(chat_id) {
         template.autorun(function() {
             var searchQuery = template.searchQuery.get();
             if (template.searching) return;

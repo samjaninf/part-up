@@ -2,27 +2,12 @@ Template.DropdownChatNotifications.onCreated(function() {
     var template = this;
     template.dropdownOpen = new ReactiveVar(false, function(a, b) {
         if (a === b || b) return;
-
-        // Meteor.call('notifications.all_read');
+        var messages = ChatMessages.find({seen_by: {$nin: [Meteor.userId()]}}).fetch();
+        messages.forEach(function(message) {
+            Meteor.call('chatmessages.seen', message._id);
+        });
     });
-
-    //Update the number of notifications in the title
-    // template.autorun(function() {
-    //     var numberOfNotifications = Notifications.findForUser(Meteor.user(), {'new': true}).count();
-    //     if (numberOfNotifications > 0) {
-    //         document.title = '(' + numberOfNotifications + ')' + ' Part-up';
-    //     } else {
-    //         document.title = 'Part-up';
-    //     }
-    // });
-    template.limit = new ReactiveVar(10);
     template.subscribe('chats.for_loggedin_user', {networks: true}, {});
-    template.resetLimit = function() {
-        Meteor.setTimeout(function() {
-            template.limit.set(10);
-            $(template.find('[data-clickoutside-close] ul')).scrollTop(0);
-        }, 200);
-    };
 });
 Template.DropdownChatNotifications.onRendered(function() {
     var template = this;
@@ -31,13 +16,11 @@ Template.DropdownChatNotifications.onRendered(function() {
         template.dropdownOpen.set(false);
         next();
     });
-    Partup.client.elements.onClickOutside([template.find('[data-clickoutside-close]')], template.resetLimit);
 });
 
 Template.DropdownChatNotifications.onDestroyed(function() {
     var template = this;
     ClientDropdowns.removeOutsideDropdownClickHandler(template);
-    Partup.client.elements.offClickOutside(template.resetLimit);
 });
 
 Template.DropdownChatNotifications.events({
@@ -45,13 +28,6 @@ Template.DropdownChatNotifications.events({
     'click [data-toggle-menu]': ClientDropdowns.dropdownClickHandler,
     'click [data-notification]': function(event, template) {
         template.dropdownOpen.set(false);
-        // var messageId = $(event.currentTarget).data('notification');
-        // Meteor.call('chatmessages.seen', messageId);
-    },
-    'click [data-loadmore]': function(event, template) {
-        event.preventDefault();
-        template.limit.set(template.limit.get() + 10);
-        template.subscribe('chats.for_loggedin_user', {networks: true}, {});
     }
 });
 
@@ -59,28 +35,33 @@ Template.DropdownChatNotifications.helpers({
     menuOpen: function() {
         return Template.instance().dropdownOpen.get();
     },
-    notifications: function() {
-        var limit = Template.instance().limit.get();
-        // var parameters = {sort: {created_at: -1}, limit: limit};
-        var messages = Chats.find({}, {fields: {_id: 1}}).fetch().map(function(item) {
-            return ChatMessages.findOne({chat_id: item._id});
-        }).filter(function(item) {
-            return !!item;
-        });
-        // var totalNotifications = ChatMessages.find().count();
-        return {
-            chatMessages: function() {
-                return messages;
-            }
-            // count: function() {
-            //     return totalNotifications;
-            // },
-            // canLoadMore: function() {
-            //     return limit <= totalNotifications;
-            // }
-        };
+    reactiveDropdownOpen: function() {
+        return Template.instance().dropdownOpen;
     },
-    totalNewNotifications: function() {
-        return Notifications.findForUser(Meteor.user(), {'new': true});
+    data: function() {
+        var userId = Meteor.userId();
+        var chats = Chats.find({}, {fields: {_id: 1, counter: 1}}).fetch().map(function(chat) {
+            var message = ChatMessages.findOne({chat_id: chat._id});
+            if (message) {
+                chat.hasMessages = true;
+                chat.messagesHaveBeenSeen = message.isSeenByUpper(userId);
+                chat.messagesHaveBeenRead = !chat.hasUnreadMessages();
+            }
+            return chat;
+        }).filter(function(chat) {
+            return !!chat.hasMessages;
+        });
+        return {
+            chats: function() {
+                return chats;
+            },
+            allMessagesAreSeen: function() {
+                var seen = true;
+                chats.forEach(function(chat) {
+                    if (!chat.messagesHaveBeenSeen) seen = false;
+                });
+                return seen;
+            }
+        };
     }
 });

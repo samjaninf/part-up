@@ -62,20 +62,12 @@ Chat.prototype.addUserToCounter = function(userId) {
  * @param {String} creatorUserId the id of the creator of a message
  */
 Chat.prototype.incrementCounter = function(creatorUserId) {
-    Chats.update({
-        _id: this._id,
-        counter: {
-            $elemMatch: {
-                user_id: {
-                    $ne: creatorUserId
-                }
-            }
-        }
-    }, {
-        $inc: {
-            'counter.unread_count': 1
-        }
+    var counter = Chats.findOneOrFail(this._id).counter;
+    counter.forEach(function(counter) {
+        if (counter.user_id === creatorUserId) return;
+        counter.unread_count++
     });
+    Chats.update(this._id, {$set: {counter: counter}});
 };
 
 /**

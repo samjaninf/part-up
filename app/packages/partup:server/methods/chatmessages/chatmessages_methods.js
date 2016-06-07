@@ -29,6 +29,10 @@ Meteor.methods({
             // Insert message
             ChatMessages.insert(chatMessage);
 
+            // Increase counters
+            var chat = Chats.findOneOrFail(fields.chat_id);
+            chat.incrementCounter(user._id);
+
             // Update the chat
             Chats.update(fields.chat_id, {$set: {updated_at: new Date()}});
 

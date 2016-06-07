@@ -758,6 +758,33 @@ Migrations.add({
     }
 });
 
+Migrations.add({
+    version: 31,
+    name: 'Set counter on all existing chats',
+    up: function() {
+        // Networks go first
+        Networks.find().fetch().forEach(function(network) {
+            if (!network.chat_id) return;
+            // Add the users to the counter
+            var chat = Chats.findOneOrFail(network.chat_id);
+            network.uppers.forEach(function(upperId) {
+                chat.addUserToCounter(upperId);
+            });
+        });
+        // And now the users
+        Meteor.users.find().forEach(function(user) {
+            if (!user.chats || user.chats.length < 1) return;
+            user.chats.forEach(function(chatId) {
+                var chat = Chats.findOneOrFail(chatId);
+                chat.addUserToCounter(user._id);
+            })
+        });
+    },
+    down: function() {
+        //
+    }
+});
+
 Meteor.startup(function() {
-    Migrations.migrateTo(30);
+    Migrations.migrateTo(31);
 });

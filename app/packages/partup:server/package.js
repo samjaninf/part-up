@@ -30,7 +30,8 @@ Package.onUse(function(api) {
         'random',
         'peerlibrary:aws-sdk',
         'simple:rest',
-        'simple:json-routes'
+        'simple:json-routes',
+        'anonyfox:scrape'
     ], ['server']);
 
     api.addFiles([
@@ -112,6 +113,7 @@ Package.onUse(function(api) {
         'services/partup_popularity_calculator_service.js',
         'services/swarms_service.js',
         'services/networks_service.js',
+        'services/scrape_service.js',
         'seo/routes.js',
         'event_handlers/any_handler.js',
         'event_handlers/partups/partups_handler.js',
@@ -138,6 +140,7 @@ Package.onUse(function(api) {
         'event_handlers/invites/networks_invites_handler.js',
         'event_handlers/notifications/notifications_handler.js',
         'event_handlers/swarms/swarms_handler.js',
+        'event_handlers/chats/chatmessages_handler.js',
         'fixtures/users.js',
         'fixtures/partups.js',
         'fixtures/updates.js',

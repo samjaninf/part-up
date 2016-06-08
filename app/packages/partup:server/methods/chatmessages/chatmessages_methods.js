@@ -7,6 +7,8 @@ Meteor.methods({
     'chatmessages.insert': function(fields) {
         check(fields, Partup.schemas.forms.chatMessage);
 
+        this.unblock();
+
         var user = Meteor.user();
 
         // Check if message is for a network, and if the user is member of the network
@@ -28,6 +30,8 @@ Meteor.methods({
 
             // Insert message
             ChatMessages.insert(chatMessage);
+
+            Event.emit('chats.messages.inserted', user._id, chatMessage._id, chatMessage.content);
 
             // Increase counters
             var chat = Chats.findOneOrFail(fields.chat_id);

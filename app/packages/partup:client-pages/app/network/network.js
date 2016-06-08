@@ -63,6 +63,9 @@ Template.app_network.helpers({
         return {
             shrinkHeader: function() {
                 return Partup.client.scroll.pos.get() > 100;
+            },
+            currentPageIsChat: function() {
+                return Router.current().route.getName() === 'network-chat';
             }
         };
     }

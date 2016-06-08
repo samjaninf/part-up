@@ -1,6 +1,6 @@
 <template name="app_network">
 
-    <article class="pu-page pu-page-tinted pu-page-network">
+    <article class="pu-page pu-page-tinted pu-page-network {{#if state.currentPageIsChat}}pu-page-chat{{/if}}">
         <header class="pu-sub-pageheader pu-sub-pageheader-layered {{# if state.shrinkHeader }}pu-sub-pageheader-layered-shrinked{{/ if }}">
             <!-- profile -->
             <section class="pu-coverheader">

@@ -40,17 +40,21 @@ Template.DropdownChatNotifications.helpers({
     },
     data: function() {
         var userId = Meteor.userId();
-        var chats = Chats.find({}, {fields: {_id: 1, counter: 1}}).fetch().map(function(chat) {
-            var message = ChatMessages.findOne({chat_id: chat._id});
-            if (message) {
-                chat.hasMessages = true;
-                chat.messagesHaveBeenSeen = message.isSeenByUpper(userId);
-                chat.messagesHaveBeenRead = !chat.hasUnreadMessages();
-            }
-            return chat;
-        }).filter(function(chat) {
-            return !!chat.hasMessages;
-        });
+        var chats = Chats.find({}, {fields: {_id: 1, counter: 1}, sort: {updated_at: -1}})
+            .fetch()
+            .map(function(chat) {
+                var message = ChatMessages.findOne({chat_id: chat._id});
+                if (message) {
+                    chat.hasMessages = true;
+                    chat.messagesHaveBeenSeen = message.isSeenByUpper(userId);
+                    chat.messagesHaveBeenRead = !chat.hasUnreadMessages();
+                }
+                return chat;
+            })
+            .filter(function(chat) {
+                return !!chat.hasMessages;
+            });
+
         return {
             chats: function() {
                 return chats;

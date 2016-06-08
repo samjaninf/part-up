@@ -40,7 +40,9 @@ Template.app_network.helpers({
             },
             unreadChatMessages: function() {
                 if (!network.chat_id) return false;
-                return Chats.findOne({_id: network.chat_id}).hasUnreadMessages();
+                var chat = Chats.findOne({_id: network.chat_id});
+                if (!chat) return false;
+                return chat.hasUnreadMessages();
             },
             isInvitePending: function() {
                 var user = Meteor.user();

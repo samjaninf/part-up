@@ -6,7 +6,7 @@ Template.NetworkChat.onCreated(function() {
     template.searching = false;
     template.MAX_TYPING_PAUSE = 5000; // 5s
     template.LIMIT = 100;
-    template.oldestNewMessage = new ReactiveVar(undefined);
+    template.oldestUnreadMessage = new ReactiveVar(undefined);
     template.overscroll = new ReactiveVar(false);
     template.underscroll = new ReactiveVar(false);
     template.stickyAvatar = new ReactiveVar(undefined);
@@ -15,34 +15,32 @@ Template.NetworkChat.onCreated(function() {
 
     var initialize = function(chat_id) {
         startMessageCollector(chat_id);
-        resetUnreadMessagesIndicator(chat_id);
+        template.initialized.set(true);
     };
 
-    var resetUnreadMessagesIndicator = function(chat_id) {
-        Meteor.setTimeout(function() {
-            Meteor.call('chats.reset_counter', chat_id);
-        }, 2000);
+    var resetUnreadMessagesIndicatorBadge = function() {
+        Meteor.call('chats.reset_counter', chatId);
     };
 
-    var subscriptionReadyHandler = function() {
+    var chatSubscriptionHandler = function() {
         var network = Networks.findOne({slug: networkSlug});
         var chat = Chats.findOne({_id: network.chat_id || 0});
         if (chat) {
+            // if a chat is available, continue
             chatId = chat._id;
-            template.initialized.set(true);
             initialize(chat._id);
         } else {
+            // if a chat is not available, create one
             Meteor.call('networks.chat_insert', networkSlug, {}, function(err, chat_id) {
                 if (err) return Partup.client.notify.error('Error initializing tribe chat');
                 chatId = chat_id;
-                template.initialized.set(true);
-                Partup.client.notify.success('Tribe chat initialized');
                 initialize(chat_id);
+                Partup.client.notify.success('Tribe chat initialized');
             });
         }
     };
 
-    var chatSubscription = template.subscribe('networks.one.chat', networkSlug, {limit: template.LIMIT}, {onReady: subscriptionReadyHandler});
+    var chatSubscription = template.subscribe('networks.one.chat', networkSlug, {limit: template.LIMIT}, {onReady: chatSubscriptionHandler});
     template.limitReached = new ReactiveVar(false);
     template.messageLimit = new ReactiveVar(template.LIMIT, function(oldLimit, newLimit) {
         if (oldLimit !== newLimit) {
@@ -136,11 +134,10 @@ Template.NetworkChat.onCreated(function() {
         });
     };
 
-    template.rememberOldestNewMessage = function(oldestNewMessage) {
-        if (!template.focussed && oldestNewMessage) {
-            if (!template.oldestNewMessage.get()) template.oldestNewMessage.set(oldestNewMessage);
+    template.rememberOldestUnreadMessage = function(oldestUnreadMessage) {
+        if (!template.oldestUnreadMessage.get()) {
+            template.oldestUnreadMessage.set(oldestUnreadMessage);
         }
-        template.ajustScrollOffset();
     };
 
     template.instantlyScrollToBottom = function() {
@@ -176,16 +173,16 @@ Template.NetworkChat.onCreated(function() {
     };
 
     template.focussed = true;
-    template.focusHandler = function(event) {
+    template.windowFocusHandler = function(event) {
         template.focussed = true;
         template.stickyNewMessagesDividerHandler(true);
         $('[data-messageinput]').focus();
     };
-    template.blurHandler = function(event) {
+    template.windowBlurHandler = function(event) {
         template.focussed = false;
     };
-    $(window).on('focus', template.focusHandler);
-    $(window).on('blur', template.blurHandler);
+    $(window).on('focus', template.windowFocusHandler);
+    $(window).on('blur', template.windowBlurHandler);
 
     template.hideTimeout;
     template.hideLine = function() {
@@ -204,15 +201,30 @@ Template.NetworkChat.onCreated(function() {
         if (scrollElement.scrollTop() >= scrollDest) {
             dividerElement.addClass('hide');
 
-            // remove the oldestNewMessage when the divider has faded out
+            // remove the oldestUnreadMessage when the divider has faded out
             Meteor.setTimeout(function() {
-                template.oldestNewMessage.set(undefined);
+                template.oldestUnreadMessage.set(undefined);
+                resetUnreadMessagesIndicatorBadge();
             }, 250);
         }
     };
     template.delayedHideLine = function(delay) {
         if (template.hideTimeout) clearTimeout(template.hideTimeout);
         template.hideTimeout = setTimeout(template.hideLine, delay);
+    };
+
+    template.newMessagesDividerHandler = function(messages) {
+        var chat = Chats.findOne(chatId);
+        var counter = lodash.find(chat.counter, {user_id: Meteor.userId()});
+
+        var unreadMessagesCount = counter ? counter.unread_count : 0;
+
+        var oldestUnreadMessage = messages[messages.length - (unreadMessagesCount + 1)];
+        if (!oldestUnreadMessage) return;
+
+        if (!template.focussed || unreadMessagesCount > 0) {
+            template.rememberOldestUnreadMessage(oldestUnreadMessage);
+        }
     };
 
     template.stickyNewMessagesDividerHandler = function(hideWhenViewed) {
@@ -272,37 +284,60 @@ Template.NetworkChat.onCreated(function() {
 
     // search
     template.searchQuery = new ReactiveVar('', function(oldValue, newValue) {
-        if (oldValue !== newValue) {
-            template.searching = (typeof newValue === 'string') && newValue.length;
-            if (!template.searching) return;
-            var limit = template.LIMIT;
-            Meteor.call('chatmessages.search_in_network', networkSlug, newValue, {limit: limit}, function(err, res) {
-                template.messages.set(res);
-                _.defer(template.instantlyScrollToBottom);
-            });
-        }
+        if (oldValue === newValue) return;
+
+        template.searching = (typeof newValue === 'string') && newValue.length;
+        if (!template.searching) return;
+
+        Meteor.call('chatmessages.search_in_network', networkSlug, newValue, {limit: template.LIMIT}, function(err, res) {
+            template.messages.set(res);
+            _.defer(template.instantlyScrollToBottom);
+        });
     });
     var setSearchQuery = function(query) {
         template.searchQuery.set(query);
     };
     template.throttledSetSearchQuery = _.throttle(setSearchQuery, 500, {trailing: true});
 
-    // message storage
-    var localCollection = [];
+    // messages
+    var localChatMessagesCollection = [];
     template.messages = new ReactiveVar([]);
     var startMessageCollector = function(chat_id) {
-        template.autorun(function() {
+
+        // gets chatmessages and stores them in localChatMessagesCollection
+        template.autorun(function(computation) {
+            // run this autorun when the searchquery changes
             var searchQuery = template.searchQuery.get();
+
+            // don't do anything if the user is searching
             if (template.searching) return;
+
             var limit = template.messageLimit.get();
-            var messages = ChatMessages.find({chat_id: chat_id}, {limit: limit, sort: {created_at: 1}}).fetch();
-            localCollection = localCollection.concat(messages);
-            localCollection = mout.array.unique(localCollection, function(message1, message2) {
+            var messages = ChatMessages
+                .find({chat_id: chat_id}, {limit: limit, sort: {created_at: 1}})
+                .fetch();
+
+            // store messages locally and filter out duplicates
+            localChatMessagesCollection = localChatMessagesCollection.concat(messages);
+            localChatMessagesCollection = mout.array.unique(localChatMessagesCollection, function(message1, message2) {
                 return message1._id === message2._id;
             });
-            var lastMessage = localCollection[localCollection.length - 1];
-            if (lastMessage) template.rememberOldestNewMessage(lastMessage);
-            template.messages.set(localCollection);
+
+            // wrapped in nonreactive to prevent unnecessary autorun
+            Tracker.nonreactive(function() {
+                template.newMessagesDividerHandler(localChatMessagesCollection);
+                template.messages.set(localChatMessagesCollection);
+                template.ajustScrollOffset();
+            });
+        });
+
+        // marks all messages as seen (not read) in current chat
+        template.autorun(function() {
+            ChatMessages
+                .find({seen_by: {$nin: [Meteor.userId()]}})
+                .forEach(function(message) {
+                    Meteor.call('chatmessages.seen', message._id);
+                });
         });
     };
 });
@@ -320,9 +355,8 @@ Template.NetworkChat.onRendered(function() {
 
 Template.NetworkChat.onDestroyed(function() {
     var template = this;
-    $(window).off('focus', template.focusHandler);
-    $(window).off('blur', template.blurHandler);
-    Meteor.clearInterval(template.chatTimer);
+    $(window).off('focus', template.windowFocusHandler);
+    $(window).off('blur', template.windowBlurHandler);
     Partup.client.chat.destroy();
 });
 
@@ -345,8 +379,8 @@ Template.NetworkChat.helpers({
             },
             messages: function() {
                 var messages = template.messages.get();
-                var oldestNewMessage = template.oldestNewMessage.get();
-                var dateBorder = oldestNewMessage ? oldestNewMessage.created_at : new Date();
+                var oldestUnreadMessage = template.oldestUnreadMessage.get();
+                var dateBorder = oldestUnreadMessage ? oldestUnreadMessage.created_at : new Date();
                 return {
                     old: function() {
                         return _.filter(messages, function(message) {

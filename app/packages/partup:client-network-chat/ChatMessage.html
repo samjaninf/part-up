@@ -1,7 +1,7 @@
 <template name="ChatMessage">
-    <div class="pu-chatbox {{#if partupEquals data.creator._id currentUserId }}pu-chatbox-send{{else}}pu-chatbox-receive{{/if}} pu-chatbox-avatar-top" data-message-user-id="{{data.creator._id}}" data-message-user-image-id="{{ data.creator.profile.image }}">
-        <a href="{{pathFor route='profile' _id=data.creator._id}}">
-            <figure class="pu-avatar" data-hovercontainer="HoverContainer_upper" data-hovercontainer-context="{{data.creator._id}}" style="background-image:url('{{ partupImageUrl id=data.creator.profile.image store='360x360'}}');"></figure>
+    <div class="pu-chatbox {{#if partupEquals data.messageCreator._id currentUserId }}pu-chatbox-send{{else}}pu-chatbox-receive{{/if}} pu-chatbox-avatar-top" data-message-user-id="{{data.messageCreator._id}}" data-message-user-image-id="{{ data.messageCreator.profile.image }}">
+        <a href="{{pathFor route='profile' _id=data.messageCreator._id}}">
+            <figure class="pu-avatar" data-hovercontainer="HoverContainer_upper" data-hovercontainer-context="{{data.messageCreator._id}}" style="background-image:url('{{ partupImageUrl id=data.messageCreator.profile.image store='360x360'}}');"></figure>
         </a>
         <ul class="pu-list">
             {{#each data.messages}}

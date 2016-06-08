@@ -2,8 +2,7 @@ Template.DropdownChatNotifications.onCreated(function() {
     var template = this;
     template.dropdownOpen = new ReactiveVar(false, function(a, b) {
         if (a === b || b) return;
-        var messages = ChatMessages.find({seen_by: {$nin: [Meteor.userId()]}}).fetch();
-        messages.forEach(function(message) {
+        var messages = ChatMessages.find({seen_by: {$nin: [Meteor.userId()]}}).forEach(function(message) {
             Meteor.call('chatmessages.seen', message._id);
         });
     });

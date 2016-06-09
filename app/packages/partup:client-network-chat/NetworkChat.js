@@ -12,6 +12,9 @@ Template.NetworkChat.onCreated(function() {
     template.stickyAvatar = new ReactiveVar(undefined);
     template.initialized = new ReactiveVar(false);
     template.rendered = new ReactiveVar(false);
+    template.sendingMessage = new ReactiveVar(false);
+    template.userIsAtScrollBottom = true;
+    template.focussed = true;
 
     var initialize = function(chat_id) {
         startMessageCollector(chat_id);
@@ -20,6 +23,14 @@ Template.NetworkChat.onCreated(function() {
 
     var resetUnreadMessagesIndicatorBadge = function() {
         Meteor.call('chats.reset_counter', chatId);
+    };
+
+    var resetIndicatorBadgeIfMessageDividerIsOnScreen = function() {
+        Meteor.setTimeout(function() {
+            if (!template.dividerLineIsVisible() || !template.focussed) return;
+            resetUnreadMessagesIndicatorBadge();
+            template.hideLine();
+        }, 4000);
     };
 
     var chatSubscriptionHandler = function() {
@@ -105,6 +116,12 @@ Template.NetworkChat.onCreated(function() {
 
     template.sendMessage = function(message) {
         if (!message) return false;
+
+        var sendingMessage = template.sendingMessage.get();
+        if (sendingMessage) return;
+
+        template.sendingMessage.set(true);
+
         var scroller = template.scrollContainer;
 
         var currentPosition = scroller.scrollTop;
@@ -113,6 +130,7 @@ Template.NetworkChat.onCreated(function() {
         var network = Networks.findOne({slug: networkSlug});
         var userId = Meteor.userId();
         if (!network.hasMember(userId)) {
+            template.sendingMessage.set(false);
             return Partup.client.notify.error(TAPi18n.__('pages-app-network-chat-send-message-permission-denied'));
         }
 
@@ -120,6 +138,7 @@ Template.NetworkChat.onCreated(function() {
             chat_id: chatId,
             content: Partup.client.strings.emojify(message)
         }, function(err, res) {
+            template.sendingMessage.set(false);
             if (err) return Partup.client.notify.error('Error sending message');
             template.resetMessageInput();
             template.resetTypingState();
@@ -152,9 +171,20 @@ Template.NetworkChat.onCreated(function() {
         var pos = element.scrollTop;
         var height = element.scrollHeight - element.clientHeight;
         _.defer(function() {
-            if (pos === height) template.instantlyScrollToBottom();
+            if (pos === height || template.userIsAtScrollBottom) template.instantlyScrollToBottom();
             template.stickyNewMessagesDividerHandler();
         });
+    };
+
+    template.scrollBottomCheck = function() {
+        var element = template.scrollContainer[0];
+        var pos = element.scrollTop;
+        var height = element.scrollHeight - element.clientHeight;
+        if (pos === height) {
+            template.userIsAtScrollBottom = true;
+        } else {
+            template.userIsAtScrollBottom = false;
+        }
     };
 
     template.scrollToNewMessages = function() {
@@ -172,7 +202,6 @@ Template.NetworkChat.onCreated(function() {
         });
     };
 
-    template.focussed = true;
     template.windowFocusHandler = function(event) {
         template.focussed = true;
         template.stickyNewMessagesDividerHandler(true);
@@ -184,6 +213,15 @@ Template.NetworkChat.onCreated(function() {
     $(window).on('focus', template.windowFocusHandler);
     $(window).on('blur', template.windowBlurHandler);
 
+    template.dividerLineIsVisible = function() {
+        var dividerElement = $('[data-new-messages-divider]');
+        if (!dividerElement[0]) return false; // maybe it's already hidden, I dunno
+
+        var scrollElement = template.scrollContainer;
+        var scrollDest = dividerElement[0].offsetTop - (scrollElement[0].clientHeight - (dividerElement[0].clientHeight * 1.5));
+        return scrollElement.scrollTop() >= scrollDest;
+    };
+
     template.hideTimeout;
     template.hideLine = function() {
         if (template.hideTimeout) clearTimeout(template.hideTimeout);
@@ -192,21 +230,17 @@ Template.NetworkChat.onCreated(function() {
         var underscroll = template.underscroll.get();
         if (overscroll || underscroll) return;
 
-        var dividerElement = $('[data-new-messages-divider]');
-        if (!dividerElement[0]) return; // maybe it's already hidden, I dunno
-
         // check if the divider line is visible for the user, then hide it
-        var scrollElement = template.scrollContainer;
-        var scrollDest = dividerElement[0].offsetTop - (scrollElement[0].clientHeight - (dividerElement[0].clientHeight * 1.5));
-        if (scrollElement.scrollTop() >= scrollDest) {
-            dividerElement.addClass('hide');
+        if (!template.dividerLineIsVisible()) return;
 
-            // remove the oldestUnreadMessage when the divider has faded out
-            Meteor.setTimeout(function() {
-                template.oldestUnreadMessage.set(undefined);
-                resetUnreadMessagesIndicatorBadge();
-            }, 250);
-        }
+        var dividerElement = $('[data-new-messages-divider]');
+        dividerElement.addClass('hide');
+
+        // remove the oldestUnreadMessage when the divider has faded out
+        Meteor.setTimeout(function() {
+            template.oldestUnreadMessage.set(undefined);
+            resetUnreadMessagesIndicatorBadge();
+        }, 250);
     };
     template.delayedHideLine = function(delay) {
         if (template.hideTimeout) clearTimeout(template.hideTimeout);
@@ -215,16 +249,43 @@ Template.NetworkChat.onCreated(function() {
 
     template.newMessagesDividerHandler = function(messages) {
         var chat = Chats.findOne(chatId);
-        var counter = lodash.find(chat.counter, {user_id: Meteor.userId()});
+        var userId = Meteor.userId();
+        var counter = lodash.find(chat.counter, {user_id: userId});
 
+        // get the unread messages count
         var unreadMessagesCount = counter ? counter.unread_count : 0;
 
-        var oldestUnreadMessage = messages[messages.length - (unreadMessagesCount + 1)];
+        // stop if the user is not focussed or if there are no unread messages
+        if (template.focussed && unreadMessagesCount <= 0) return;
+
+        // returns the oldest unread message with n offset
+        // offset = 0 is oldest, offset = 1 is second oldest
+        var returnOldestUnreadMessageWithOffset = function(n) {
+            return messages[messages.length - ((unreadMessagesCount + 1) - n)];
+        };
+
+        var offset = 0;
+        var oldestUnreadMessage = returnOldestUnreadMessageWithOffset(offset);
+
+        // stop if there is no oldest unread message
         if (!oldestUnreadMessage) return;
 
-        if (!template.focussed || unreadMessagesCount > 0) {
-            template.rememberOldestUnreadMessage(oldestUnreadMessage);
+        // make sure the oldest unread message is not the current user's message
+        while (oldestUnreadMessage.creator_id === userId) {
+            offset++;
+            var newOldestMessage = returnOldestUnreadMessageWithOffset(offset);
+            if (!newOldestMessage) {
+                oldestUnreadMessage = undefined;
+                break;
+            }
+            oldestUnreadMessage = newOldestMessage;
+            if (offset == unreadMessagesCount) break;
         }
+
+        // again, stop if there is no oldest unread message
+        if (!oldestUnreadMessage) return;
+
+        template.rememberOldestUnreadMessage(oldestUnreadMessage);
     };
 
     template.stickyNewMessagesDividerHandler = function(hideWhenViewed) {
@@ -308,9 +369,11 @@ Template.NetworkChat.onCreated(function() {
         template.autorun(function(computation) {
             // run this autorun when the searchquery changes
             var searchQuery = template.searchQuery.get();
+            var sendingMessage = template.sendingMessage.get();
 
             // don't do anything if the user is searching
-            if (template.searching) return;
+            // or if a message is not processed yet (scraper)
+            if (template.searching || sendingMessage) return;
 
             var limit = template.messageLimit.get();
             var messages = ChatMessages
@@ -327,18 +390,19 @@ Template.NetworkChat.onCreated(function() {
             Tracker.nonreactive(function() {
                 template.newMessagesDividerHandler(localChatMessagesCollection);
                 template.messages.set(localChatMessagesCollection);
-                template.ajustScrollOffset();
             });
         });
 
         // marks all messages as seen (not read) in current chat
         template.autorun(function() {
             ChatMessages
-                .find({seen_by: {$nin: [Meteor.userId()]}})
+                .find({chat_id: chatId, seen_by: {$nin: [Meteor.userId()]}})
                 .forEach(function(message) {
                     Meteor.call('chatmessages.seen', message._id);
                 });
         });
+
+        resetIndicatorBadgeIfMessageDividerIsOnScreen();
     };
 });
 
@@ -381,6 +445,7 @@ Template.NetworkChat.helpers({
                 var messages = template.messages.get();
                 var oldestUnreadMessage = template.oldestUnreadMessage.get();
                 var dateBorder = oldestUnreadMessage ? oldestUnreadMessage.created_at : new Date();
+                template.ajustScrollOffset();
                 return {
                     old: function() {
                         return _.filter(messages, function(message) {
@@ -437,12 +502,21 @@ Template.NetworkChat.helpers({
             },
             reactiveQuery: function() {
                 return template.searchQuery;
+            },
+            sendingMessage: function() {
+                return template.sendingMessage.get();
+            },
+            inputDisabled: function() {
+                return template.sendingMessage.get() ? 'disabled' : '';
             }
         };
     }
 });
 Template.NetworkChat.events({
     'keydown [data-submit=return]': function(event, template) {
+        var sendingMessage = template.sendingMessage.get();
+        if (sendingMessage) event.preventDefault();
+
         // determine keycode (with cross browser compatibility)
         var pressedKey = event.which ? event.which : event.keyCode;
 
@@ -466,7 +540,11 @@ Template.NetworkChat.events({
         event.preventDefault();
         template.loadOlderMessages();
     },
+    'click [data-new-messages-divider]': function(event, template) {
+        template.hideLine();
+    },
     'scroll [data-reversed-scroller]': function(event, template) {
+        template.scrollBottomCheck();
         if (event.currentTarget.scrollTop < 200 && !template.loadingOlderMessages && !template.searching) {
             template.loadOlderMessages();
         }

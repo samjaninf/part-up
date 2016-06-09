@@ -15,8 +15,8 @@
                     <p class="pu-highlighttext">{{#with partupHighlight content }}{{{ partupAutolink . }}}{{/with}}</p>
                     {{#with preview_data }}
                         <a href="{{url}}" target="_blank" class="pu-linkpreview">
-                            <figure style="background-image: url('{{ image }}');" >
-                            </figure>
+                            {{#with image}}<figure style="background-image: url('{{ . }}');" >
+                            </figure>{{/with}}
                             <div class="pu-linkpreview-description">
                                 <p class="pu-sub-title">{{ title }}</p>
                                 <p class="pu-sub-intro">{{ description }}</p>

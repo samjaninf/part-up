@@ -66,12 +66,12 @@
                 <label class="pu-formfield">
                     <div class="pu-sub-tablecell-input">
                         <span class="pu-sub-input">
-                            <input data-submit="return" data-messageinput type="text" name="partup_name" placeholder="{{_ 'pages-app-network-chat-placeholder' }}" class="pu-input form-control" autocomplete="off">
+                            <input class="pu-input form-control {{#if state.sendingMessage}}pu-input-disabled{{/if}}" {{ inputDisabled }} data-submit="return" data-messageinput type="text" name="partup_name" placeholder="{{_ 'pages-app-network-chat-placeholder' }}" autocomplete="off">
                         </span>
                         <span class="pu-sub-error"></span>
                     </div>
                     <div class="pu-sub-tablecell-button">
-                        <button type="button" class="pu-button" data-send>
+                        <button type="button" class="pu-button {{#if state.sendingMessage}}pu-button-disabled{{/if}}" data-send>
                             <span>{{_ 'pages-app-network-chat-button-send' }}</span>
                         </button>
                     </div>

@@ -14,8 +14,9 @@ Event.on('chats.messages.inserted', function(userId, chatMessageId, content) {
             description: result.description,
             image: result.image,
             domain: result.domain,
-            language: result.lang
+            language: result.lang,
+            url: url[0]
         };
-        ChatMessages.update(chatMessageId, {$set: {data: data}});
+        ChatMessages.update(chatMessageId, {$set: {preview_data: data}});
     }
 });

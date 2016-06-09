@@ -13,16 +13,16 @@
                         <span class="pu-sub-chattime pu-sub-chattime-outside">{{ partupDateTime created_at }}</span>
                     {{/if}}
                     <p class="pu-highlighttext">{{#with partupHighlight content }}{{{ partupAutolink . }}}{{/with}}</p>
-                    {{#if preview}}
-                        <div class="pu-linkpreview">
-                            <figure style="background-image: url('http://www.nationsencyclopedia.com/photos/norway-climate-1715.jpg');" >
+                    {{#with preview_data }}
+                        <a href="{{url}}" target="_blank" class="pu-linkpreview">
+                            <figure style="background-image: url('{{ image }}');" >
                             </figure>
                             <div class="pu-linkpreview-description">
-                                <p class="pu-sub-title">Some lorem</p>
-                                <p class="pu-sub-intro">Some lorem ipsum self made blabla. Some lorem ipsum self made blabla. Some lorem ipsum self made blabla. </p>
+                                <p class="pu-sub-title">{{ title }}</p>
+                                <p class="pu-sub-intro">{{ description }}</p>
                             </div>
-                        </div>
-                    {{/if}}
+                        </a>
+                    {{/with}}
                 </div>
             </li>
             {{/each}}

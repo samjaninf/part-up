@@ -11,7 +11,7 @@ Template.ChatMessage.onRendered(function() {
 Template.ChatMessage.helpers({
     data: function() {
         var template = Template.instance();
-        var data = Template.currentData().data;
+        var data = template.data.data;
         var user = Meteor.users.findOne(data.creator_id);
         return {
             messageCreator: function() {

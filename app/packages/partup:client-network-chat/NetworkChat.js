@@ -430,7 +430,7 @@ Template.NetworkChat.helpers({
         var network = Networks.findOne({slug: template.data.networkSlug});
         return {
             activeUppers: function() {
-                return Meteor.users.find({'status.online': true, _id: {$not: Meteor.userId(), $in: network.uppers || []}});
+                return Meteor.users.find({'status.online': true, _id: {$in: network.uppers || []}});
             },
             messagesGroupedByDelay: function(messages) {
                 return Partup.client.chatmessages.groupByDelay(messages, {seconds: 20});

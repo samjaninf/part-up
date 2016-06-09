@@ -32,14 +32,9 @@ $border-radius: 4px
             display: block
             margin-bottom: 2px
 
-            &:first-child .pu-chatmessage
-                .pu-sub-chatname
-                    font-weight: bold
-                    margin-bottom: 1px;
+            &:first-child .pu-chatmessage .pu-sub-chatname
+                display: block
 
-                .pu-sub-chattime
-                    font-size: 13px
-                    color: $color-text-subtle
 
         &:after, &:before
             top: 18px
@@ -51,6 +46,9 @@ $border-radius: 4px
             pointer-events: none
 
     &-receive
+        .pu-sub-chattime-outside
+            right: calc(100% + 12px)
+
         .pu-avatar
             left: -45px
 
@@ -89,6 +87,9 @@ $border-radius: 4px
                 margin-top: -10px
 
     &-send
+        .pu-sub-chattime-outside
+            left: calc(100% + 12px)
+
         .pu-avatar
             right: -45px
 

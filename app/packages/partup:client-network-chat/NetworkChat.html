@@ -25,7 +25,7 @@
                         <p class="pu-textline pu-textline-light">
                             <span>{{ partupDayOfWeek day }} {{ partupDateDayMonthYear day }}</span>
                         </p>
-                        {{#each data.messagesGroupedByMinutes messages}}
+                        {{#each data.messagesGroupedByDelay messages}}
                             {{#each data.messagesGroupedByUser messages}}
                                 {{> ChatMessage data=. highlight=state.reactiveQuery }}
                             {{/each}}
@@ -45,7 +45,7 @@
                         <p class="pu-textline pu-textline-light">
                             <span>{{ partupDayOfWeek day }} {{ partupDateDayMonthYear day }}</span>
                         </p>
-                        {{#each data.messagesGroupedByMinutes messages}}
+                        {{#each data.messagesGroupedByDelay messages}}
                             {{#each data.messagesGroupedByUser messages}}
                                 {{> ChatMessage data=. highlight=state.reactiveQuery }}
                             {{/each}}

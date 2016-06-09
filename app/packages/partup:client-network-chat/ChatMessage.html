@@ -7,7 +7,11 @@
             {{#each data.messages}}
             <li data-chat-message-id="{{ _id }}">
                 <div class="pu-chatmessage {{#if chatTimeoutHasPassed _id 100 }}pu-chatmessage-loaded{{/if}}">
-                    {{#if creator}}<p class="pu-sub-chatname">{{ creator.profile.name }} <span class="pu-sub-chattime">{{ partupDateTime created_at }}</span></p>{{/if}}
+                    {{#if creator}}
+                        <p class="pu-sub-chatname">{{ creator.profile.name }} <span class="pu-sub-chattime">{{ partupDateTime created_at }}</span></p>
+                    {{else}}
+                        <span class="pu-sub-chattime pu-sub-chattime-outside">{{ partupDateTime created_at }}</span>
+                    {{/if}}
                     <p class="pu-highlighttext">{{#with partupHighlight content }}{{{ partupAutolink . }}}{{/with}}</p>
                     {{#if preview}}
                         <div class="pu-linkpreview">

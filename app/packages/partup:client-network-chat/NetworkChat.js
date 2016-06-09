@@ -43,22 +43,22 @@ Template.NetworkChat.onCreated(function() {
     var chatSubscription = template.subscribe('networks.one.chat', networkSlug, {limit: template.LIMIT}, {onReady: chatSubscriptionHandler});
     template.limitReached = new ReactiveVar(false);
     template.messageLimit = new ReactiveVar(template.LIMIT, function(oldLimit, newLimit) {
-        if (oldLimit !== newLimit) {
-            chatSubscription = template.subscribe('networks.one.chat', networkSlug, {limit: newLimit}, {
-                onReady: function() {
-                    var messagesCount = ChatMessages.find({chat_id: chatId}, {limit: newLimit, sort: {created_at: 1}}).count();
-                    var totalNewMessages = messagesCount - oldLimit;
-                    if (totalNewMessages < 1) {
-                        template.limitReached.set(true);
-                    } else {
-                        _.defer(function() {
-                            template.ajustScrollOffsetByMessageCount(totalNewMessages);
-                            template.loadingOlderMessages = false;
-                        });
-                    }
+        if (oldLimit === newLimit) return;
+
+        chatSubscription = template.subscribe('networks.one.chat', networkSlug, {limit: newLimit}, {
+            onReady: function() {
+                var messagesCount = ChatMessages.find({chat_id: chatId}, {limit: newLimit, sort: {created_at: 1}}).count();
+                var totalNewMessages = messagesCount - oldLimit;
+                if (totalNewMessages < 1) {
+                    template.limitReached.set(true);
+                } else {
+                    _.defer(function() {
+                        template.ajustScrollOffsetByMessageCount(totalNewMessages);
+                        template.loadingOlderMessages = false;
+                    });
                 }
-            });
-        }
+            }
+        });
     });
 
     template.ajustScrollOffsetByMessageCount = function(count) {
@@ -368,8 +368,8 @@ Template.NetworkChat.helpers({
             activeUppers: function() {
                 return Meteor.users.find({'status.online': true, _id: {$not: Meteor.userId(), $in: network.uppers || []}});
             },
-            messagesGroupedByMinutes: function(messages) {
-                return Partup.client.chatmessages.groupByCreationMinuteRange(messages, 5);
+            messagesGroupedByDelay: function(messages) {
+                return Partup.client.chatmessages.groupByDelay(messages, {seconds: 20});
             },
             messagesGroupedByDay: function(messages) {
                 return Partup.client.chatmessages.groupByCreationDay(messages);
@@ -476,14 +476,6 @@ Template.NetworkChat.events({
     'DOMMouseScroll [data-reversed-scroller], mousewheel [data-reversed-scroller]': function(event, template) {
         template.stickyNewMessagesDividerHandler(true);
     },
-    'click [data-flexible-center]': function(event, template) {
-        event.preventDefault();
-        $(event.currentTarget).parent().addClass('start');
-        _.defer(function() {
-            $(event.currentTarget).parent().addClass('active');
-            $('[data-search]').focus();
-        });
-    },
     'click [data-clear]': function(event, template) {
         event.preventDefault();
         event.stopPropagation();
@@ -495,19 +487,5 @@ Template.NetworkChat.events({
     },
     'input [data-search]': function(event, template) {
         template.throttledSetSearchQuery(event.currentTarget.value);
-    },
-    'focus [data-search]': function(event, template) {
-        $(event.currentTarget).parent().addClass('start');
-        _.defer(function() {
-            $(event.currentTarget).parent().addClass('active');
-        });
-    },
-    'blur [data-search]': function(event, template) {
-        if (!$(event.target).val()) {
-            $('[data-flexible-center]').parent().removeClass('active');
-        }
-    },
-    'transitionend [data-flexible-center]': function(event, template) {
-        $(event.currentTarget).parent().removeClass('start');
     }
 });

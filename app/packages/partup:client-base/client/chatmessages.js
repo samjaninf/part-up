@@ -2,18 +2,21 @@ var round = function(number, increment, offset) {
     return Math.ceil((number - offset) / increment) * increment + offset;
 };
 Partup.client.chatmessages = {
-    groupByCreationMinuteRange: function(messages, range) {
+    groupByDelay: function(messages, options) {
+        var delay = options.seconds ? options.seconds * 1000 : 1000;
         var outputArray = [];
 
         messages.forEach(function(item, index) {
             var outputLastIndex = outputArray.length - 1;
-            var minutes = round(new Date(item.created_at).getMinutes(), range, 0);
-            var minute = new Date(new Date(item.created_at).setMinutes(minutes, 0, 0)).getTime();
-            if (outputArray[outputLastIndex] && outputArray[outputLastIndex].minute === minute) {
+            var lastCreatedAt;
+            if (outputArray[outputLastIndex]) {
+                lastCreatedAt = new Date(outputArray[outputLastIndex].messages[outputArray[outputLastIndex].messages.length - 1].created_at).getTime();
+            }
+            var currentCreatedAt = new Date(item.created_at).getTime();
+            if (outputArray[outputLastIndex] && lastCreatedAt && (currentCreatedAt - lastCreatedAt) < delay) {
                 outputArray[outputLastIndex].messages.push(item);
             } else {
                 outputArray.push({
-                    minute: minute,
                     messages: [item]
                 });
             }

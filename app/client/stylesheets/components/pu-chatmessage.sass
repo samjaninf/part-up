@@ -4,3 +4,22 @@
 
     &-loaded
         opacity: 1
+
+    .pu-sub-chatname
+        display: none
+        font-weight: bold
+        margin-bottom: 1px
+
+    .pu-sub-chattime
+        font-weight: bold
+        font-size: 13px
+        color: $color-text-subtle
+
+        &-outside
+            position: absolute
+            line-height: 20px
+            opacity: 0
+            transition: opacity .2s
+
+    &:hover .pu-sub-chattime-outside
+        opacity: 1

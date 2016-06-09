@@ -103,7 +103,9 @@
                                         <figure class="pu-avatar pu-avatar-online" style="background-image:url('{{ partupImageUrl id=profile.image store='360x360'}}');"></figure>
                                         <p>{{ profile.name }}</p>
                                         {{#if state.started_typing _id}}
-                                            {{>NetworkChat_typing_indicator}}
+                                            {{#unless partupEquals _id currentUserId }}
+                                                {{>NetworkChat_typing_indicator}}
+                                            {{/unless}}
                                         {{/if}}
                                     </a>
                                 </li>

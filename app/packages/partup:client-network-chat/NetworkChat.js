@@ -18,7 +18,9 @@ Template.NetworkChat.onCreated(function() {
 
     var initialize = function(chat_id) {
         startMessageCollector(chat_id);
-        template.initialized.set(true);
+        Meteor.setTimeout(function() {
+            template.initialized.set(true);
+        }, 1000);
     };
 
     var resetUnreadMessagesIndicatorBadge = function() {
@@ -257,6 +259,9 @@ Template.NetworkChat.onCreated(function() {
 
         // stop if the user is not focussed or if there are no unread messages
         if (template.focussed && unreadMessagesCount <= 0) return;
+
+        // if user is focussed stop here
+        if (template.focussed && template.initialized.get()) return;
 
         // returns the oldest unread message with n offset
         // offset = 0 is oldest, offset = 1 is second oldest

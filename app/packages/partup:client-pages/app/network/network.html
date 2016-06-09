@@ -31,11 +31,8 @@
                             <!--Temp disable chat tab-->
                             <li>
                                 <a href="{{ pathFor route='network-chat' slug=data.network.slug }}"
-                                    class="pu-button pu-button-nav pu-button-nav-secondary {{ isActiveRoute name='network-chat' class='pu-state-active'}}">
+                                    class="pu-button pu-button-nav pu-button-nav-secondary {{ isActiveRoute name='network-chat' class='pu-state-active'}} pu-badge pu-badge-white {{#if data.unreadChatMessages }}pu-badge-active{{/if}}">
                                     {{_ 'pages-app-network-tab-button-chat'}}
-                                    {{#if data.unreadChatMessages}}
-                                        (unread messages)
-                                    {{/if}}
                                 </a>
                             </li>
                             <li>

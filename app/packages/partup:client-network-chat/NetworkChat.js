@@ -553,7 +553,7 @@ Template.NetworkChat.events({
         if (event.currentTarget.scrollTop < 200 && !template.loadingOlderMessages && !template.searching) {
             template.loadOlderMessages();
         }
-        template.stickyUserAvatarHandler();
+        if (!Partup.client.browser.isSafari()) template.stickyUserAvatarHandler();
     },
     'DOMMouseScroll [data-preventscroll], mousewheel [data-preventscroll]': Partup.client.scroll.preventScrollPropagation,
     'DOMMouseScroll [data-reversed-scroller], mousewheel [data-reversed-scroller]': function(event, template) {

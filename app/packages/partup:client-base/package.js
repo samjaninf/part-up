@@ -68,6 +68,7 @@ Package.onUse(function(api) {
         'client/partuptile.js',
         'client/chatmessages.js',
         'client/user.js',
+        'client/browser.js',
         'helpers/sanitize.js',
         'helpers/log.js',
         'helpers/partupResponsive.js',

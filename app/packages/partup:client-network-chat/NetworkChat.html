@@ -82,11 +82,12 @@
             <section>
                 <div class="pu-sidebar-wrap" data-preventscroll>
                     <section>
-                        <div class="pu-clearinput">
+                        <div class="pu-search pu-clearinput">
                             <input type="text" placeholder="{{_ 'pages-app-network-chat-search-input-placeholder'}}" class="pu-input form-control" data-search>
                             {{#if state.reactiveQuery.get}}
                                 <i class="picon-times" data-clear></i>
                             {{/if}}
+                            <i class="picon-search"></i>
                         </div>
                         {{#if data.network.isPublic}}<p>{{{_ 'pages-app-network-chat-sidebar-text-open' }}}</p>{{/if}}
                         {{#if data.network.isInvitational}}<p>{{{_ 'pages-app-network-chat-sidebar-text-invite' }}}</p>{{/if}}

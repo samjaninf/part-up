@@ -11,9 +11,11 @@ Meteor.methods({
         if (!user) throw new Meteor.Error(401, 'unauthorized');
 
         try {
+            var chat = Chats.findOneOrFail(fields.chat_id);
+
             var chatMessage = {
                 _id: Random.id(),
-                chat_id: fields.chat_id,
+                chat_id: chat._id,
                 content: fields.content,
                 created_at: new Date(),
                 creator_id: user._id,
@@ -26,7 +28,27 @@ Meteor.methods({
             ChatMessages.insert(chatMessage);
 
             // Update the chat
-            Chats.update(fields.chat_id, {$set: {updated_at: new Date()}});
+            Chats.update(chat._id, {$set: {updated_at: new Date()}});
+
+            // Find participants
+            const receivers = Meteor.users.find({chats: {$in: [chat._id]}}).fetch()
+                .map(function(user) {
+                    return user._id;
+                })
+                .filter(function(id) {
+                    return id !== user._id;
+                });
+
+            // Send push notification
+            var filterDevices = function() {return true; }; // all devices
+            var message = user.profile.name + ': ' + fields.content; //todo TAPi18n.__('', {sender: user.profile.name, message: fields.content});
+            var payload = {
+                chat: {
+                    _id: chat._id
+                }
+            };
+
+            Partup.server.services.pushnotifications.send(receivers, filterDevices, message, payload);
 
             return chatMessage._id;
         } catch (error) {

@@ -397,11 +397,21 @@ Template.NetworkChat.onCreated(function() {
             // if (template.searching || sendingMessage) return;
             if (template.searching) return;
 
-            ChatMessages
-                .find({chat_id: chatId, seen_by: {$nin: [Meteor.userId()]}})
-                .forEach(function(message) {
-                    Meteor.call('chatmessages.seen', message._id);
-                });
+            if (template.focussed) {
+                ChatMessages
+                    .find({chat_id: chatId, read_by: {$nin: [Meteor.userId()]}, seen_by: {$nin: [Meteor.userId()]}})
+                    .forEach(function(message) {
+                        Meteor.call('chatmessages.read', message._id);
+                    });
+
+                resetUnreadMessagesIndicatorBadge();
+            } else {
+                ChatMessages
+                    .find({chat_id: chatId, seen_by: {$nin: [Meteor.userId()]}})
+                    .forEach(function(message) {
+                        Meteor.call('chatmessages.seen', message._id);
+                    });
+            }
         });
 
         resetIndicatorBadgeIfMessageDividerIsOnScreen();
@@ -585,5 +595,25 @@ Template.NetworkChat.events({
     },
     'input [data-search]': function(event, template) {
         template.throttledSetSearchQuery(event.currentTarget.value);
+    }
+});
+
+Meteor.methods({
+    'chatmessages.insert': function(fields) {
+        var chatMessage = {
+            _id: Random.id(),
+            chat_id: fields.chat_id,
+            content: fields.content,
+            created_at: new Date(),
+            creator_id: Meteor.userId(),
+            read_by: [],
+            seen_by: [],
+            updated_at: new Date()
+        };
+
+        // Insert message
+        ChatMessages.insert(chatMessage);
+
+        return true;
     }
 });

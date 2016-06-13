@@ -1,6 +1,6 @@
 // full documentation for Autolinker at http://gregjacobs.github.io/Autolinker.js/docs/#!/api/Autolinker
-Template.registerHelper('partupAutolink', function(text, sanitize) {
-    if (sanitize) text = Partup.client.sanitize(text);
+Template.registerHelper('partupAutolink', function(text) {
+
     var jaja = Autolinker.link(text, {
         twitter: false, // to not parse twitter handles
         hashtag: false, // do not parse hashtags

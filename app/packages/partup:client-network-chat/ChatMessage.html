@@ -1,19 +1,25 @@
 <template name="ChatMessage">
     <div class="pu-chatbox {{#if partupEquals data.messageCreator._id currentUserId }}pu-chatbox-send{{else}}pu-chatbox-receive{{/if}} pu-chatbox-avatar-top" data-message-user-id="{{data.messageCreator._id}}" data-message-user-image-id="{{ data.messageCreator.profile.image }}">
         <a href="{{pathFor route='profile' _id=data.messageCreator._id}}">
-            <figure class="pu-avatar" data-hovercontainer="HoverContainer_upper" data-hovercontainer-context="{{data.messageCreator._id}}" style="background-image:url('{{ partupImageUrl id=data.messageCreator.profile.image store='360x360'}}');"></figure>
+            <figure class="pu-avatar" data-hovercontainer="HoverContainer_upper" data-hovercontainer-context="{{data.messageCreator._id}}" style="{{#with data.messageCreator.profile.image}}background-image:url('{{ partupImageUrl id=. store='360x360'}}');{{/with}}"></figure>
         </a>
         <ul class="pu-list">
             {{#each data.messages}}
                 {{#RenderBlock onRendered=handlers.onNewMessageRender}}
                     <li data-chat-message-id="{{ _id }}">
-                        <div class="pu-chatmessage {{#if chatTimeoutHasPassed _id 100 }}pu-chatmessage-loaded{{/if}}">
+                        <div class="pu-chatmessage {{#if chatTimeoutHasPassed _id 10 }}pu-chatmessage-loaded{{/if}}">
                             {{#if creator}}
                                 <p class="pu-sub-chatname">{{ creator.profile.name }} <span class="pu-sub-chattime">{{ partupDateTime created_at }}</span></p>
                             {{else}}
                                 <span class="pu-sub-chattime pu-sub-chattime-outside">{{ partupDateTime created_at }}</span>
                             {{/if}}
-                                <p class="pu-highlighttext">{{#with partupHighlight content }}{{{ partupAutolink . true }}}{{/with}}</p>
+                                <p class="pu-highlighttext">
+                                    {{#with partupSanitize content}}
+                                        {{#with partupHighlight . }}
+                                            {{{ partupAutolink . }}}
+                                        {{/with}}
+                                    {{/with}}
+                                </p>
                             {{#with preview_data }}
                                 <a href="{{url}}" target="_blank" class="pu-linkpreview">
                                     {{#with image}}<figure style="background-image: url('{{ . }}');" >

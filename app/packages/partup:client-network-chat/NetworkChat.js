@@ -6,6 +6,7 @@ Template.NetworkChat.onCreated(function() {
     template.searching = false;
     template.MAX_TYPING_PAUSE = 5000; // 5s
     template.LIMIT = 100;
+    template.SEARCH_LIMIT = 50;
     template.oldestUnreadMessage = new ReactiveVar(undefined);
     template.overscroll = new ReactiveVar(false);
     template.underscroll = new ReactiveVar(false);
@@ -53,7 +54,7 @@ Template.NetworkChat.onCreated(function() {
         }
     };
 
-    var chatSubscription = template.subscribe('networks.one.chat', networkSlug, {limit: template.LIMIT}, {onReady: chatSubscriptionHandler});
+    var chatSubscription = template.subscribe('networks.one.chat', networkSlug, {limit: template.SEARCH_LIMIT}, {onReady: chatSubscriptionHandler});
     template.limitReached = new ReactiveVar(false);
     template.messageLimit = new ReactiveVar(template.LIMIT, function(oldLimit, newLimit) {
         if (oldLimit === newLimit) return;
@@ -365,11 +366,12 @@ Template.NetworkChat.onCreated(function() {
         template.autorun(function(computation) {
             // run this autorun when the searchquery changes
             var searchQuery = template.searchQuery.get();
-            var sendingMessage = template.sendingMessage.get();
+            // var sendingMessage = template.sendingMessage.get();
 
             // don't do anything if the user is searching
             // or if a message is not processed yet (scraper)
-            if (template.searching || sendingMessage) return;
+            // if (template.searching || sendingMessage) return;
+            if (template.searching) return;
 
             var limit = template.messageLimit.get();
             var messages = ChatMessages
@@ -391,8 +393,9 @@ Template.NetworkChat.onCreated(function() {
 
         // marks all messages as seen (not read) in current chat
         template.autorun(function() {
-            var sendingMessage = template.sendingMessage.get();
-            if (template.searching || sendingMessage) return;
+            // var sendingMessage = template.sendingMessage.get();
+            // if (template.searching || sendingMessage) return;
+            if (template.searching) return;
 
             ChatMessages
                 .find({chat_id: chatId, seen_by: {$nin: [Meteor.userId()]}})

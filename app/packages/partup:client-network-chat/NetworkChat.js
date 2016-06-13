@@ -13,7 +13,7 @@ Template.NetworkChat.onCreated(function() {
     template.stickyAvatar = new ReactiveVar(undefined);
     template.initialized = new ReactiveVar(false);
     template.rendered = new ReactiveVar(false);
-    template.sendingMessage = new ReactiveVar(false);
+    // template.sendingMessage = new ReactiveVar(false);
     template.userIsAtScrollBottom = true;
     template.focussed = true;
 
@@ -120,17 +120,17 @@ Template.NetworkChat.onCreated(function() {
     template.sendMessage = function(message) {
         if (!message) return false;
 
-        var sendingMessage = template.sendingMessage.get();
-        if (sendingMessage) return;
+        // var sendingMessage = template.sendingMessage.get();
+        // if (sendingMessage) return;
 
-        template.sendingMessage.set(true);
+        // template.sendingMessage.set(true);
 
         var scroller = template.scrollContainer;
 
         var network = Networks.findOne({slug: networkSlug});
         var userId = Meteor.userId();
         if (!network.hasMember(userId)) {
-            template.sendingMessage.set(false);
+            // template.sendingMessage.set(false);
             return Partup.client.notify.error(TAPi18n.__('pages-app-network-chat-send-message-permission-denied'));
         }
         template.instantlyScrollToBottom();
@@ -140,7 +140,7 @@ Template.NetworkChat.onCreated(function() {
             chat_id: chatId,
             content: Partup.client.strings.emojify(message)
         }, function(err, res) {
-            template.sendingMessage.set(false);
+            // template.sendingMessage.set(false);
             if (err) return Partup.client.notify.error('Error sending message');
             template.resetTypingState();
             template.onNewMessageRender(template.instantlyScrollToBottom);
@@ -525,9 +525,9 @@ Template.NetworkChat.helpers({
             reactiveQuery: function() {
                 return template.searchQuery;
             },
-            sendingMessage: function() {
-                return template.sendingMessage.get();
-            }
+            // sendingMessage: function() {
+            //     return template.sendingMessage.get();
+            // }
         };
     },
     handlers: function() {
@@ -541,10 +541,10 @@ Template.NetworkChat.helpers({
 });
 Template.NetworkChat.events({
     'keydown [data-submit=return]': function(event, template) {
-        var sendingMessage = template.sendingMessage.get();
-        if (sendingMessage) {
-            event.preventDefault();
-        }
+        // var sendingMessage = template.sendingMessage.get();
+        // if (sendingMessage) {
+        //     event.preventDefault();
+        // }
 
         // determine keycode (with cross browser compatibility)
         var pressedKey = event.which ? event.which : event.keyCode;

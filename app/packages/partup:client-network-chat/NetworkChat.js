@@ -597,23 +597,3 @@ Template.NetworkChat.events({
         template.throttledSetSearchQuery(event.currentTarget.value);
     }
 });
-
-Meteor.methods({
-    'chatmessages.insert': function(fields) {
-        var chatMessage = {
-            _id: Random.id(),
-            chat_id: fields.chat_id,
-            content: fields.content,
-            created_at: new Date(),
-            creator_id: Meteor.userId(),
-            read_by: [],
-            seen_by: [],
-            updated_at: new Date()
-        };
-
-        // Insert message
-        ChatMessages.insert(chatMessage);
-
-        return true;
-    }
-});

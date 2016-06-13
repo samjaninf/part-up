@@ -12,7 +12,7 @@
                     {{else}}
                         <span class="pu-sub-chattime pu-sub-chattime-outside">{{ partupDateTime created_at }}</span>
                     {{/if}}
-                    <p class="pu-highlighttext">{{#with partupHighlight content }}{{{ partupAutolink . }}}{{/with}}</p>
+                    <p class="pu-highlighttext">{{#with partupHighlight content }}{{{ partupAutolink . true }}}{{/with}}</p>
                     {{#with preview_data }}
                         <a href="{{url}}" target="_blank" class="pu-linkpreview">
                             {{#with image}}<figure style="background-image: url('{{ . }}');" >

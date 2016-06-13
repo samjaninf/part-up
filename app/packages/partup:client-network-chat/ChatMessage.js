@@ -22,5 +22,13 @@ Template.ChatMessage.helpers({
                 return data.messages;
             }
         };
+    },
+    handlers: function() {
+        var template = Template.instance();
+        return {
+            onNewMessageRender: function() {
+                return template.data.onNewMessageRender;
+            }
+        };
     }
 });

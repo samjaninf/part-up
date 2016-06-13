@@ -5,26 +5,28 @@
         </a>
         <ul class="pu-list">
             {{#each data.messages}}
-            <li data-chat-message-id="{{ _id }}">
-                <div class="pu-chatmessage {{#if chatTimeoutHasPassed _id 100 }}pu-chatmessage-loaded{{/if}}">
-                    {{#if creator}}
-                        <p class="pu-sub-chatname">{{ creator.profile.name }} <span class="pu-sub-chattime">{{ partupDateTime created_at }}</span></p>
-                    {{else}}
-                        <span class="pu-sub-chattime pu-sub-chattime-outside">{{ partupDateTime created_at }}</span>
-                    {{/if}}
-                    <p class="pu-highlighttext">{{#with partupHighlight content }}{{{ partupAutolink . true }}}{{/with}}</p>
-                    {{#with preview_data }}
-                        <a href="{{url}}" target="_blank" class="pu-linkpreview">
-                            {{#with image}}<figure style="background-image: url('{{ . }}');" >
-                            </figure>{{/with}}
-                            <div class="pu-linkpreview-description">
-                                <p class="pu-sub-title">{{ title }}</p>
-                                <p class="pu-sub-intro">{{ description }}</p>
-                            </div>
-                        </a>
-                    {{/with}}
-                </div>
-            </li>
+                {{#RenderBlock onRendered=handlers.onNewMessageRender}}
+                    <li data-chat-message-id="{{ _id }}">
+                        <div class="pu-chatmessage {{#if chatTimeoutHasPassed _id 100 }}pu-chatmessage-loaded{{/if}}">
+                            {{#if creator}}
+                                <p class="pu-sub-chatname">{{ creator.profile.name }} <span class="pu-sub-chattime">{{ partupDateTime created_at }}</span></p>
+                            {{else}}
+                                <span class="pu-sub-chattime pu-sub-chattime-outside">{{ partupDateTime created_at }}</span>
+                            {{/if}}
+                                <p class="pu-highlighttext">{{#with partupHighlight content }}{{{ partupAutolink . true }}}{{/with}}</p>
+                            {{#with preview_data }}
+                                <a href="{{url}}" target="_blank" class="pu-linkpreview">
+                                    {{#with image}}<figure style="background-image: url('{{ . }}');" >
+                                    </figure>{{/with}}
+                                    <div class="pu-linkpreview-description">
+                                        <p class="pu-sub-title">{{ title }}</p>
+                                        <p class="pu-sub-intro">{{ description }}</p>
+                                    </div>
+                                </a>
+                            {{/with}}
+                        </div>
+                    </li>
+                {{/RenderBlock}}
             {{/each}}
         </ul>
     </div>

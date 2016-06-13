@@ -101,7 +101,7 @@ Template.NetworkChat.onCreated(function() {
         });
     };
 
-    template.resetMessageInput = function() {
+    template.clearMessageInput = function() {
         $('[data-messageinput]')[0].value = '';
     };
 
@@ -126,15 +126,14 @@ Template.NetworkChat.onCreated(function() {
 
         var scroller = template.scrollContainer;
 
-        var currentPosition = scroller.scrollTop;
-        var bottomPosition = scroller[0].scrollHeight - scroller[0].clientHeight;
-
         var network = Networks.findOne({slug: networkSlug});
         var userId = Meteor.userId();
         if (!network.hasMember(userId)) {
             template.sendingMessage.set(false);
             return Partup.client.notify.error(TAPi18n.__('pages-app-network-chat-send-message-permission-denied'));
         }
+        template.instantlyScrollToBottom();
+        template.clearMessageInput();
 
         Meteor.call('chatmessages.insert', {
             chat_id: chatId,
@@ -142,16 +141,8 @@ Template.NetworkChat.onCreated(function() {
         }, function(err, res) {
             template.sendingMessage.set(false);
             if (err) return Partup.client.notify.error('Error sending message');
-            template.resetMessageInput();
             template.resetTypingState();
-
-            if (currentPosition === bottomPosition) {
-                scroller[0].scrollTop = scroller[0].scrollHeight;
-            } else {
-                scroller.animate({
-                    scrollTop: scroller[0].scrollHeight
-                }, 500);
-            }
+            template.onNewMessageRender(template.instantlyScrollToBottom);
         });
     };
 
@@ -400,6 +391,9 @@ Template.NetworkChat.onCreated(function() {
 
         // marks all messages as seen (not read) in current chat
         template.autorun(function() {
+            var sendingMessage = template.sendingMessage.get();
+            if (template.searching || sendingMessage) return;
+
             ChatMessages
                 .find({chat_id: chatId, seen_by: {$nin: [Meteor.userId()]}})
                 .forEach(function(message) {
@@ -408,6 +402,16 @@ Template.NetworkChat.onCreated(function() {
         });
 
         resetIndicatorBadgeIfMessageDividerIsOnScreen();
+    };
+
+    var newMessageListeneners = [];
+    template.onNewMessageRender = function(callback) {
+        newMessageListeneners.push(callback);
+    };
+    template.newMessagesDidRender = function() {
+        newMessageListeneners.forEach(function() {
+            newMessageListeneners.pop().call();
+        });
     };
 });
 
@@ -510,9 +514,14 @@ Template.NetworkChat.helpers({
             },
             sendingMessage: function() {
                 return template.sendingMessage.get();
-            },
-            inputDisabled: function() {
-                return template.sendingMessage.get() ? 'disabled' : '';
+            }
+        };
+    },
+    handlers: function() {
+        var template = Template.instance();
+        return {
+            onMessageRender: function() {
+                return template.newMessagesDidRender;
             }
         };
     }
@@ -520,7 +529,9 @@ Template.NetworkChat.helpers({
 Template.NetworkChat.events({
     'keydown [data-submit=return]': function(event, template) {
         var sendingMessage = template.sendingMessage.get();
-        if (sendingMessage) event.preventDefault();
+        if (sendingMessage) {
+            event.preventDefault();
+        }
 
         // determine keycode (with cross browser compatibility)
         var pressedKey = event.which ? event.which : event.keyCode;
@@ -529,6 +540,7 @@ Template.NetworkChat.events({
         if (pressedKey == 13 && !event.shiftKey) {
             event.preventDefault();
             template.sendMessage($('[data-messageinput]').val());
+            return false;
         } else {
             template.throttledEnableTypingState();
         }

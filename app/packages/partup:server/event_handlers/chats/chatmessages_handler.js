@@ -9,6 +9,10 @@ Event.on('chats.messages.inserted', function(userId, chatMessageId, content) {
     var url = content.match(regex);
     if (url && url.length > 0) {
         var result = Partup.server.services.scrape.website(url[0]);
+
+        // stop if there is no scrape data
+        if (!Object.keys(result).length) return;
+
         var data = {
             title: result.title,
             description: result.description,

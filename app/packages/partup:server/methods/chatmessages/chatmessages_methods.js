@@ -50,7 +50,8 @@ Meteor.methods({
                 var message = user.profile.name + ': ' + fields.content; //todo TAPi18n.__('', {sender: user.profile.name, message: fields.content});
                 var payload = {
                     chat: {
-                        _id: chat._id
+                        _id: chat._id,
+                        username: user.profile.name
                     }
                 };
 

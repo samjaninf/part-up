@@ -14,3 +14,20 @@ Meteor.publishComposite('notifications.for_upper', function(limit) {
         ]
     };
 });
+
+Meteor.publishComposite('notifications.for_upper.by_id', function(notificationId) {
+    check(notificationId, String);
+    this.unblock();
+
+    var user = Meteor.users.findOne(this.userId);
+    if (!user) return;
+
+    return {
+        find: function() {
+            return Notifications.findForUser(user, {_id: notificationId});
+        },
+        children: [
+            {find: Images.findForNotification}
+        ]
+    };
+});

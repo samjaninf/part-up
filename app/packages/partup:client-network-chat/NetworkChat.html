@@ -1,130 +1,14 @@
 <template name="NetworkChat">
     <div class="pu-chat">
         <main>
-            <article class="pu-chat-wrapper {{#if state.fullyLoaded}}pu-state-active{{/if}}" data-reversed-scroller-wrapper>
-                <!-- Top new messages button -->
-                {{#if data.messages.new.length}}{{#if state.overscroll}}
-                    <p class="pu-textline pu-textline-colour pu-textline-hover">
-                        <span data-scrollto>
-                            {{_ 'pages-app-network-chat-label-newmessages'}}
-                            <i class="picon-arrow-up"></i>
-                        </span>
-                    </p>
-                {{/if}}{{/if}}
-                <header class="pu-sticky-user pu-sticky-user-visible" data-sticky-avatar>
-                    <a href="{{pathFor route='profile' _id=data.stickyAvatar._id}}">
-                        <figure class="pu-avatar" data-hovercontainer="HoverContainer_upper" data-hovercontainer-context="{{data.stickyAvatar._id}}" data-avatar></figure>
-                    </a>
-                </header>
-                <!-- messages container -->
-                <div data-preventscroll data-reversed-scroller>
-                    <!-- <button class="pu-button" data-load-old>Load older messages</button> -->
-                    {{#if state.limitReached}}<p class="pu-textline pu-textline-light pu-textline-light-nostripe"><span>{{_ 'pages-app-network-chat-label-top'}}</span></p>{{/if}}
-                    <!-- old messages -->
-                    {{#each data.messagesGroupedByDay data.messages.old}}
-                        <p class="pu-textline pu-textline-light">
-                            <span>{{ partupDayOfWeek day }} {{ partupDateDayMonthYear day }}</span>
-                        </p>
-                        {{#each data.messagesGroupedByDelay messages}}
-                            {{#each data.messagesGroupedByUser messages}}
-                                {{> ChatMessage data=. highlight=state.reactiveQuery onNewMessageRender=handlers.onMessageRender }}
-                            {{/each}}
-                        {{/each}}
-                    {{/each}}
-                    <!-- New messages divider -->
-                    {{#if data.messages.new.length}}
-                        <p class="pu-textline pu-textline-colour" data-new-messages-divider>
-                            <span>
-                                {{_ 'pages-app-network-chat-label-newmessages'}}
-                                <i class="picon-arrow-down"></i>
-                            </span>
-                        </p>
-                    {{/if}}
-                    <!-- new messages -->
-                    {{#each data.messagesGroupedByDay data.messages.new}}
-                        <p class="pu-textline pu-textline-light">
-                            <span>{{ partupDayOfWeek day }} {{ partupDateDayMonthYear day }}</span>
-                        </p>
-                        {{#each data.messagesGroupedByDelay messages}}
-                            {{#each data.messagesGroupedByUser messages}}
-                                {{> ChatMessage data=. highlight=state.reactiveQuery onNewMessageRender=handlers.onMessageRender }}
-                            {{/each}}
-                        {{/each}}
-                    {{/each}}
-                </div>
-                <!-- New messages bottom button -->
-                {{#if data.messages.new.length}}{{#if state.underscroll}}
-                    <p class="pu-textline pu-textline-colour pu-textline-hover">
-                        <span data-scrollto>
-                            {{_ 'pages-app-network-chat-label-newmessages'}}
-                            <i class="picon-arrow-down"></i>
-                        </span>
-                    </p>
-                {{/if}}{{/if}}
-            </article>
-            <footer>
-                <label class="pu-formfield">
-                    <div class="pu-sub-tablecell-input">
-                        <span class="pu-sub-input">
-                            <input class="pu-input form-control" data-submit="return" data-messageinput type="text" name="partup_name" placeholder="{{_ 'pages-app-network-chat-placeholder' }}" autocomplete="off">
-                        </span>
-                        <span class="pu-sub-error"></span>
-                    </div>
-                    <div class="pu-sub-tablecell-button">
-                        <button type="button" class="pu-button" data-send>
-                            <span>{{_ 'pages-app-network-chat-button-send' }}</span>
-                        </button>
-                    </div>
-                </label>
-            </footer>
-        </main>
-        <aside class="pu-sidebar">
-            <section>
-                <div class="pu-sidebar-wrap" data-preventscroll>
-                    <section>
-                        <div class="pu-search pu-clearinput">
-                            <input type="text" placeholder="{{_ 'pages-app-network-chat-search-input-placeholder'}}" class="pu-input form-control" data-search>
-                            {{#if state.reactiveQuery.get}}
-                                <i class="picon-times" data-clear></i>
-                            {{/if}}
-                            <i class="picon-search"></i>
-                        </div>
-                        {{#if data.network.isPublic}}<p>{{{_ 'pages-app-network-chat-sidebar-text-open' }}}</p>{{/if}}
-                        {{#if data.network.isInvitational}}<p>{{{_ 'pages-app-network-chat-sidebar-text-invite' }}}</p>{{/if}}
-                        {{#if data.network.isClosed}}<p>{{{_ 'pages-app-network-chat-sidebar-text-clodes' }}}</p>{{/if}}
-                    </section>
-                    <section>
-                        <h2>{{_ 'pages-app-network-chat-title-activeuppers'}}</h2>
-                        {{#if data.activeUppers.count}}
-                            <ul class="pu-list pu-list-users">
-                                {{#each data.activeUppers}}
-                                <li>
-                                    <a href="{{ pathFor route='profile' _id=_id}}" data-hovercontainer="HoverContainer_upper" data-hovercontainer-context="{{_id}}">
-                                        <figure class="pu-avatar pu-avatar-online" style="background-image:url('{{ partupImageUrl id=profile.image store='360x360'}}');"></figure>
-                                        <p>{{ profile.name }}</p>
-                                        {{#if state.started_typing _id}}
-                                            {{#unless partupEquals _id currentUserId }}
-                                                {{>NetworkChat_typing_indicator}}
-                                            {{/unless}}
-                                        {{/if}}
-                                    </a>
-                                </li>
-                                {{/each}}
-                            </ul>
-                        {{else}}
-                            <p>{{_ 'pages-app-network-chat-activeuppers-label' }}</p>
-                        {{/if}}
-                    </section>
-                </div>
-            </section>
-        </aside>
-    </div>
-</template>
+            {{#if state.initialized }}
+                {{> ChatView config=config.messageView }}
 
-<template name="NetworkChat_typing_indicator">
-    <span class="pu-typing">
-        <span></span>
-        <span></span>
-        <span></span>
-    </span>
+                {{#if data.network.hasMember currentUserId }}
+                    {{> ChatBar config=config.bottomBar }}
+                {{/if}}
+            {{/if}}
+        </main>
+        {{> ChatGroupSidebar config=config.sideBar }}
+    </div>
 </template>

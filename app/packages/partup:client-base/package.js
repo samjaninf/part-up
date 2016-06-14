@@ -70,6 +70,7 @@ Package.onUse(function(api) {
         'client/chatmessages.js',
         'client/user.js',
         'client/browser.js',
+        'client/chat.js',
         'helpers/sanitize.js',
         'helpers/log.js',
         'helpers/partupResponsive.js',

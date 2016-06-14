@@ -1,5 +1,5 @@
 Package.describe({
-    name: 'partup:client-network-chat',
+    name: 'partup:client-chat',
     version: '0.0.1',
     summary: '',
     documentation: null
@@ -16,8 +16,15 @@ Package.onUse(function(api) {
     ], 'client');
 
     api.addFiles([
-        'NetworkChat.html',
-        'NetworkChat.js'
+        'ChatView.html',
+        'ChatView.js',
+        'ChatMessage.html',
+        'ChatMessage.js',
+        'ChatBar.html',
+        'ChatBar.js',
+        'ChatGroupSidebar.html',
+        'ChatGroupSidebar.js',
+        'ChatTypingIndicator.html'
     ], 'client');
 
 });

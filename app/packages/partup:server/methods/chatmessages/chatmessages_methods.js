@@ -30,25 +30,33 @@ Meteor.methods({
             // Update the chat
             Chats.update(chat._id, {$set: {updated_at: new Date()}});
 
-            // Find participants
-            const receivers = Meteor.users.find({chats: {$in: [chat._id]}}).fetch()
-                .map(function(user) {
-                    return user._id;
-                })
-                .filter(function(id) {
-                    return id !== user._id;
-                });
+            // Find possible network
+            const network = Networks.findOne({chat_id: chat._id});
 
-            // Send push notification
-            var filterDevices = function() {return true; }; // all devices
-            var message = user.profile.name + ': ' + fields.content; //todo TAPi18n.__('', {sender: user.profile.name, message: fields.content});
-            var payload = {
-                chat: {
-                    _id: chat._id
-                }
-            };
+            if (!network) {
+                // It's a 1-on-1 chat!
 
-            Partup.server.services.pushnotifications.send(receivers, filterDevices, message, payload);
+                // Find participants
+                const receivers = Meteor.users.find({chats: {$in: [chat._id]}}).fetch()
+                    .map(function(user) {
+                        return user._id;
+                    })
+                    .filter(function(id) {
+                        return id !== user._id;
+                    });
+
+                // Send push notification
+                var filterDevices = function() {return true; }; // all devices
+                var message = user.profile.name + ': ' + fields.content; //todo TAPi18n.__('', {sender: user.profile.name, message: fields.content});
+                var payload = {
+                    chat: {
+                        _id: chat._id
+                    }
+                };
+
+                Partup.server.services.pushnotifications.send(receivers, filterDevices, message, payload);
+            }
+
 
             return chatMessage._id;
         } catch (error) {

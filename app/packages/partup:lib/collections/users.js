@@ -484,6 +484,32 @@ User = function(user) {
          */
         calculateApplicationIconBadgeNumber: function() {
             return 0;
+        },
+
+        /**
+         * Remove a users push notification devices which aren't coupled with existing loginTokens (anymore)
+         */
+        pruneDevices: function() {
+            var allUserHashedTokens = (mout.object.get(user, 'services.resume.loginTokens') || []);
+            allUserHashedTokens = allUserHashedTokens.map(function(o) {
+                    return o.hashedToken;
+                });
+
+            var uuidsOfDevicesToBeRemoved = user.push_notification_devices.filter(function(device) {
+                return !device.loginToken || !mout.array.contains(allUserHashedTokens, device.loginToken);
+            }).map(function(device) {
+                return device.uuid;
+            });
+
+            Meteor.users.update({
+                _id: user._id
+            }, {
+                $pull: {
+                    'push_notification_devices': {
+                        'uuid': {$in: uuidsOfDevicesToBeRemoved}
+                    }
+                }
+            });
         }
     };
 };

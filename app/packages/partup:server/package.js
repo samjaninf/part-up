@@ -30,7 +30,8 @@ Package.onUse(function(api) {
         'random',
         'peerlibrary:aws-sdk',
         'simple:rest',
-        'simple:json-routes'
+        'simple:json-routes',
+        '3stack:accounts-logout-hook'
     ], ['server']);
 
     api.addFiles([

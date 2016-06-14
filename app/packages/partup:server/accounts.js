@@ -34,6 +34,13 @@ Accounts.onLogin(function(data) {
     });
 });
 
+Accounts.afterLogout(function(userId){
+    var user = Meteor.users.findOne(userId);
+    if (user) {
+        User(user).pruneDevices();
+    }
+});
+
 var defaultEmailObject = {
     dailydigest: true,
     upper_mentioned_in_partup: true,

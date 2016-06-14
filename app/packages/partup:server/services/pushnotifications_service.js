@@ -1,7 +1,6 @@
 'use strict';
 
 var apn = Npm.require('apn'); // Apple Push Notification
-var gcm = Npm.require('gcm'); // Google Cloud Messaging
 
 var sendApnNotification;
 var sendGcmNotification;
@@ -22,7 +21,9 @@ Meteor.startup(function() {
 
             note.badge = badge;
             note.alert = message;
-            note.payload = payload;
+            note.payload = {
+                payload: JSON.stringify(payload)
+            };
 
             apnConnection.pushNotification(note, apnDevice);
         };
@@ -32,31 +33,20 @@ Meteor.startup(function() {
      * Google Cloud Messaging
      */
     if (process.env.PUSH_GOOGLE_GCM_API) {
-        var gcmConnection = new gcm.GCM(
-            process.env.PUSH_GOOGLE_GCM_API
-        );
-
         sendGcmNotification = function(device, user, message, payload, collapseKey) {
-            var note = {
-                registration_id: device.registration_id,
-                'data.title': 'Part-up',
-                'data.body': message
-            };
-
-            if (collapseKey) {
-                note.collapse_key = collapseKey;
-            }
-
-
-            // _.forOwn(payload || {}, function(val, key) {
-            //     note['data.' + key] = val;
-            // });
-
-            gcmConnection.send(note, function(err, messageId) {
-                if (err) {
-                    console.log(err);
+            HTTP.call('POST', 'https://android.googleapis.com/gcm/send', {
+                headers: {
+                    'Authorization': 'key=' + process.env.PUSH_GOOGLE_GCM_API,
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    registration_ids: [device.registration_id],
+                    data: mout.object.mixIn({}, {
+                        title: 'Part-up',
+                        body: message,
+                        payload: JSON.stringify(payload)
+                    })
                 }
-                console.log("sent message with ID: ", messageId);
             });
         };
     }

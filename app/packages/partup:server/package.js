@@ -229,7 +229,6 @@ Npm.depends({
     'winston': '0.9.0',
     'gm': '1.20.0',
     'apn': '1.7.5',
-    'gcm': '1.0.1',
     'moment': '2.13.0',
     'part-up-js-models': 'git://github.com/part-up/js-models.git#1.0.0'
 });

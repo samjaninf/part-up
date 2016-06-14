@@ -1,0 +1,42 @@
+<template name="ChatGroupSidebar">
+    <aside class="pu-sidebar">
+        <section>
+            <div class="pu-sidebar-wrap" data-preventscroll>
+                <section>
+                    <div class="pu-search pu-clearinput">
+                        <input type="text" placeholder="{{_ 'pages-app-network-chat-search-input-placeholder'}}" class="pu-input form-control" data-search>
+                        {{#if data.searchValue}}
+                            <i class="picon-times" data-clear></i>
+                        {{/if}}
+                        <i class="picon-search"></i>
+                    </div>
+                    {{#if data.network.isPublic}}<p>{{{_ 'pages-app-network-chat-sidebar-text-open' }}}</p>{{/if}}
+                    {{#if data.network.isInvitational}}<p>{{{_ 'pages-app-network-chat-sidebar-text-invite' }}}</p>{{/if}}
+                    {{#if data.network.isClosed}}<p>{{{_ 'pages-app-network-chat-sidebar-text-clodes' }}}</p>{{/if}}
+                </section>
+                <section>
+                    <h2>{{_ 'pages-app-network-chat-title-activeuppers'}}</h2>
+                    {{#if data.activeUppers.count}}
+                        <ul class="pu-list pu-list-users">
+                            {{#each data.activeUppers}}
+                            <li>
+                                <a href="{{ pathFor route='profile' _id=_id}}" data-hovercontainer="HoverContainer_upper" data-hovercontainer-context="{{_id}}">
+                                    <figure class="pu-avatar pu-avatar-online" style="background-image:url('{{ partupImageUrl id=profile.image store='360x360'}}');"></figure>
+                                    <p>{{ profile.name }}</p>
+                                    {{#if state.started_typing _id}}
+                                        {{#unless partupEquals _id currentUserId }}
+                                            {{> ChatTypingIndicator}}
+                                        {{/unless}}
+                                    {{/if}}
+                                </a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                    {{else}}
+                        <p>{{_ 'pages-app-network-chat-activeuppers-label' }}</p>
+                    {{/if}}
+                </section>
+            </div>
+        </section>
+    </aside>
+</template>

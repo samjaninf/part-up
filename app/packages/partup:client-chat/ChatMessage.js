@@ -1,7 +1,6 @@
 Template.ChatMessage.onCreated(function() {
     var template = this;
     template.subscribe('users.one', template.data.data.creator_id);
-    template.highlight = template.data.highlight;
 });
 
 Template.ChatMessage.onRendered(function() {
@@ -20,6 +19,9 @@ Template.ChatMessage.helpers({
             messages: function() {
                 data.messages[0].creator = user;
                 return data.messages;
+            },
+            highlight: function() {
+                return template.data.highlight.get() || '';
             }
         };
     },

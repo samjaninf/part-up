@@ -27,9 +27,8 @@ Template.registerHelper('partupAutolink', function(text) {
     return jaja;
 });
 
-Template.registerHelper('partupHighlight', function(message) {
-    var template = Template.instance();
-    var text = template.highlight.get();
+Template.registerHelper('partupHighlight', function(message, highlightText) {
+    var text = highlightText;
     if (!text.length) return message;
     var highlight = Partup.client.sanitize(text);
     var description = message || '';

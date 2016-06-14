@@ -125,3 +125,4 @@ es5-shim
 partup:client-network-chat
 anonyfox:scrape
 standard-minifiers-js
+partup:client-chat

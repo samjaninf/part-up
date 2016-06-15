@@ -196,7 +196,7 @@ Template.ChatView.onCreated(function() {
             var offsetTop = elm.position().top;
             var bottomOffsetTop = offsetTop + elm.outerHeight(true);
 
-            if (offsetTop < 25 && bottomOffsetTop > 68) {
+            if (offsetTop < 5 && bottomOffsetTop > 48) {
                 imageId = elm.attr('data-message-user-image-id');
                 userId = elm.attr('data-message-user-id');
                 var avatar = Images.findOne({_id: imageId});
@@ -314,7 +314,7 @@ Template.ChatView.helpers({
         var template = Template.instance();
         return {
             messagesGroupedByDelay: function(messages) {
-                return Partup.client.chatmessages.groupByDelay(messages, {seconds: 20});
+                return Partup.client.chatmessages.groupByDelay(messages, {seconds: 120});
             },
             messagesGroupedByDay: function(messages) {
                 return Partup.client.chatmessages.groupByCreationDay(messages);

@@ -1,0 +1,25 @@
+<template name="DropdownMenu">
+    <button class="pu-button pu-button-header {{# unless partupResponsive }}pu-button-header-desktop{{/ unless }}" data-toggle-menu="menu">
+        Menu
+    </button>
+    <div class="pu-dropdown {{#if menuOpen}}pu-dropdown-active{{/if}}" data-clickoutside-close>
+        <ul class="pu-list">
+            <li class="pu-dropdownitem"><a href="{{_ 'footer-menu-company-about-url' }}">{{_ 'footer-menu-company-about'}}</a></li>
+            <li class="pu-dropdownitem"><a href="{{_ 'footer-menu-company-community-url'}}">{{_ 'footer-menu-company-community'}}</a></li>
+            <li class="pu-dropdownitem"><a href="{{_ 'footer-menu-company-pricing-url'}}">{{_ 'footer-menu-company-pricing'}}</a></li>
+            <li class="pu-dropdownitem"><a href="{{_ 'footer-menu-company-help-url' }}" target="_blank">{{_ 'footer-menu-company-help'}}</a></li>
+            <li class="pu-dropdownitem"><a href="{{_ 'footer-menu-company-blog-url' }}" target="_blank">{{_ 'footer-menu-company-blog'}}</a></li>
+            <li class="pu-dropdownitem"><a href="{{_ 'footer-menu-company-contact-url'}}">{{_ 'footer-menu-company-contact'}}</a></li>
+        </ul>
+        <ul class="pu-list">
+            <li class="pu-dropdownitem"><a href="{{_ 'footer-menu-social-twitter-url' }}" target="_blank">{{_ 'footer-menu-social-twitter'}}</a></li>
+            <li class="pu-dropdownitem"><a href="{{_ 'footer-menu-social-facebook-url' }}" target="_blank">{{_ 'footer-menu-social-facebook'}}</a></li>
+            <li class="pu-dropdownitem"><a href="{{_ 'footer-menu-social-youtube-url' }}" target="_blank">{{_ 'footer-menu-social-youtube'}}</a></li>
+            <li class="pu-dropdownitem"><a href="{{_ 'footer-menu-social-googleplus-url' }}" target="_blank">{{_ 'footer-menu-social-googleplus'}}</a></li>
+            <li class="pu-dropdownitem"><a href="{{_ 'footer-menu-social-linkedin-url' }}" target="_blank">{{_ 'footer-menu-social-linkedin'}}</a></li>
+        </ul>
+        <ul class="pu-list">
+            <li class="dropdownitem"><a class="pu-button" href="#" data-feedback>{{_ 'footer-feedback-button' }}</a></li>
+        </ul>
+    </div>
+</template>

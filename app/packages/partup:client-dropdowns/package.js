@@ -57,6 +57,9 @@ Package.onUse(function(api) {
         'chats/notification/chat-notification.html',
         'chats/notification/chat-notification.js',
 
+        'menu/menu.html',
+        'menu/menu.js',
+
         'profile/profile.html',
         'profile/profile.js',
 

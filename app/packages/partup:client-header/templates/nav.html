@@ -1,6 +1,9 @@
 <template name="Header_nav">
     <ul class="pu-list pu-list-horizontal">
         <li>
+            {{> DropdownMenu }}
+        </li>
+        <li>
             <a href="{{ pathFor 'discover' }}" class="pu-button pu-button-header {{# unless partupResponsive }}pu-button-header-desktop{{/ unless }}">
                 {{# if isMobile }}
                     {{_ 'header-mobile-discover' }}

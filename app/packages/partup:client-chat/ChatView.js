@@ -1,7 +1,7 @@
 Template.ChatView.onCreated(function() {
     var template = this;
     var chatId = template.data.config.chatId;
-
+    if (!chatId) throw "No chatId was provided";
     template.stickyAvatar = new ReactiveVar(undefined);
     template.initialized = new ReactiveVar(false);
     template.rendered = new ReactiveVar(false);
@@ -100,18 +100,6 @@ Template.ChatView.onCreated(function() {
     template.delayedHideLine = function(delay) {
         if (template.hideTimeout) clearTimeout(template.hideTimeout);
         template.hideTimeout = setTimeout(template.hideLine, delay);
-    };
-
-    template.stickyNewMessagesDividerHandler = function(hideWhenViewed) {
-        if ($('[data-new-messages-divider]')[0]) {
-            var overscroll = $('[data-new-messages-divider]').position().top < 0;
-            var underscroll = $('[data-new-messages-divider]').position().top > (template.scrollContainer[0].clientHeight - $('[data-new-messages-divider]').outerHeight(true));
-            template.overscroll.set(overscroll);
-            template.underscroll.set(underscroll);
-            if (!overscroll && hideWhenViewed) {
-                template.delayedHideLine(1000);
-            }
-        }
     };
 
     template.windowFocusHandler = function(event) {

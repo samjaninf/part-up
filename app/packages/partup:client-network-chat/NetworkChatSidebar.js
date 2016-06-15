@@ -32,6 +32,7 @@ Template.NetworkChatSidebar.helpers({
     }
 });
 Template.NetworkChatSidebar.events({
+    'DOMMouseScroll [data-preventscroll], mousewheel [data-preventscroll]': Partup.client.scroll.preventScrollPropagation,
     'input [data-search]': function(event, template) {
         template.data.config.onSearch(event.currentTarget.value);
         template.searchValue.set(event.currentTarget.value);

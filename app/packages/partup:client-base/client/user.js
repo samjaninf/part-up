@@ -7,7 +7,7 @@
 
 Partup.client.user = {
     logout: function() {
-        Intercom('shutdown');
+        if (Intercom) Intercom('shutdown');
         Meteor.logout();
     }
 };

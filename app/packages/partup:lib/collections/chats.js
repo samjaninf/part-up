@@ -135,7 +135,8 @@ Chats = new Mongo.Collection('chats', {
 Chats.findForUser = function(userId, parameters, options) {
     options = options || {};
     parameters = parameters || {};
-    var user = Meteor.users.findOneOrFail(userId);
+    var user = Meteor.users.findOne(userId);
+    if (!user) return;
     var chatIds = [];
 
     if (parameters.private) {

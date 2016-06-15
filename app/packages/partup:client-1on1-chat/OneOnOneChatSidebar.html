@@ -3,7 +3,7 @@
         <div class="pu-sidebar-wrap" data-preventscroll>
             <section>
                 <div class="pu-search pu-clearinput">
-                    <input type="text" placeholder="{{_ 'pages-app-network-chat-search-input-placeholder'}}" class="pu-input form-control" data-search>
+                    <input type="text" placeholder="Search an upper to chat with" class="pu-input form-control" data-search>
                     {{#if data.searchValue}}
                         <i class="picon-times" data-clear></i>
                     {{/if}}
@@ -12,11 +12,21 @@
             </section>
             <section>
                 <ul class="pu-list pu-list-users">
+                    {{#if data.searchResults }}
+                    {{#each data.searchResults}}
+                        <li>
+                            <button data-start="{{ _id }}">
+                                <figure class="pu-avatar {{#if status.online}}pu-avatar-online{{else}}pu-avatar-offline{{/if}}" style="background-image:url('{{ partupImageObjectUrl object=embeddedImage store='360x360'}}');"></figure>
+                                <p>{{ profile.name }}</p>
+                            </button>
+                        </li>
+                    {{/each}}
+                    {{else}}
                     {{#each data.chats}}
                         <li>
-                            <button>
-                                <figure class="pu-avatar pu-avatar-online" style="background-image:url('{{ partupImageUrl id=profile.image store='360x360'}}');"></figure>
-                                <p>jaja</p>
+                            <button data-initialize="{{ _id }}">
+                                <figure class="pu-avatar {{#if upper.status.online}}pu-avatar-online{{else}}pu-avatar-offline{{/if}}" style="background-image:url('{{ partupImageUrl id=upper.profile.image store='360x360'}}');"></figure>
+                                <p>{{ upper.profile.name }}</p>
                                 <!-- {{#if state.started_typing _id}}
                                     {{#unless partupEquals _id currentUserId }}
                                         {{> ChatTypingIndicator}}
@@ -25,6 +35,7 @@
                             </button>
                         </li>
                     {{/each}}
+                    {{/if}}
                 </ul>
             </section>
         </div>

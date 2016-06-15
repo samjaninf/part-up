@@ -1,7 +1,5 @@
-Template.ChatBar.onCreated(function() {
+var continueOnCreated = function(chatId) {
     var template = this;
-    var chatId = template.data.config.chatId;
-
     template.clearMessageInput = function() {
         $('[data-messageinput]')[0].value = '';
     };
@@ -41,6 +39,17 @@ Template.ChatBar.onCreated(function() {
             Partup.client.chat.onNewMessageRender(Partup.client.chat.instantlyScrollToBottom);
         });
     };
+};
+
+Template.ChatBar.onCreated(function() {
+    var template = this;
+
+    template.autorun(function(c) {
+        if (template.data.config.chatId) c.stop();
+        var chatId = template.data.config.chatId ? template.data.config.chatId : template.data.config.reactiveChatId.get();
+
+        Tracker.nonreactive(continueOnCreated.bind(template, chatId));
+    });
 });
 
 Template.ChatBar.events({

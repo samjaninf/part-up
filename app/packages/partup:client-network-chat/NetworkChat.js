@@ -126,7 +126,6 @@ Template.NetworkChat.helpers({
             messageView: function() {
                 return {
                     chatId: network.chat_id,
-                    onSearch: template.throttledSetSearchQuery,
                     onScrollTop: template.loadOlderMessages,
                     onNewMessagesViewed: template.resetUnreadMessagesIndicatorBadge,
                     reactiveMessages: template.reactiveMessages,

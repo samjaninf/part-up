@@ -9,10 +9,59 @@ Template.OneOnOneChat.onCreated(function() {
         }
     });
 
-    var searchUser = function(query) {
-        console.log(query);
+    template.startNewChat = function(userId) {
+        Meteor.call('chats.start_with_users', [userId], function(err, chat_id) {
+            if (err) return Partup.client.notify.error('nope');
+            template.initializeChat(chat_id);
+        });
     };
-    template.throttledSearchUser = _.throttle(searchUser, 500, {trailing: true});
+
+    var currentChatId = undefined;
+    template.activeChatSubscription = undefined;
+    template.activeChatSubscriptionReady = new ReactiveVar(false);
+    template.initializeChat = function(chatId) {
+        if (template.activeChatSubscription) {
+            template.activeChatSubscription.stop();
+            template.activeChatSubscriptionReady.set(false);
+        }
+        template.activeChatSubscription = template.subscribe('chats.by_id', chatId, {}, {
+            onReady: function() {
+                startMessageCollector(chatId);
+                template.activeChatSubscriptionReady.set(true);
+            }
+        });
+    };
+
+    var localChatMessagesCollection = [];
+    template.reactiveMessages = new ReactiveVar([]);
+    var startMessageCollector = function(chat_id) {
+        // reset
+        currentChatId = chat_id;
+        localChatMessagesCollection = [];
+        template.reactiveMessages.set([]);
+        template.activeChat.set(chat_id);
+
+        // gets chatmessages and stores them in localChatMessagesCollection
+        template.autorun(function(computation) {
+            if (chat_id !== currentChatId) return computation.stop();
+
+            // var limit = template.messageLimit.get();
+            var messages = ChatMessages
+                .find({chat_id: chat_id}, {limit: 100, sort: {created_at: 1}})
+                .fetch();
+
+            // store messages locally and filter out duplicates
+            localChatMessagesCollection = localChatMessagesCollection.concat(messages);
+            localChatMessagesCollection = mout.array.unique(localChatMessagesCollection, function(message1, message2) {
+                return message1._id === message2._id;
+            });
+
+            // wrapped in nonreactive to prevent unnecessary autorun
+            Tracker.nonreactive(function() {
+                template.reactiveMessages.set(localChatMessagesCollection);
+            });
+        });
+    };
 });
 
 Template.OneOnOneChat.helpers({
@@ -20,7 +69,7 @@ Template.OneOnOneChat.helpers({
         var template = Template.instance();
         return {
             activeChat: function() {
-                return template.activeChat.get();
+                return template.activeChatSubscriptionReady.get();
             }
         };
     },
@@ -34,15 +83,26 @@ Template.OneOnOneChat.helpers({
     },
     config: function() {
         var template = Template.instance();
+        var chatId = template.activeChat.get();
         return {
             sideBar: function() {
                 return {
-                    onSearch: template.throttledSearchUser
+                    onStartChat: template.startNewChat,
+                    onInitializeChat: template.initializeChat
                 };
             },
             bottomBar: function() {
                 return {
-                    // chatId: network.chat_id
+                    reactiveChatId: template.activeChat
+                };
+            },
+            messageView: function() {
+                return {
+                    chatId: chatId,
+                    onScrollTop: lodash.noop,
+                    onNewMessagesViewed: lodash.noop,
+                    reactiveMessages: template.reactiveMessages,
+                    reactiveHighlight:  new ReactiveVar('')
                 };
             }
         };

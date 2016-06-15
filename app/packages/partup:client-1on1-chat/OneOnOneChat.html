@@ -9,7 +9,9 @@
                     {{> ChatView config=config.messageView }}
                     {{> ChatBar config=config.bottomBar }}
                 {{else}}
-                    <article class="pu-chat-wrapper"></article>
+                    <article class="pu-chat-wrapper">
+                        {{> Spinner}}
+                    </article>
                     <footer></footer>
                 {{/if}}
             </main>

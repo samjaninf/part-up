@@ -178,7 +178,11 @@ Package.onUse(function(api) {
             'app/content_pages/pricing/pricing.html',
             'app/content_pages/pricing/pricing.js',
             'app/content_pages/pricing/partials/product.html',
-            'app/content_pages/pricing/partials/product.js'
+            'app/content_pages/pricing/partials/product.js',
+
+            // app chat
+            'app/chat/chat.html',
+            'app/chat/chat.js'
         ],
         modal: [
             //no connection

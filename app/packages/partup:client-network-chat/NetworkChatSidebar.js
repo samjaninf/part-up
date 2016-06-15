@@ -1,8 +1,8 @@
-Template.ChatGroupSidebar.onCreated(function() {
+Template.NetworkChatSidebar.onCreated(function() {
     var template = this;
     template.searchValue = new ReactiveVar(undefined);
 });
-Template.ChatGroupSidebar.helpers({
+Template.NetworkChatSidebar.helpers({
     data: function() {
         var template = Template.instance();
         var network = Networks.findOne({slug: template.data.config.networkSlug});
@@ -31,7 +31,7 @@ Template.ChatGroupSidebar.helpers({
         };
     }
 });
-Template.ChatGroupSidebar.events({
+Template.NetworkChatSidebar.events({
     'input [data-search]': function(event, template) {
         template.data.config.onSearch(event.currentTarget.value);
         template.searchValue.set(event.currentTarget.value);
@@ -42,6 +42,7 @@ Template.ChatGroupSidebar.events({
         $('[data-search]').val('');
         _.defer(function() {
             template.data.config.onSearch('');
+            template.searchValue.set('');
             $('[data-search]').blur();
         });
     }

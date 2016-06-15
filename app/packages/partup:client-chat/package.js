@@ -22,8 +22,6 @@ Package.onUse(function(api) {
         'ChatMessage.js',
         'ChatBar.html',
         'ChatBar.js',
-        'ChatGroupSidebar.html',
-        'ChatGroupSidebar.js',
         'ChatTypingIndicator.html'
     ], 'client');
 

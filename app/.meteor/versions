@@ -112,6 +112,7 @@ oauth2@1.1.9
 observe-sequence@1.0.11
 okgrow:analytics@1.0.6
 ordered-dict@1.0.7
+partup:client-1on1-chat@0.0.1
 partup:client-admin@0.0.1
 partup:client-admin-createswarm@0.0.1
 partup:client-admin-createtribe@0.0.1

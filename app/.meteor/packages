@@ -127,3 +127,4 @@ anonyfox:scrape
 standard-minifiers-js
 3stack:accounts-logout-hook
 partup:client-chat
+partup:client-1on1-chat

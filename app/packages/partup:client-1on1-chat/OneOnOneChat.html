@@ -1,0 +1,20 @@
+<template name="OneOnOneChat">
+    <div class="pu-chat">
+        {{#if state.initialized }}
+            <aside class="pu-sidebar pu-sidebar-left">
+                {{> OneOnOneChatSidebar config=config.sideBar }}
+            </aside>
+            <main class="pu-chat-main pu-chat-main-right">
+                {{#if data.activeChat }}
+                    {{> ChatView config=config.messageView }}
+                    {{> ChatBar config=config.bottomBar }}
+                {{else}}
+                    <article class="pu-chat-wrapper"></article>
+                    <footer></footer>
+                {{/if}}
+            </main>
+        {{ else }}
+            {{> Spinner}}
+        {{/if }}
+    </div>
+</template>

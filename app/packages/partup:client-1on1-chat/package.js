@@ -1,5 +1,5 @@
 Package.describe({
-    name: 'partup:client-network-chat',
+    name: 'partup:client-1on1-chat',
     version: '0.0.1',
     summary: '',
     documentation: null
@@ -16,10 +16,10 @@ Package.onUse(function(api) {
     ], 'client');
 
     api.addFiles([
-        'NetworkChat.html',
-        'NetworkChat.js',
-        'NetworkChatSidebar.html',
-        'NetworkChatSidebar.js'
+        'OneOnOneChat.html',
+        'OneOnOneChat.js',
+        'OneOnOneChatSidebar.html',
+        'OneOnOneChatSidebar.js'
     ], 'client');
 
 });

@@ -40,6 +40,8 @@
             left: 0
             z-index: 9
             pointer-events: none
+            opacity: 0
+            transition: opacity .2s
 
             .pu-avatar
                 width: 32px
@@ -60,9 +62,12 @@
             transition: opacity .2s
             position: relative
 
+        &.pu-state-active > div,
+        &.pu-state-active > .pu-sticky-user
+            opacity: 1
+
         &.pu-state-active > div
             pointer-events: auto
-            opacity: 1
 
         > .pu-textline-hover
             &:first-child

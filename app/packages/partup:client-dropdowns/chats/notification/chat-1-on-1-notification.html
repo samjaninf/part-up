@@ -1,0 +1,11 @@
+<template name="ChatOneOnOneNotification">
+    <a href="{{pathFor route='network-chat' slug=data.network.slug}}">
+        <figure class="pu-avatar pu-avatar-plain"
+            style="background-image: url('{{ partupImageUrl id=data.chat.upper.profile.image }}');">
+        </figure>
+        <article>
+            <p>{{ data.chat.upper.profile.name }} {{#if data.chat.hasUnreadMessages}}({{data.chat.unreadCount}}){{/if}}</p>
+            <time>{{ data.chat.message.content }}</time>
+        </article>
+    </a>
+</template>

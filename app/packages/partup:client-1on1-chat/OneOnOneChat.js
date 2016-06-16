@@ -21,6 +21,7 @@ Template.OneOnOneChat.onCreated(function() {
     template.activeChatSubscription = undefined;
     template.activeChatSubscriptionReady = new ReactiveVar(false);
     template.initializeChat = function(chatId, person) {
+        template.activeChat.set(chatId);
         template.activeChatSubscriptionReady.set(false);
         template.activeChatSubscription = template.subscribe('chats.by_id', chatId, {limit: 50}, {
             onReady: function() {
@@ -37,7 +38,6 @@ Template.OneOnOneChat.onCreated(function() {
         // reset
         currentChatId = chat_id;
         localChatMessagesCollection = [];
-        template.activeChat.set(chat_id);
 
         // gets chatmessages and stores them in localChatMessagesCollection
         template.autorun(function(computation) {
@@ -89,7 +89,8 @@ Template.OneOnOneChat.helpers({
             sideBar: function() {
                 return {
                     onStartChat: template.startNewChat,
-                    onInitializeChat: template.initializeChat
+                    onInitializeChat: template.initializeChat,
+                    reactiveActiveChat: template.activeChat
                 };
             },
             bottomBar: function() {

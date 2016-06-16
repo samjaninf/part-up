@@ -23,11 +23,19 @@ Template.OneOnOneChatSidebar.helpers({
         return {
             chats: function() {
                 if (!user.chats.length) return [];
-                return Chats
-                    .find({_id: {$in: user.chats}})
+
+                return Chats.find({_id: {$in: user.chats}}, {sort: {updated_at: -1}})
                     .map(function(chat) {
                         chat.upper = Meteor.users
                             .findOne({_id: {$nin: [user._id]}, chats: {$in: [chat._id]}});
+
+                        var message = ChatMessages.findOne({chat_id: chat._id}, {sort: {created_at: -1}, limit: 1});
+                        if (message) {
+                            chat.hasMessages = true;
+                            chat.messagesHaveBeenSeen = message.isSeenByUpper(user._id);
+                            chat.messagesHaveBeenRead = !chat.hasUnreadMessages();
+                            chat.message = message;
+                        }
                         return chat;
                     });
             },
@@ -36,6 +44,14 @@ Template.OneOnOneChatSidebar.helpers({
             },
             searchResults: function() {
                 return template.searchResults.get();
+            }
+        };
+    },
+    state: function() {
+        var template = Template.instance();
+        return {
+            activeChat: function() {
+                return template.data.config.reactiveActiveChat.get();
             }
         };
     }

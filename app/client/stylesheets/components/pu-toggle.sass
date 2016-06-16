@@ -1,0 +1,26 @@
+.pu-toggle
+    display: block
+    border: 2px solid #eee
+    background-color: #eee
+    border-radius: 4px
+    overflow: hidden
+    font-size: 0
+
+    button
+        display: inline-block
+        background-color: transparent
+        border: 0
+        width: calc(50% - 1px)
+        font-size: 14px
+        padding: 10px 20px
+        font-family: $font-primary
+        outline: none
+        font-weight: bold
+        color: lighten($color-text, 10%)
+
+        &:first-child
+            margin-right: 2px
+
+        &.pu-state-active
+            color: $color-text
+            background-color: #fff

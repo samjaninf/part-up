@@ -88,6 +88,21 @@
             &:hover
                 text-decoration: underline
 
+    &-slim
+        .pu-sidebar-wrap
+            > section
+                padding: 0
+
+            > .pu-sidebar-search
+                padding: 20px
+                border-bottom: 2px solid #eee
+
+                .pu-search > input.pu-input
+                    margin-bottom: 0
+
+                &:after
+                    display: none
+
     @media screen and (min-width: ($breakpoint-desktop + 50px))
         .pu-sidebar-wrap,
         .pu-sub-partupdetail-right

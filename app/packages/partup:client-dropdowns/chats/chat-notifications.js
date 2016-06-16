@@ -1,12 +1,13 @@
 Template.DropdownChatNotifications.onCreated(function() {
     var template = this;
+    template.private = new ReactiveVar(true);
     template.dropdownOpen = new ReactiveVar(false, function(a, b) {
         if (a === b || b) return;
         var messages = ChatMessages.find({seen_by: {$nin: [Meteor.userId()]}}).forEach(function(message) {
             Meteor.call('chatmessages.seen', message._id);
         });
     });
-    template.subscribe('chats.for_loggedin_user', {networks: true}, {});
+    template.subscribe('chats.for_loggedin_user', {networks: true, private: true}, {});
 });
 Template.DropdownChatNotifications.onRendered(function() {
     var template = this;
@@ -27,6 +28,14 @@ Template.DropdownChatNotifications.events({
     'click [data-toggle-menu]': ClientDropdowns.dropdownClickHandler,
     'click [data-notification]': function(event, template) {
         template.dropdownOpen.set(false);
+    },
+    'click [data-private]': function(event, template) {
+        event.preventDefault();
+        template.private.set(true);
+    },
+    'click [data-network]': function(event, template) {
+        event.preventDefault();
+        template.private.set(false);
     }
 });
 
@@ -37,20 +46,35 @@ Template.DropdownChatNotifications.helpers({
     reactiveDropdownOpen: function() {
         return Template.instance().dropdownOpen;
     },
+    private: function() {
+        return Template.instance().private.get();
+    },
     data: function() {
+        var template = Template.instance();
+        var private = template.private.get();
         var userId = Meteor.userId();
-        var chats = Chats.find({}, {fields: {_id: 1, counter: 1}, sort: {updated_at: -1}})
+        var user = Meteor.user();
+        var chats = Chats.findForUser(userId, {networks: !private, private: private}, {fields: {_id: 1, counter: 1}, sort: {updated_at: -1}})
             .map(function(chat) {
+                if (private) {
+                    chat.upper = Meteor.users
+                        .findOne({_id: {$nin: [user._id]}, chats: {$in: [chat._id]}});
+                }
                 var message = ChatMessages.findOne({chat_id: chat._id}, {sort: {created_at: -1}, limit: 1});
                 if (message) {
                     chat.hasMessages = true;
                     chat.messagesHaveBeenSeen = message.isSeenByUpper(userId);
                     chat.messagesHaveBeenRead = !chat.hasUnreadMessages();
+                    chat.message = message;
                 }
                 return chat;
             })
             .filter(function(chat) {
-                return !!chat.hasMessages;
+                if(!private) {
+                    return !!chat.hasMessages;
+                } else {
+                    return true;
+                }
             });
 
         return {

@@ -5,5 +5,11 @@
     "footer-menu-button-label": "More",
     "pages-app-network-chat-empty-placeholder": "No messages yet",
     "pages-one-on-one-chat-empty-placeholder": "Send a message to __person__",
-    "pages-one-on-one-chat-noselect-placeholder": "Select a person to chat with"
+    "pages-one-on-one-chat-noselect-placeholder": "Select a person to chat with",
+    "pages-one-on-one-chat-sidebar-search-placeholder": "No uppers found",
+    "pages-one-on-one-chat-sidebar-message-placeholder": "empty",
+    "dropdowns-chat-notifications-placeholder-nonotifications": "You don't have any chats yet",
+    "dropdowns-chat-notifications-button-loadmore": "Show more",
+    "dropdowns-chat-notifications-toggle-one-on-one": "Personal chat",
+    "dropdowns-chat-notifications-toggle-network": "Tribe chat"
 }

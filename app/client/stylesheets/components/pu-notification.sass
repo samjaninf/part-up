@@ -7,13 +7,21 @@
     border-bottom: 2px solid $color-border-light
     overflow: hidden
 
-    a
+    a,
+    button
+        font-size: 15px
+        font-family: $font-primary
         text-decoration: none
         padding: 20px 20px 10px
         display: block
         transition: background-color $animation-duration
         line-height: 0
         color: $color-text-secondary
+        text-align: left
+        width: 100%
+        border: 0
+        background-color: transparent
+        outline: none
 
         &:hover,
         &:active,
@@ -76,3 +84,37 @@
 
         &:after
             display: none
+    &-slim
+        article
+            max-width: 255px
+            width: 100%
+
+    &-chat
+        article
+            time
+                padding: 0
+                color: $color-text-subtle
+                font-size: 12px
+                float: right
+                width: auto
+
+            span
+                padding: 2px 0px 7px 0px
+                color: $color-text-subtle
+                font-size: 14px
+                line-height: 1.2em
+                width: 100%
+                float: left
+                white-space: nowrap
+                overflow: hidden
+                text-overflow: ellipsis
+
+    &-active
+        background-color: #fff
+        a,button
+            background-color: #fff
+            &:hover,
+            &:active,
+            &:focus
+                background-color: #fff
+                color: $color-text

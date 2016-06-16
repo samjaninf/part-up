@@ -6,11 +6,23 @@
         {{ label }}
     </button>
     <div class="pu-dropdown pu-dropdown-notifications {{#if menuOpen}}pu-dropdown-active{{/if}} pu-dropdown-notifications-nobutton" data-clickoutside-close>
+        <header>
+            <div class="pu-toggle">
+                <button class="{{#if private}}pu-state-active{{/if}}" data-private>{{_ 'dropdowns-chat-notifications-toggle-one-on-one'}}</button>
+                <button class="{{#unless private}}pu-state-active{{/unless}}" data-network>{{_ 'dropdowns-chat-notifications-toggle-network'}}</button>
+            </div>
+        </header>
         <ul data-preventscroll>
             {{#each data.chats}}
-                <li class="pu-notification {{#if messagesHaveBeenSeen }}pu-notification-viewed{{/if}} {{#if messagesHaveBeenRead}}pu-notification-clicked{{/if}}" data-notification="{{ _id }}">
-                    {{> ChatNotification chat=. }}
-                </li>
+                {{#if private}}
+                    <li class="pu-notification {{#if messagesHaveBeenSeen }}pu-notification-viewed{{/if}} {{#if messagesHaveBeenRead}}pu-notification-clicked{{/if}}" data-notification="{{ _id }}">
+                        {{> ChatOneOnOneNotification chat=. }}
+                    </li>
+                {{else}}
+                    <li class="pu-notification {{#if messagesHaveBeenSeen }}pu-notification-viewed{{/if}} {{#if messagesHaveBeenRead}}pu-notification-clicked{{/if}}" data-notification="{{ _id }}">
+                        {{> ChatGroupNotification chat=. }}
+                    </li>
+                {{/if}}
             {{else}}
                 <li class="pu-notification pu-notification-empty">
                     <p>{{_ 'dropdowns-notifications-placeholder-nonotifications'}}</p>
@@ -22,11 +34,5 @@
                 </li>
             {{/if}}
         </ul>
-        {{#if false}}
-            <!-- disabled untill implementation -->
-            <footer>
-                <!-- <a href="{{ pathFor route="profile-settings" _id="" }}">{{_ 'dropdowns-notifications-button-managenotifications'}}</a> -->
-            </footer>
-        {{/if}}
     </div>
 </template>

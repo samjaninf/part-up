@@ -117,6 +117,12 @@ Meteor.methods({
             userIds.unshift(user._id);
             Meteor.users.update({_id: {$in: userIds}}, {$push: {chats: chatId}}, {multi: true});
 
+            // Add users to chat counter
+            var chat = Chats.findOneOrFail(chatId);
+            userIds.forEach(function(userId) {
+                chat.addUserToCounter(userId);
+            });
+
             return chatId;
         } catch (error) {
             Log.error(error);

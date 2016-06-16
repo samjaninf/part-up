@@ -131,6 +131,42 @@
         &.pu-dropdown-active
             max-height: 500px
 
+    &-simple
+        top: 60px
+        border: 0
+        border-top-right-radius: 0
+        box-shadow: 0 2px 5px rgba(#000, 0.1)
+        padding-top: 0
+        padding-bottom: 0
+        overflow: scroll
+        ul
+            padding-top: 20px
+            padding-bottom: 20px
+            position: relative
+
+            &:after
+                content: ''
+                display: block
+                position: absolute
+                height: 2px
+                width: 60px
+                background-color: #eee
+                bottom: 0
+                left: 0
+
+            li a
+                padding: 10px 30px
+                text-decoration: none
+                color: $color-text
+                display: block
+                transition: background-color .2s
+                &:hover
+                    background-color: #f9f9f9
+
+            &:last-child
+                &:after
+                    display: none
+
     &-active
         opacity: 1
         transform: translateY(0px)

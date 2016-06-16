@@ -24,7 +24,7 @@
                     {{else}}
                     {{#each data.chats}}
                         <li>
-                            <button data-initialize="{{ _id }}">
+                            <button data-initialize="{{ _id }}" data-person="{{ upper._id }}">
                                 <figure class="pu-avatar {{#if upper.status.online}}pu-avatar-online{{else}}pu-avatar-offline{{/if}}" style="background-image:url('{{ partupImageUrl id=upper.profile.image store='360x360'}}');"></figure>
                                 <p>{{ upper.profile.name }}</p>
                                 <!-- {{#if state.started_typing _id}}

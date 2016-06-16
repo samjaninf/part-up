@@ -64,6 +64,8 @@ Template.OneOnOneChatSidebar.events({
     'click [data-initialize]': function(event, template) {
         event.preventDefault();
         var chatId = $(event.currentTarget).data('initialize');
-        template.data.config.onInitializeChat(chatId);
+        var person = $(event.currentTarget).data('person');
+        template.data.config.onInitializeChat(chatId, Meteor.users.findOne(person));
+        template.throttledSearchUser('');
     }
 });

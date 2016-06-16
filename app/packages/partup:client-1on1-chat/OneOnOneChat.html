@@ -7,13 +7,18 @@
             <main class="pu-chat-main pu-chat-main-right">
                 {{#if data.activeChat }}
                     {{> ChatView config=config.messageView }}
-                    {{> ChatBar config=config.bottomBar }}
                 {{else}}
                     <article class="pu-chat-wrapper">
-                        {{> Spinner}}
+                        <p class="pu-chat-placeholder">
+                            {{#if state.selectedChat }}
+                                {{> Spinner type='large' color="gray"}}
+                            {{else}}
+                                <span>{{_ 'pages-one-on-one-chat-noselect-placeholder'}}</span>
+                            {{/if}}
+                        </p>
                     </article>
-                    <footer></footer>
                 {{/if}}
+                {{> ChatBar config=config.bottomBar }}
             </main>
         {{ else }}
             {{> Spinner}}

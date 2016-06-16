@@ -7,6 +7,7 @@ Template.ChatView.onCreated(function() {
     template.rendered = new ReactiveVar(false);
     template.overscroll = new ReactiveVar(false);
     template.underscroll = new ReactiveVar(false);
+    template.chatEmpty = new ReactiveVar(false);
     template.oldestUnreadMessage = new ReactiveVar(undefined);
     template.userIsAtScrollBottom = true;
     template.focussed = true;
@@ -14,9 +15,7 @@ Template.ChatView.onCreated(function() {
     template.init = function() {
         Partup.client.chat.initialize(template);
         start();
-        Meteor.setTimeout(function() {
-            template.initialized.set(true);
-        }, 1000);
+        template.initialized.set(true);
     };
 
     var handleNewMessagesViewedIfMessageDividerIsOnScreen = function() {
@@ -248,6 +247,7 @@ Template.ChatView.onCreated(function() {
             var messages = template.data.config.reactiveMessages.get();
             Tracker.nonreactive(function() {
                 template.newMessagesDividerHandler(messages);
+                template.chatEmpty.set(!messages.length);
             });
         });
 
@@ -285,8 +285,8 @@ Template.ChatView.onRendered(function() {
         template.scrollContainer[0].scrollTop = template.scrollContainer[0].scrollHeight;
         Meteor.setTimeout(function() {
             template.rendered.set(true);
-        }, 150);
-    }, 100);
+        }, 10);
+    }, 10);
     template.init();
 });
 
@@ -353,6 +353,12 @@ Template.ChatView.helpers({
             underscroll: function() {
                 return template.underscroll.get();
             },
+            chatEmpty: function() {
+                return template.chatEmpty.get();
+            },
+            placeholderText: function() {
+                return template.data.config.placeholderText;
+            }
         };
     },
     handlers: function() {

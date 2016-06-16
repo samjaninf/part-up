@@ -1,5 +1,6 @@
 var continueOnCreated = function(chatId) {
     var template = this;
+    template.chatId = chatId;
     template.clearMessageInput = function() {
         $('[data-messageinput]')[0].value = '';
     };
@@ -54,10 +55,7 @@ Template.ChatBar.onCreated(function() {
 
 Template.ChatBar.events({
     'keydown [data-submit=return]': function(event, template) {
-        // var sendingMessage = template.sendingMessage.get();
-        // if (sendingMessage) {
-        //     event.preventDefault();
-        // }
+        if (!template.chatId) return;
 
         // determine keycode (with cross browser compatibility)
         var pressedKey = event.which ? event.which : event.keyCode;
@@ -72,6 +70,7 @@ Template.ChatBar.events({
         }
     },
     'click [data-send]': function(event, template) {
+        if (!template.chatId) return;
         event.preventDefault();
         template.sendMessage($('[data-messageinput]').val());
     }

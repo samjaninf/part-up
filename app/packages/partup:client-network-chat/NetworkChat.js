@@ -129,7 +129,8 @@ Template.NetworkChat.helpers({
                     onScrollTop: template.loadOlderMessages,
                     onNewMessagesViewed: template.resetUnreadMessagesIndicatorBadge,
                     reactiveMessages: template.reactiveMessages,
-                    reactiveHighlight:  template.searchQuery
+                    reactiveHighlight:  template.searchQuery,
+                    placeholderText: TAPi18n.__('pages-app-network-chat-empty-placeholder')
                 };
             },
             bottomBar: function() {

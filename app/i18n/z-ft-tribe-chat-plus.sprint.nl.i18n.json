@@ -2,5 +2,8 @@
     "header-chat": "Chats",
     "pages-app-network-chat-send-message-permission-denied": "You have to be a member of this tribe to send a message",
     "pages-app-network-chat-search-input-placeholder": "Search a message in this chat",
-    "footer-menu-button-label": "More"
+    "footer-menu-button-label": "More",
+    "pages-app-network-chat-empty-placeholder": "No messages yet",
+    "pages-one-on-one-chat-empty-placeholder": "Send a message to __person__",
+    "pages-one-on-one-chat-noselect-placeholder": "Select a person to chat with"
 }

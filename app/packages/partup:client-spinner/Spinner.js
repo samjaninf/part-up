@@ -30,6 +30,9 @@ Template.Spinner.rendered = function() {
             case 'inverted':
                 options.color = '#ffffff';
                 break;
+            case 'gray':
+                options.color = '#ccc';
+                break;
         }
     }
 

@@ -18,6 +18,11 @@
         <div data-preventscroll data-reversed-scroller>
             {{#if state.limitReached}}<p class="pu-textline pu-textline-light pu-textline-light-nostripe"><span>{{_ 'pages-app-network-chat-label-top'}}</span></p>{{/if}}
             <!-- old messages -->
+            {{#if state.chatEmpty}}
+                <p class="pu-chat-placeholder">
+                    <span>{{ state.placeholderText }}</span>
+                </p>
+            {{/if}}
             {{#each data.messagesGroupedByDay data.messages.old}}
                 <p class="pu-textline pu-textline-light">
                     <span>{{ partupDayOfWeek day }} {{ partupDateDayMonthYear day }}</span>

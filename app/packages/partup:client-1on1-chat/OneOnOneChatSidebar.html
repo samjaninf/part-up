@@ -14,12 +14,12 @@
                 <ul class="pu-list">
                     {{#if data.searchValue }}
                     {{#each data.searchResults}}
-                        <li class="pu-notification pu-notification-chat pu-notification-slim">
+                        <li class="pu-notification pu-notification-chat pu-notification-slim pu-notification-viewed pu-notification-tall">
                             <button data-start="{{ _id }}">
                                 <figure class="pu-avatar pu-avatar-middle {{#if status.online}}pu-avatar-online{{else}}pu-avatar-offline{{/if}}" style="background-image:url('{{ partupImageObjectUrl object=embeddedImage store='360x360'}}');"></figure>
                                 <article>
                                     <p>{{ profile.name }}</p>
-                                    <span>jajaja</span>
+                                    <span>{{_ 'pages-one-on-one-chat-sidebar-start-placeholder'}}</span>
                                 </article>
                             </button>
                         </li>
@@ -30,15 +30,15 @@
                     {{/each}}
                     {{else}}
                     {{#each data.chats}}
-                        <li class="pu-notification pu-notification-chat pu-notification-slim {{#if partupEquals _id state.activeChat }}pu-notification-active{{/if}} {{#if messagesHaveBeenSeen }}pu-notification-viewed{{/if}} {{#unless message }}pu-notification-viewed{{/unless}}">
+                        <li class="pu-notification pu-notification-chat pu-notification-slim pu-notification-tall {{#if partupEquals _id state.activeChat }}pu-notification-active{{/if}} {{#if messagesHaveBeenSeen }}pu-notification-viewed{{/if}} {{#unless message }}pu-notification-viewed{{/unless}}">
                             <button  data-initialize="{{ _id }}" data-person="{{ upper._id }}">
                                 <figure class="pu-avatar pu-avatar-middle {{#if upper.status.online}}pu-avatar-online{{else}}pu-avatar-offline{{/if}}" style="background-image:url('{{ partupImageUrl id=upper.profile.image store='360x360'}}');"></figure>
                                 <article>
                                     <p>{{ upper.profile.name }} {{#if hasUnreadMessages}}({{unreadCount}}){{/if}}</p>
                                     {{#if message }}
-                                        <span>{{ message.content }} <time>{{ partupDateNotification message.created_at }}</time></span>
+                                        <span><span>{{ message.content }}</span> <time>{{ partupDateNotification message.created_at }}</time></span>
                                     {{else}}
-                                        <span>{{_ 'pages-one-on-one-chat-sidebar-message-placeholder'}}</span>
+                                        <span><span>{{_ 'pages-one-on-one-chat-sidebar-message-placeholder'}}</span> <time>{{ partupDateNotification created_at }}</time></span>
                                     {{/if}}
                                 </article>
                             </button>

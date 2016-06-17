@@ -51,12 +51,12 @@ Template.DropdownChatNotifications.helpers({
     },
     data: function() {
         var template = Template.instance();
-        var private = template.private.get();
+        var getPrivate = template.private.get();
         var userId = Meteor.userId();
         var user = Meteor.user();
-        var chats = Chats.findForUser(userId, {networks: !private, private: private}, {fields: {_id: 1, counter: 1}, sort: {updated_at: -1}})
+        var chats = Chats.findForUser(userId, {networks: !getPrivate, private: getPrivate}, {fields: {_id: 1, counter: 1, created_at: 1}, sort: {updated_at: -1}})
             .map(function(chat) {
-                if (private) {
+                if (getPrivate) {
                     chat.upper = Meteor.users
                         .findOne({_id: {$nin: [user._id]}, chats: {$in: [chat._id]}});
                 }
@@ -70,7 +70,7 @@ Template.DropdownChatNotifications.helpers({
                 return chat;
             })
             .filter(function(chat) {
-                if(!private) {
+                if (!getPrivate) {
                     return !!chat.hasMessages;
                 } else {
                     return true;
@@ -84,7 +84,7 @@ Template.DropdownChatNotifications.helpers({
             allMessagesAreSeen: function() {
                 var seen = true;
                 chats.forEach(function(chat) {
-                    if (!chat.messagesHaveBeenSeen) seen = false;
+                    if (!chat.messagesHaveBeenSeen && chat.message) seen = false;
                 });
                 return seen;
             }

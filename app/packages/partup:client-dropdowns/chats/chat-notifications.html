@@ -5,7 +5,7 @@
 
         {{ label }}
     </button>
-    <div class="pu-dropdown pu-dropdown-notifications {{#if menuOpen}}pu-dropdown-active{{/if}} pu-dropdown-notifications-nobutton" data-clickoutside-close>
+    <div class="pu-dropdown pu-dropdown-notifications {{#if menuOpen}}pu-dropdown-active{{/if}} pu-dropdown-notifications-nobutton pu-dropdown-notifications-header" data-clickoutside-close>
         <header>
             <div class="pu-toggle">
                 <button class="{{#if private}}pu-state-active{{/if}}" data-private>{{_ 'dropdowns-chat-notifications-toggle-one-on-one'}}</button>
@@ -15,7 +15,7 @@
         <ul data-preventscroll>
             {{#each data.chats}}
                 {{#if private}}
-                    <li class="pu-notification {{#if messagesHaveBeenSeen }}pu-notification-viewed{{/if}} {{#if messagesHaveBeenRead}}pu-notification-clicked{{/if}}" data-notification="{{ _id }}">
+                    <li class="pu-notification pu-notification-chat pu-notification-wide {{#unless message}}pu-notification-viewed{{/unless}}{{#if messagesHaveBeenSeen }}pu-notification-viewed{{/if}} {{#if messagesHaveBeenRead}}pu-notification-clicked{{/if}}" data-notification="{{ _id }}">
                         {{> ChatOneOnOneNotification chat=. }}
                     </li>
                 {{else}}

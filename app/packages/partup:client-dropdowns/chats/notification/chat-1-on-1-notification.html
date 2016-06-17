@@ -1,5 +1,5 @@
 <template name="ChatOneOnOneNotification">
-    <a href="{{pathFor route='network-chat' slug=data.network.slug}}">
+    <a href="{{pathFor route='chats' hash=data.chat._id }}">
         <figure class="pu-avatar {{#if data.chat.upper.status.online}}pu-avatar-online{{else}}pu-avatar-offline{{/if}}" style="background-image:url('{{ partupImageUrl id=data.chat.upper.profile.image store='360x360'}}');"></figure>
         <article>
             <p>{{ data.chat.upper.profile.name }} {{#if data.chat.hasUnreadMessages}}({{data.chat.unreadCount}}){{/if}}</p>

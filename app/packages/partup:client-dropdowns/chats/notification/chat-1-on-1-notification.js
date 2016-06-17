@@ -2,6 +2,10 @@ Template.ChatOneOnOneNotification.helpers({
     notificationName: function() {
         return 'notification_' + this.notification.type;
     },
+    chatQuery: function() {
+        var template = Template.instance();
+        return 'chat-id=' + template.data.chat._id;
+    },
     data: function() {
         var template = Template.instance();
         var chat = template.data.chat;

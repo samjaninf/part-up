@@ -806,6 +806,11 @@ Router.route('/chats', {
     yieldRegions: {
         'app':                  {to: 'main'},
         'app_chat':             {to: 'app'}
+    },
+    data: function() {
+        return {
+            chatId: this.params.hash
+        };
     }
 });
 

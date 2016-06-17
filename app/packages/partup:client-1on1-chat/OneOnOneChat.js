@@ -1,5 +1,6 @@
 Template.OneOnOneChat.onCreated(function() {
     var template = this;
+    var chatId = template.data.chatId || undefined;
     template.initialized = new ReactiveVar(false);
     template.activeChat = new ReactiveVar(undefined);
     template.chatPerson = new ReactiveVar(undefined);
@@ -25,7 +26,11 @@ Template.OneOnOneChat.onCreated(function() {
         template.activeChatSubscriptionReady.set(false);
         template.activeChatSubscription = template.subscribe('chats.by_id', chatId, {limit: 50}, {
             onReady: function() {
-                template.chatPerson.set(person);
+                if (person) {
+                    template.chatPerson.set(person);
+                } else {
+                    template.chatPerson.set(Meteor.users.findOne({_id: {$nin: [Meteor.userId()]}, chats: {$in: [chatId]}}));
+                }
                 startMessageCollector(chatId);
                 template.activeChatSubscriptionReady.set(true);
             }
@@ -59,6 +64,14 @@ Template.OneOnOneChat.onCreated(function() {
             });
         });
     };
+    if (chatId) {
+        template.initializeChat(chatId);
+    }
+    template.autorun(function() {
+        var controller = Iron.controller();
+        var hash = controller.getParams().hash;
+        template.initializeChat(hash);
+    });
 });
 
 Template.OneOnOneChat.helpers({

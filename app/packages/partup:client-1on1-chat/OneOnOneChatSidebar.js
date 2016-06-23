@@ -22,7 +22,7 @@ Template.OneOnOneChatSidebar.helpers({
         var user = Meteor.user();
         return {
             chats: function() {
-                if (!user.chats.length) return [];
+                if (!user.chats || !user.chats.length) return [];
 
                 return Chats.find({_id: {$in: user.chats}}, {sort: {updated_at: -1}})
                     .map(function(chat) {
